@@ -81,7 +81,7 @@
             gap: 14px;
             margin-bottom: 32px;
             width: 100%;
-            max-width: 1120px;
+            max-width: 1080px;
         }
 
         .summary-chip {
@@ -102,17 +102,17 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
-            gap: 22px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
             width: 100%;
-            max-width: 1160px;
+            max-width: 1080px;
         }
 
         .card {
             background: var(--surface-color);
             border: 2px solid var(--border-color);
             border-radius: var(--border-radius);
-            padding: 24px 20px;
+            padding: 24px 22px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -179,7 +179,7 @@
         }
 
         .card h3 {
-            font-size: 1.2em;
+            font-size: 1.22em;
             color: #ffffff;
             margin-bottom: 10px;
             line-height: 1.3;
@@ -187,7 +187,7 @@
 
         .card p {
             color: var(--text-muted);
-            font-size: 0.88em;
+            font-size: 0.9em;
             line-height: 1.5;
             margin-bottom: 18px;
         }
@@ -287,7 +287,7 @@
     </header>
 
     <div class="summary-bar">
-        <div class="summary-chip">📚 <strong>4 Capacitações</strong> Disponíveis</div>
+        <div class="summary-chip">📚 <strong>3 Capacitações</strong> Disponíveis</div>
         <div class="summary-chip">💾 <strong>Salvamento Automático</strong> no Navegador</div>
         <div class="summary-chip">🎓 <strong>Certificado em PDF</strong> ao Concluir os 5 Módulos</div>
     </div>
@@ -382,36 +382,6 @@
                 <span class="card-cta" id="cta-lgpd">Acessar Capacitação ➡</span>
             </div>
         </a>
-
-        <!-- CURSO 4: IA PARA DESENVOLVIMENTO DE SOFTWARES -->
-        <a href="curso_ia_desenvolvimento_softwares.html" class="card" id="card-ia-dev" data-storage="atb_saude_save_curso_ia_dev_softwares_v1">
-            <div>
-                <div class="card-top">
-                    <div class="card-icon">💻</div>
-                    <span class="status-badge" id="badge-ia-dev">Não iniciado</span>
-                </div>
-                <div class="card-category">Tecnologia &amp; Engenharia</div>
-                <h3>IA Aplicada ao Desenvolvimento de Softwares</h3>
-                <p>Da planilha ao sistema modular: arquitetura, PRD e SQL, Protocolo P.O.C.A. Dev, sprints, Git, depuração, testes QA e segurança AppSec.</p>
-            </div>
-            <div>
-                <div class="card-meta">
-                    <span class="meta-tag">5 Módulos</span>
-                    <span class="meta-tag">20 Slides + Quiz</span>
-                    <span class="meta-tag">Certificado PDF</span>
-                </div>
-                <div class="card-progress-wrap">
-                    <div class="card-progress-info">
-                        <span>Progresso</span>
-                        <span id="pct-ia-dev">0 / 5 módulos</span>
-                    </div>
-                    <div class="card-progress-bar">
-                        <div class="card-progress-fill" id="bar-ia-dev"></div>
-                    </div>
-                </div>
-                <span class="card-cta" id="cta-ia-dev">Acessar Capacitação ➡</span>
-            </div>
-        </a>
     </main>
 
     <footer class="footer">
@@ -424,8 +394,7 @@
             const items = [
                 { key: "atb_saude_save_capacitacao_IA_saude_v1", card: "card-ia-saude", badge: "badge-ia-saude", pct: "pct-ia-saude", bar: "bar-ia-saude", cta: "cta-ia-saude" },
                 { key: "atb_saude_save_capacitacao_lei_8080_sus_v1", card: "card-lei-8080", badge: "badge-lei-8080", pct: "pct-lei-8080", bar: "bar-lei-8080", cta: "cta-lei-8080" },
-                { key: "atb_saude_save_capacitacao_LGPD_saude_v1", card: "card-lgpd", badge: "badge-lgpd", pct: "pct-lgpd", bar: "bar-lgpd", cta: "cta-lgpd" },
-                { key: "atb_saude_save_curso_ia_dev_softwares_v1", card: "card-ia-dev", badge: "badge-ia-dev", pct: "pct-ia-dev", bar: "bar-ia-dev", cta: "cta-ia-dev" }
+                { key: "atb_saude_save_capacitacao_LGPD_saude_v1", card: "card-lgpd", badge: "badge-lgpd", pct: "pct-lgpd", bar: "bar-lgpd", cta: "cta-lgpd" }
             ];
 
             items.forEach(item => {
