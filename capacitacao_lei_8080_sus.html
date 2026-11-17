@@ -1,0 +1,2811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capacitação Prática: Lei nº 8.080/1990 (Lei Orgânica do SUS) - Saúde de Atibaia/SP</title>
+<style>
+  :root {
+    --bg: #1e1e1e;
+    --panel: #2a2a2a;
+    --card: #333333;
+    --text: #f0f0f0;
+    --muted: #aaaaaa;
+    --accent: #3584e4;
+    --accent-light: #62a0ea;
+    --success: #2ec27e;
+    --warning: #f5c211;
+    --danger: #e01b24;
+    --border: #444444;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: 310px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    z-index: 50;
+  }
+
+  .brand {
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
+    background: #242424;
+  }
+
+  .brand h1 {
+    font-size: 15px;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .brand p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  .search-box {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: #262626;
+  }
+
+  .search-box input {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    outline: none;
+  }
+
+  .search-box input:focus {
+    border-color: var(--accent-light);
+  }
+
+  #nav-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
+
+  .nav-mod {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--warning);
+    margin: 14px 6px 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .nav-item {
+    padding: 9px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.8px;
+    color: var(--text);
+    margin-bottom: 3px;
+    transition: 0.2s;
+    line-height: 1.35;
+  }
+
+  .nav-item:hover {
+    background: var(--card);
+  }
+
+  .nav-item.active {
+    background: var(--accent);
+    font-weight: 600;
+    color: #fff;
+  }
+
+  /* Main Area */
+  #main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-width: 0;
+  }
+
+  #topbar {
+    min-height: 56px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 24px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #menu-toggle {
+    display: none;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .badge-poca {
+    background: #252f3f;
+    color: var(--accent-light);
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .controls button {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 7px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.5px;
+    transition: 0.2s;
+  }
+
+  .controls button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .controls button.btn-builder {
+    background: #1f3d2d;
+    border-color: var(--success);
+    color: #8ff0a4;
+    font-weight: 600;
+  }
+
+  .controls button.btn-builder:hover {
+    background: var(--success);
+    color: #000;
+  }
+
+  /* Slide Content */
+  #slide-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 44px;
+    max-width: 1240px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .slide-header {
+    margin-bottom: 22px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 14px;
+  }
+
+  .slide-header h2 {
+    font-size: 26px;
+    color: #fff;
+    margin-top: 6px;
+    line-height: 1.25;
+  }
+
+  .slide-meta {
+    font-size: 13px;
+    color: var(--accent-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card.warn { border-left-color: var(--warning); }
+  .card.danger { border-left-color: var(--danger); }
+  .card.ok { border-left-color: var(--success); }
+
+  .card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--accent-light);
+    line-height: 1.35;
+  }
+
+  .card.warn h3 { color: var(--warning); }
+  .card.danger h3 { color: #ff7b7b; }
+  .card.ok h3 { color: var(--success); }
+
+  .card ul {
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .card li {
+    margin-bottom: 7px;
+  }
+
+  .card li strong {
+    color: #ffffff;
+  }
+
+  /* Mind Map Visual Tree */
+  .mindmap {
+    background: #23272e;
+    border: 1px dashed var(--accent-light);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+
+  .mm-title {
+    font-size: 13.5px;
+    text-transform: uppercase;
+    color: var(--warning);
+    margin-bottom: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.4px;
+  }
+
+  .mm-tree {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .mm-node {
+    flex: 1;
+    min-width: 210px;
+    background: var(--card);
+    border-radius: 6px;
+    padding: 13px;
+    border-top: 3px solid var(--success);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .mm-node strong {
+    display: block;
+    color: #fff;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  /* Explanatory Note Box */
+  .notes-box {
+    background: #252f3f;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    margin-top: 20px;
+  }
+
+  .notes-title {
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .notes-text {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #e2e8f0;
+  }
+
+  /* Prompt Copy Box */
+  .code-wrapper {
+    margin-top: 12px;
+    position: relative;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    padding: 6px 12px;
+    border-radius: 6px 6px 0 0;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  pre {
+    background: #141414;
+    padding: 14px;
+    border-radius: 0 0 6px 6px;
+    border: 1px solid var(--border);
+    color: #8ff0a4;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12.5px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
+  }
+
+  .copy-btn {
+    background: var(--success);
+    color: #000;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 11.5px;
+    transition: 0.2s;
+  }
+
+  .copy-btn:hover {
+    filter: brightness(1.1);
+  }
+
+  /* Interactive Modal: Construtor POCA */
+  #poca-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  #poca-modal.open {
+    display: flex;
+  }
+
+  .modal-content {
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    max-width: 780px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .modal-header h3 {
+    color: var(--accent-light);
+    font-size: 18px;
+  }
+
+  .close-modal {
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 11px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .poca-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .poca-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .poca-field label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--warning);
+  }
+
+  .poca-field textarea {
+    background: #191919;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 12.5px;
+    resize: vertical;
+    min-height: 68px;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 900px) {
+    #sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      transform: translateX(-100%);
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #menu-toggle {
+      display: inline-block;
+    }
+    #slide-container {
+      padding: 20px 18px;
+    }
+    .poca-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Print mode */
+  @media print {
+    body {
+      display: block;
+      height: auto;
+      overflow: visible;
+      background: #fff;
+      color: #000;
+    }
+    #sidebar, #topbar, #poca-modal {
+      display: none !important;
+    }
+    #slide-container {
+      display: none !important;
+    }
+    #print-all {
+      display: block !important;
+      padding: 15px;
+    }
+    .print-slide {
+      page-break-after: always;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .card, .mindmap, .notes-box, pre, .code-header {
+      background: #f9f9f9 !important;
+      color: #000 !important;
+      border: 1px solid #aaa !important;
+    }
+    h2, h3, strong, .notes-text, .slide-meta, .mm-title, .notes-title, li {
+      color: #000 !important;
+    }
+    .copy-btn {
+      display: none !important;
+    }
+  }
+
+  #print-all {
+    display: none;
+  }
+
+  /* Progress Bar in Sidebar */
+  .progress-panel {
+    padding: 12px 14px;
+    background: #20252b;
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 6px;
+  }
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #141414;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .progress-status-text {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Locked Navigation Items ("Inclicável") */
+  .nav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-item.locked {
+    opacity: 0.42;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    user-select: none;
+    color: #888888;
+    background: transparent !important;
+  }
+  .nav-item.quiz-item {
+    border-left: 3px solid var(--warning);
+    background: rgba(245, 194, 17, 0.07);
+    font-weight: 600;
+  }
+  .nav-item.quiz-item.completed {
+    border-left-color: var(--success);
+    background: rgba(46, 194, 126, 0.09);
+  }
+  .nav-item.cert-item {
+    border-left: 3px solid var(--accent-light);
+    background: rgba(53, 132, 228, 0.12);
+    font-weight: 700;
+  }
+  .nav-item.cert-item.unlocked {
+    border-left-color: var(--success);
+    background: rgba(46, 194, 126, 0.15);
+    color: #8ff0a4;
+  }
+  .nav-lock-icon {
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Locked Next Button ("Inclicável") */
+  .controls button:disabled,
+  .controls button.btn-locked {
+    opacity: 0.42 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    background: #252525 !important;
+    border-color: #3a3a3a !important;
+    color: #777777 !important;
+  }
+
+  /* Interactive Quiz Styling */
+  .quiz-container {
+    background: #232830;
+    border: 2px solid var(--warning);
+    border-radius: 10px;
+    padding: 24px;
+    margin-top: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+  .quiz-container.quiz-completed {
+    border-color: var(--success);
+  }
+  .quiz-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .quiz-badge-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--warning);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .quiz-container.quiz-completed .quiz-badge-title {
+    color: var(--success);
+  }
+  .quiz-status-pill {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    background: rgba(245, 194, 17, 0.15);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+  }
+  .quiz-status-pill.ok {
+    background: rgba(46, 194, 126, 0.18);
+    color: var(--success);
+    border-color: var(--success);
+  }
+  .quiz-intro {
+    font-size: 14px;
+    color: #d8dee9;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  .quiz-question-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .quiz-question-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 14px;
+    line-height: 1.45;
+  }
+  .quiz-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .quiz-option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #1f1f1f;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13.8px;
+    line-height: 1.45;
+    color: var(--text);
+  }
+  .quiz-option-label:hover {
+    background: #2d333b;
+    border-color: var(--accent-light);
+  }
+  .quiz-option-label input[type="radio"] {
+    margin-top: 3px;
+    accent-color: var(--accent);
+    transform: scale(1.15);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .quiz-option-label.selected-correct {
+    background: rgba(46, 194, 126, 0.16);
+    border-color: var(--success);
+    color: #ffffff;
+  }
+  .quiz-option-label.selected-wrong {
+    background: rgba(224, 27, 36, 0.16);
+    border-color: var(--danger);
+  }
+  .quiz-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .btn-validate-quiz {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-validate-quiz:hover {
+    background: var(--accent-light);
+  }
+  .btn-advance-mod {
+    background: var(--success);
+    color: #000000;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-advance-mod:hover {
+    filter: brightness(1.1);
+  }
+  .quiz-feedback {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    display: none;
+  }
+  .quiz-feedback.show {
+    display: block;
+  }
+  .quiz-feedback.ok {
+    background: rgba(46, 194, 126, 0.16);
+    border: 1px solid var(--success);
+    color: #8ff0a4;
+  }
+  .quiz-feedback.err {
+    background: rgba(224, 27, 36, 0.16);
+    border: 1px solid var(--danger);
+    color: #ff9b9b;
+  }
+
+  /* Certificate Generator & Preview Card */
+  .cert-panel {
+    background: var(--panel);
+    border: 2px solid var(--success);
+    border-radius: 10px;
+    padding: 26px;
+    margin-bottom: 24px;
+  }
+  .cert-form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+    margin-bottom: 18px;
+  }
+  .cert-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cert-input-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--warning);
+  }
+  .cert-input-group input {
+    background: #181818;
+    border: 1px solid var(--border);
+    color: #ffffff;
+    padding: 11px 14px;
+    border-radius: 6px;
+    font-size: 14.5px;
+    outline: none;
+  }
+  .cert-input-group input:focus {
+    border-color: var(--accent-light);
+  }
+  .cert-input-group input:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .cert-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .btn-cert-download {
+    background: var(--success);
+    color: #000000;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-cert-download:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+  .btn-cert-print {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-cert-print:hover:not(:disabled) {
+    background: var(--accent-light);
+  }
+  .btn-cert-download:disabled,
+  .btn-cert-print:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Visual Certificate Preview Box */
+  .cert-preview-wrapper {
+    background: #ffffff;
+    color: #1a202c;
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  .cert-diploma-border {
+    border: 6px double #1e4e8c;
+    padding: 32px 36px;
+    background: linear-gradient(135deg, #ffffff 0%, #f4f8fd 100%);
+    position: relative;
+    text-align: center;
+    min-width: 680px;
+  }
+  .cert-diploma-header {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e4e8c;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .cert-diploma-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f294a;
+    margin: 8px 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .cert-diploma-subtitle {
+    font-size: 14px;
+    color: #2b6cb0;
+    font-weight: 600;
+    margin-bottom: 22px;
+  }
+  .cert-diploma-Lead {
+    font-size: 15px;
+    color: #4a5568;
+    margin-bottom: 8px;
+  }
+  .cert-diploma-name {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f294a;
+    border-bottom: 2px solid #2b6cb0;
+    display: inline-block;
+    padding: 4px 36px 8px;
+    margin: 6px 0 16px;
+    min-width: 360px;
+  }
+  .cert-diploma-body {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #2d3748;
+    max-width: 780px;
+    margin: 0 auto 24px;
+  }
+  .cert-diploma-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 28px;
+    padding-top: 14px;
+    font-size: 12.5px;
+    color: #4a5568;
+  }
+  .cert-sign-line {
+    border-top: 1.5px solid #1e4e8c;
+    padding-top: 6px;
+    width: 240px;
+    font-weight: 700;
+    color: #0f294a;
+  }
+
+  /* Dedicated Print Certificate Container */
+  #print-certificate-only {
+    display: none;
+  }
+
+  @media print {
+    body.print-cert-mode {
+      background: #ffffff !important;
+      color: #000000 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    body.print-cert-mode #sidebar,
+    body.print-cert-mode #topbar,
+    body.print-cert-mode #poca-modal,
+    body.print-cert-mode #slide-container,
+    body.print-cert-mode #print-all {
+      display: none !important;
+    }
+    body.print-cert-mode #print-certificate-only {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 95vh;
+      padding: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <div class="brand">
+    <h1>Saúde de Atibaia/SP</h1>
+    <p>Cartilha Prática: Lei nº 8.080/1990 (SUS)<br>Gestão Tripartite • Direitos • Financiamento</p>
+    <p>Clovis Campaner Filho<br>Gestor de T.I. - Chefe de Divisão de T.I. da Saúde</p>
+  </div>
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="🔍 Filtrar tópico ou slide..." oninput="filterNav(this.value)">
+  </div>
+  <div class="progress-panel">
+    <div class="progress-panel-header">
+      <span>PROGRESSO DOS MÓDULOS</span>
+      <span id="mod-progress-count">0 / 5 Concluídos</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="mod-progress-fill"></div>
+    </div>
+    <div class="progress-status-text">
+      <span id="mod-lock-status">🔒 Módulos 2 a 5 bloqueados</span>
+      <span id="cert-lock-badge">🎓 Bloqueado</span>
+    </div>
+  </div>
+  <div id="nav-list"></div>
+</aside>
+
+<main id="main">
+  <header id="topbar">
+    <div class="top-left">
+      <button id="menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
+      <span id="progress-badge" class="badge">Slide 1 de 20</span>
+      <span class="badge-poca">Cartilha Lei 8.080/90 • SUS Atibaia</span>
+    </div>
+    <div class="controls">
+      <button class="btn-builder" onclick="togglePocaModal()">📋 Guia Rápido Lei 8.080</button>
+      <button id="btn-prev" onclick="prevSlide()">⬅ Anterior</button>
+      <button id="btn-next" onclick="nextSlide()">Próximo ➡</button>
+      <button onclick="toggleFullScreen()">⛶ Tela Cheia</button>
+      <button onclick="printFullCourseApostila()">🖨️ Salvar PDF Completo</button>
+    </div>
+  </header>
+
+  <section id="slide-container"></section>
+  <section id="print-all"></section>
+  <section id="print-certificate-only"></section>
+</main>
+
+<!-- Modal Interativo Guia Rápido de Bolso Lei 8.080/90 -->
+<div id="poca-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📋 Guia Rápido de Bolso — Lei nº 8.080/1990 (Saúde de Atibaia)</h3>
+      <button class="close-modal" onclick="togglePocaModal()">✕ Fechar</button>
+    </div>
+    <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
+      Selecione abaixo o perfil de consulta rápida para visualizar e copiar o resumo dos artigos obrigatórios da Lei Orgânica do SUS:
+    </p>
+    <div class="poca-form-grid">
+      <div class="poca-field">
+        <label>1. Perfil de Consulta Rápida</label>
+        <select id="poca-p" onchange="updatePocaPreview()" style="background:#191919; border:1px solid var(--border); color:var(--text); border-radius:6px; padding:10px; font-size:13px;">
+          <option value="ordenador">💰 Ordenador de Despesas & Finanças (Arts. 33, 36, 38, 19-T, 52)</option>
+          <option value="atendimento">🏥 Recepção, Enfermagem & Farmácia (Arts. 6º-A, 7º, 19-I, 19-J, 26-A)</option>
+          <option value="municipio">🏛️ Competências do Município & Tripartite (Arts. 9º, 14-A, 18, 24 a 28)</option>
+          <option value="regulacao">📊 Regulação Assistencial & Filas (Arts. 8º, 19-X, 47-A)</option>
+        </select>
+      </div>
+      <div class="poca-field">
+        <label>2. Setor / Unidade (Opcional para cabeçalho)</label>
+        <textarea id="poca-o" oninput="updatePocaPreview()" style="min-height:44px;">Secretaria Municipal de Saúde de Atibaia/SP</textarea>
+      </div>
+    </div>
+    <input type="hidden" id="poca-c" value="">
+    <input type="hidden" id="poca-a" value="">
+    <div class="code-wrapper">
+      <div class="code-header">
+        <span>Cartilha Resumida da Lei nº 8.080/1990 (Pronta para Copiar)</span>
+        <button class="copy-btn" onclick="copyTextFromElement('poca-generated-output', this)">Copiar Checklist</button>
+      </div>
+      <pre id="poca-generated-output"></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = [
+  // =========================================================================
+  // MÓDULO 1 • HISTÓRIA DO SUS, POR QUE A LEI 8.080 NASCEU E CONCEITO DE SAÚDE
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • História do SUS, Por Que a Lei 8.080 Nasceu e Conceito de Saúde",
+    titulo: "1. Antes do SUS vs. Depois da Lei 8.080/1990: Por Que Ela Foi Criada?",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Como Era o Brasil Antes de 1988/1990 (A Saúde Excludente)",
+        itens: [
+          "<strong>Saúde Só para Quem Tinha Carteira Assinada:</strong> Antes da Constituição de 1988 e da Lei 8.080/90, o atendimento público (INAMPS) era exclusivo para trabalhadores formais que contribuíam com a Previdência.",
+          "<strong>Os 'Indigentes Sanitários':</strong> Trabalhadores rurais, autônomos, desempregados e crianças sem vínculo formal não tinham direito garantido — dependiam de caridade, Santas Casas ou ficavam sem atendimento.",
+          "<strong>Centralização em Brasília:</strong> Tudo era decidido de forma centralizada, sem participação dos Municípios nem da comunidade."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "A Virada Histórica: Constituição de 1988 e Lei nº 8.080/1990",
+        itens: [
+          "<strong>Movimento da Reforma Sanitária:</strong> Profissionais de saúde, gestores e movimentos sociais lutaram na 8ª Conferência Nacional de Saúde (1986) pela tese <em>'Saúde é Direito de Todos e Dever do Estado'</em>.",
+          "<strong>Nascimento da Lei Orgânica da Saúde:</strong> Em <strong>19 de setembro de 1990</strong>, foi sancionada a <strong>Lei Federal nº 8.080/1990</strong>, que regulamentou os arts. 196 a 200 da Constituição e organizou o funcionamento do <strong>Sistema Único de Saúde (SUS)</strong> em todo o país.",
+          "<strong>Conquista Civilizatória:</strong> O Brasil tornou-se o maior sistema público de saúde universal do mundo, garantindo atendimento gratuito a qualquer pessoa em território nacional."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Antes de 1988 (INAMPS)", txt: "Atendimento restrito a trabalhadores com carteira assinada" },
+      { no: "Constituição de 1988", txt: "Art. 196: Saúde passa a ser direito de todos e dever do Estado" },
+      { no: "19 de Setembro de 1990", txt: "Sanção da Lei nº 8.080/90 (Lei Orgânica do SUS)" },
+      { no: "Resultado Prático", txt: "Acesso universal, gratuito, descentralizado e com foco municipal" }
+    ],
+    nota: "Para todo colaborador que chega hoje à Secretaria Municipal de Saúde de Atibaia, conhecer essa história muda o olhar sobre o balcão: quando acolhemos um cidadão sem perguntar se ele tem emprego formal ou plano privado, estamos cumprindo a maior conquista social da história do Brasil."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • História do SUS, Por Que a Lei 8.080 Nasceu e Conceito de Saúde",
+    titulo: "2. O Conceito Ampliado de Saúde e os Determinantes Sociais (Arts. 1º a 3º)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Saúde é Direito Fundamental — Dever do Estado e da Sociedade (Art. 2º)",
+        itens: [
+          "<strong>Abrangência Nacional (Art. 1º):</strong> A Lei 8.080 regula em todo o Brasil as ações e serviços de saúde executados em caráter permanente ou eventual, por órgãos públicos ou instituições privadas.",
+          "<strong>Dever do Estado (Art. 2º, § 1º):</strong> Prover condições indispensáveis ao pleno exercício desse direito, formulando políticas econômicas e sociais para <strong>reduzir riscos de doenças e agravos</strong> e assegurar <strong>acesso universal e igualitário</strong> (promoção, proteção e recuperação).",
+          "<strong>Corresponsabilidade (Art. 2º, § 2º):</strong> O dever do Estado não exclui o das pessoas, da família, das empresas e da sociedade."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Saúde Não é Só Hospital: Os Determinantes Sociais (Art. 3º)",
+        itens: [
+          "<strong>Conceito Ampliado (Art. 3º, caput — atualizado pela Lei 12.864/2013):</strong> Os níveis de saúde expressam a organização social e econômica do País. São fatores determinantes e condicionantes da saúde:",
+          "• <strong>Alimentação, moradia, saneamento básico e meio ambiente;</strong>",
+          "• <strong>Trabalho, renda, educação e atividade física;</strong>",
+          "• <strong>Transporte, lazer e acesso aos bens e serviços essenciais.</strong>",
+          "<strong>Bem-Estar Integral (Parágrafo único):</strong> Dizem respeito à saúde todas as ações destinadas a garantir às pessoas e à coletividade condições de <strong>bem-estar físico, mental e social</strong>."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Promoção da Saúde", txt: "Atividade física, alimentação saudável, educação e prevenção" },
+      { no: "Proteção da Saúde", txt: "Vacinação, vigilância sanitária, água tratada e saúde do trabalhador" },
+      { no: "Recuperação", txt: "Consultas, exames, medicamentos, urgência/UPA e reabilitação" },
+      { no: "Determinantes (Art. 3º)", txt: "Moradia, saneamento, trabalho, renda, transporte e meio ambiente" }
+    ],
+    nota: "Por isso a Secretaria de Saúde de Atibaia trabalha integrada com Educação, Assistência Social, Esportes e Meio Ambiente: pelo Art. 3º da Lei 8.080, combater esgoto a céu aberto, incentivar atividade física nas UBSs e cuidar da saúde mental são ações legítimas de saúde pública."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • História do SUS, Por Que a Lei 8.080 Nasceu e Conceito de Saúde",
+    titulo: "3. O Que Compõe o SUS e Seu Campo de Atuação (Arts. 4º a 6º-A)",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "Quem Forma o SUS e Seus 3 Objetivos Centrais (Arts. 4º e 5º)",
+        itens: [
+          "<strong>Composição (Art. 4º):</strong> Conjunto de ações e serviços prestados por órgãos e instituições públicas federais, estaduais e municipais (administração direta, indireta e fundações), incluindo laboratórios públicos, hemocentros e controle de qualidade. A <strong>iniciativa privada</strong> participa em <strong>caráter complementar</strong> (§ 2º).",
+          "<strong>3 Objetivos do SUS (Art. 5º):</strong><br>1) Identificar e divulgar os fatores condicionantes e determinantes da saúde;<br>2) Formular políticas de saúde nos campos econômico e social;<br>3) Prestar assistência às pessoas integrando <strong>ações assistenciais e atividades preventivas</strong>."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Campo de Atuação Atualizado do SUS (Arts. 6º e 6º-A)",
+        itens: [
+          "<strong>Ações Obrigatórias no Campo do SUS (Art. 6º):</strong><br>• <strong>Vigilância Sanitária (§ 1º)</strong> e <strong>Vigilância Epidemiológica (§ 2º)</strong>;<br>• <strong>Saúde do Trabalhador (§ 3º)</strong> e <strong>Saúde Bucal (§ 4º — Lei 14.572/2023)</strong>;<br>• <strong>Assistência Terapêutica Integral, inclusive Farmacêutica</strong>;<br>• <strong>Assistência Toxicológica e logística de antídotos (§ 5º — Lei 14.715/2023)</strong>;<br>• <strong>Complexo Econômico-Industrial da Saúde - Ceis (§ 6º — Lei 15.471/2026)</strong>;<br>• Saneamento básico, vigilância nutricional, meio ambiente e política de sangue.",
+          "<strong>Transparência Obrigatória de Estoque (Art. 6º-A — Lei 14.654/2023):</strong> Os gestores do SUS são <strong>obrigados a divulgar na internet os estoques de medicamentos das farmácias públicas</strong> sob sua gestão, com <strong>atualização quinzenal</strong> acessível ao cidadão!"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Vigilâncias (Art. 6º)", txt: "Sanitária, Epidemiológica, Ambiental, Nutricional e do Trabalhador" },
+      { no: "Assistência Integral", txt: "Médica, Enfermagem, Saúde Bucal, Farmacêutica e Toxicológica" },
+      { no: "Inovação (Ceis 2026)", txt: "Produção nacional de vacinas, soros, fármacos e insumos críticos" },
+      { no: "Art. 6º-A (Farmácias)", txt: "Obrigação legal de publicar estoque de medicamentos na web a cada 15 dias" }
+    ],
+    nota: "Atenção gestores e equipe da Assistência Farmacêutica de Atibaia: o Art. 6º-A da Lei 8.080 exige que o estoque das farmácias públicas municipais fique disponível no site oficial da Prefeitura com atualização quinzenal, evitando deslocamentos desnecessários do cidadão."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: true,
+    mod: "Módulo 1 • História do SUS, Por Que a Lei 8.080 Nasceu e Conceito de Saúde",
+    titulo: "4. Os Princípios Doutrinários e Organizativos do SUS (Art. 7º)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Os Pilares Éticos do Atendimento (Todo Servidor Deve Conhecer)",
+        itens: [
+          "<strong>1. Universalidade (Inciso I):</strong> O SUS é para todos os cidadãos, sem barreiras financeiras, burocráticas ou discriminação.",
+          "<strong>2. Integralidade (Inciso II):</strong> Olhar o paciente como um todo — unindo prevenção (vacina, orientação) e cura (consulta, exame, cirurgia) em todos os níveis de complexidade.",
+          "<strong>3. Igualdade / Equidade (Inciso IV):</strong> Assistência sem preconceitos ou privilégios de qualquer espécie (tratando cada caso segundo sua necessidade clínica).",
+          "<strong>4. Autonomia e Direito à Informação (Incisos III, V e VI):</strong> Respeitar a integridade física e moral da pessoa, informá-la claramente sobre sua saúde e divulgar os serviços disponíveis.",
+          "<strong>5. Atenção Humanizada (Inciso XVI — Lei nº 15.126/2025):</strong> Acolhimento digno, empático e respeitoso incorporado expressamente como princípio legal do SUS!"
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Princípios de Organização e Proteção a Grupos Vulneráveis",
+        itens: [
+          "<strong>Descentralização com Direção Única (Inciso IX):</strong> Ênfase na <strong>municipalização</strong> dos serviços (quem está perto do cidadão executa) e organização em rede <strong>regionalizada e hierarquizada</strong>.",
+          "<strong>Participação da Comunidade (Inciso VIII):</strong> Controle social pelos Conselhos e Conferências de Saúde.",
+          "<strong>Epidemiologia e Resolubilidade (Incisos VII, XII e XIII):</strong> Usar dados reais para definir prioridades, resolver problemas em cada nível e evitar duplicidade de meios.",
+          "<strong>Proteção Especial (Incisos XIV e XV):</strong> Atendimento especializado e sigiloso para <strong>mulheres vítimas de violência doméstica</strong> (garantindo privacidade e restrição de acesso ao agressor — Lei 14.847/2024) e proteção integral de <strong>crianças e adolescentes</strong> contra maus-tratos (Lei 14.679/2023)."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Universalidade", txt: "Acesso garantido a todas as pessoas em todos os níveis" },
+      { no: "Integralidade", txt: "Prevenção + cura + reabilitação de forma contínua" },
+      { no: "Igualdade & Humanização", txt: "Sem privilégios, com acolhimento humanizado (Lei 15.126/2025)" },
+      { no: "Proteção a Vítimas", txt: "Privacidade reforçada para mulheres, crianças e adolescentes" }
+    ],
+    nota: "O Art. 7º é a bússola ética de qualquer unidade de saúde. Destaque especial para as atualizações recentes da Lei 8.080: a inclusão da 'Atenção Humanizada' (2025) e o dever de garantir ambiente reservado e protegido para mulheres vítimas de violência (2024)."
+  },
+  {
+    tipo: "quiz",
+    modNum: 1,
+    mod: "Módulo 1 • História do SUS, Por Que a Lei 8.080 Nasceu e Conceito de Saúde",
+    titulo: "📝 Avaliação do Módulo 1 (Desbloqueio do Módulo 2)",
+    subtitulo: "Responda corretamente às 2 questões abaixo (apenas 1 alternativa correta por questão) para habilitar a visualização do Módulo 2.",
+    perguntas: [
+      {
+        q: "1. Qual era a situação do atendimento público de saúde no Brasil antes da Constituição de 1988 e da Lei nº 8.080/1990, e o que mudou com a criação do SUS?",
+        opcoes: [
+          "Antes da Lei 8.080, todos já tinham atendimento gratuito universal e a lei criou a cobrança de mensalidades nos postos de saúde.",
+          "Antes do SUS, o atendimento médico público (INAMPS) era restrito aos trabalhadores com carteira assinada; com a Lei 8.080/1990, a saúde tornou-se direito fundamental universal, igualitário e gratuito a toda população.",
+          "A Lei 8.080/1990 transferiu todos os postos de saúde dos municípios para a administração exclusiva de hospitais privados."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Segundo os arts. 3º, 6º-A e 7º da Lei nº 8.080/1990 atualizada, assinale a alternativa CORRETA:",
+        opcoes: [
+          "A saúde depende apenas de remédios e hospitais, não tendo relação com saneamento, moradia, trabalho ou atividade física.",
+          "As farmácias públicas municipais são proibidas de divulgar seus estoques de medicamentos na internet.",
+          "A saúde possui determinantes sociais (alimentação, moradia, saneamento, trabalho, educação, atividade física, transporte e lazer), os estoques das farmácias públicas devem ser divulgados na internet com atualização quinzenal (Art. 6º-A) e a Atenção Humanizada é princípio expresso do SUS."
+        ],
+        correta: 2
+      }
+    ],
+    nota: "Acerte as 2 questões acima e clique em 'Validar Respostas' para liberar imediatamente o Módulo 2 (Gestão Tripartite, Direção Única e Papel do Município de Atibaia)."
+  },
+
+  // =========================================================================
+  // MÓDULO 2 • GESTÃO TRIPARTITE, DIREÇÃO ÚNICA E PAPEL DO MUNICÍPIO
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Gestão Tripartite, Direção Única e Papel do Município",
+    titulo: "5. Direção Única e Organização Regionalizada da Rede (Arts. 8º a 10)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "O Que Significa 'Direção Única' em Cada Esfera? (Art. 9º)",
+        itens: [
+          "<strong>Um Único Comando por Nível de Governo:</strong> Para evitar que vários órgãos mandem ao mesmo tempo sem coordenação, a Lei 8.080 define uma única direção em cada esfera:<br>• <strong>Na União:</strong> O Ministério da Saúde;<br>• <strong>Nos Estados e DF:</strong> A Secretaria Estadual de Saúde (ex.: SES/SP);<br>• <strong>Nos Municípios:</strong> A <strong>Secretaria Municipal de Saúde</strong> (ex.: SMS de Atibaia).",
+          "<strong>Consórcios e Distritos (Art. 10):</strong> Municípios podem formar <strong>consórcios públicos intermunicipais</strong> para somar esforços em exames, especialidades ou SAMU regional, e podem organizar sua rede interna em <strong>distritos sanitários</strong> (§ 2º)."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Hierarquização e Regionalização: Como a Rede Conversa (Art. 8º)",
+        itens: [
+          "<strong>Por Que Nem Todo Município Tem Tudo?</strong> Um município pequeno não consegue manter sozinho um hospital de transplantes ou radioterapia oncológica com qualidade e escala.",
+          "<strong>Organização em Níveis Crescentes de Complexidade:</strong><br>• <strong>Atenção Primária (Porta de Entrada):</strong> UBSs, Estratégia Saúde da Família (ESF), Vacinação, Saúde Bucal — resolve cerca de 80% dos problemas de saúde perto da casa do cidadão;<br>• <strong>Atenção Secundária (Média Complexidade):</strong> UPAs, Ambulatórios de Especialidades, CAPS, Exames Diagnósticos;<br>• <strong>Atenção Terciária (Alta Complexidade):</strong> Hospitais de referência regional/estadual, UTIs, Oncologia, Alta Cirurgia (referenciados via regulação)."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Direção Única (Art. 9º)", txt: "União (MS) • Estado (SES) • Município (Secretaria Municipal de Saúde)" },
+      { no: "Atenção Primária", txt: "UBS / ESF: porta de entrada preferencial e acompanhamento contínuo" },
+      { no: "Média Complexidade", txt: "UPA, especialidades, CAPS, reabilitação e exames de apoio" },
+      { no: "Alta Complexidade", txt: "Hospitais de referência regional pactuados na Rede de Atenção" }
+    ],
+    nota: "Entender a hierarquização ajuda a orientar corretamente o cidadão na ponta: a UBS não é um 'postinho simples', mas o centro ordenador do cuidado; a UPA é para urgências e emergências; e os hospitais terciários atendem casos graves regulados."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Gestão Tripartite, Direção Única e Papel do Município",
+    titulo: "6. A Gestão Tripartite na Prática: CIT, CIB, CONASS, CONASEMS e COSEMS",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Como os 3 Entes Negociam sem Hierarquia entre Si? (Art. 14-A)",
+        itens: [
+          "<strong>Autonomia Federativa:</strong> No Brasil, o Ministério da Saúde não é 'chefe' do Prefeito nem do Secretário Municipal de Saúde. União, Estados e Municípios são entes autônomos que precisam <strong>pactuar (combinar)</strong> regras operacionais e financeiras.",
+          "<strong>1. CIT (Comissão Intergestores Tripartite — Nível Nacional):</strong> Reúne representantes do Ministério da Saúde (União), CONASS (Estados) e CONASEMS (Municípios) para pactuar políticas nacionais, financiamento e responsabilidades por medicamentos/programas.",
+          "<strong>2. CIB (Comissão Intergestores Bipartite — Nível Estadual):</strong> Reúne a Secretaria Estadual de Saúde e o COSEMS estadual para pactuar redes regionais, fluxos de referência/contrarreferência e distribuição de recursos no Estado."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Quem Representa os Gestores Municipais? (Art. 14-B)",
+        itens: [
+          "<strong>CONASS:</strong> Conselho Nacional de Secretários de Saúde (representa os Estados).",
+          "<strong>CONASEMS:</strong> Conselho Nacional de Secretarias Municipais de Saúde (representa todos os Municípios brasileiros na CIT).",
+          "<strong>COSEMS (ex.: COSEMS/SP):</strong> Conselho de Secretarias Municipais de Saúde no âmbito estadual — apoia tecnicamente os gestores municipais e negocia na CIB e nas CIR (Comissões Intergestores Regionais)."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "CIT (Tripartite)", txt: "União + Estados + Municípios: pactuação operacional e financeira nacional" },
+      { no: "CIB (Bipartite)", txt: "Estado + Municípios: pactuação regional de vagas, redes e fluxos" },
+      { no: "CONASEMS & COSEMS", txt: "Entidades que defendem os interesses dos Municípios nas mesas de pactuação" },
+      { no: "Conselhos de Saúde", txt: "Controle Social (50% usuários, 25% trabalhadores, 25% gestores/prestadores)" }
+    ],
+    nota: "Dica essencial para gestores: nunca confunda 'Comissão Intergestores (CIT/CIB)' com 'Conselho de Saúde (CMS)'. A CIT e a CIB são fóruns técnicos entre gestores públicos para operacionalizar o SUS; já o Conselho Municipal de Saúde é o órgão deliberativo de controle social com participação da população."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Gestão Tripartite, Direção Única e Papel do Município",
+    titulo: "7. O Que Compete ao Município (Art. 18 — Missão da Saúde de Atibaia)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "As Responsabilidades Diretas da Direção Municipal do SUS (Art. 18)",
+        itens: [
+          "<strong>1. Gerir e Executar os Serviços Públicos (Inciso I):</strong> Planejar, organizar, controlar, avaliar e executar diretamente as ações e serviços de saúde no município (UBSs, ESFs, UPA, CAPS, Farmácia, Ambulatórios).",
+          "<strong>2. Executar as Vigilâncias e Ações Básicas (Inciso IV):</strong><br>• Vigilância Epidemiológica e Vigilância Sanitária;<br>• Alimentação e Nutrição;<br>• Saneamento básico (ações vinculadas à saúde);<br>• Saúde do Trabalhador e <strong>Saúde Bucal</strong> (Lei 14.572/2023).",
+          "<strong>3. Política de Insumos e Equipamentos (Inciso V):</strong> Garantir abastecimento de medicamentos, vacinas, insumos médicos e manutenção de equipamentos."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Articulação Regional, Contratos e Fiscalização Privada (Incisos II, VII, X a XII)",
+        itens: [
+          "<strong>4. Planejamento Regionalizado (Inciso II):</strong> Integrar a rede municipal com a região de saúde (Região Bragantina / DRS) para garantir exames e internações de maior complexidade.",
+          "<strong>5. Contratos e Convênios Complementares (Inciso X):</strong> Celebrar contratos/convênios com prestadores privados (laboratórios, clínicas, hospitais) quando a rede própria não for suficiente, controlando e avaliando sua execução.",
+          "<strong>6. Fiscalização Sanitária e Privada (Incisos VI, XI e XII):</strong> Fiscalizar procedimentos dos serviços privados de saúde no município, atuar contra agressões ambientais com impacto na saúde e editar normas técnicas complementares locais."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Execução Direta", txt: "Atenção Básica, Urgência/UPA, Saúde Bucal, Farmácia e Vigilâncias" },
+      { no: "Gestão de Insumos", txt: "Abastecimento farmacêutico, vacinas e equipamentos nas unidades" },
+      { no: "Rede Regional", txt: "Articulação com o Estado e consórcios para média/alta complexidade" },
+      { no: "Regulação & Controle", txt: "Contratar, auditar prestadores e exercer o poder de polícia sanitária" }
+    ],
+    nota: "Na arquitetura do SUS, o Município é o principal executor das ações diretas ao cidadão. Enquanto a União (Art. 16) normatiza e cofinancia nacionalmente e o Estado (Art. 17) coordena redes regionais e hospitais de alta complexidade, é no Município que o SUS acontece na vida real."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: true,
+    mod: "Módulo 2 • Gestão Tripartite, Direção Única e Papel do Município",
+    titulo: "8. Participação Privada Complementar e Regras de Ouro (Arts. 20 a 28)",
+    cards: [
+      {
+        tipo: "warn",
+        titulo: "Quando e Como o SUS Pode Contratar a Iniciativa Privada? (Arts. 24 a 26)",
+        itens: [
+          "<strong>Caráter Complementar (Art. 24):</strong> O SUS só recorre a serviços privados quando a capacidade instalada da rede pública própria for <strong>insuficiente</strong> para cobrir a demanda da população.",
+          "<strong>Instrumento Formal (Art. 24, par. único):</strong> Sempre por meio de <strong>contrato administrativo ou convênio</strong>, seguindo as normas de direito público (Lei 14.133/2021).",
+          "<strong>Preferência Legal (Art. 25):</strong> As entidades <strong>filantrópicas e sem fins lucrativos</strong> (ex.: Santas Casas, APAEs) têm preferência para participar complementarmente do SUS.",
+          "<strong>Gratuidade Absoluta (Art. 43):</strong> É terminantemente <strong>proibido cobrar qualquer valor do paciente</strong> nos serviços privados contratados ou conveniados pelo SUS!"
+        ]
+      },
+      {
+        tipo: "danger",
+        titulo: "Proibições Expressas aos Gestores e Chefias (Arts. 26 e 28)",
+        itens: [
+          "<strong>Vedação de Conflito de Interesses (Art. 26, § 4º):</strong> Aos proprietários, administradores e dirigentes de entidades ou serviços privados contratados pelo SUS é <strong>VEDADO exercer cargo de chefia ou função de confiança no SUS</strong>.",
+          "<strong>Dedicação em Tempo Integral nas Chefias (Art. 28):</strong> Os cargos e funções de chefia, direção e assessoramento no âmbito do SUS só podem ser exercidos em <strong>regime de tempo integral</strong>.",
+          "<strong>Acumulação de Cargos (Art. 28, §§ 1º e 2º):</strong> Servidores que acumulam legalmente dois cargos públicos (ex.: dois cargos de médico ou enfermeiro, conforme a Constituição) podem atuar em mais de um estabelecimento do SUS, exceto se ocuparem cargo de chefia/direção."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Insuficiência da Rede", txt: "Requisito prévio para contratar serviços privados complementares" },
+      { no: "Preferência Filantrópica", txt: "Entidades sem fins lucrativos têm prioridade sobre empresas lucrativas" },
+      { no: "Gratuidade Total", txt: "Zero cobrança 'por fora' ao usuário atendido via convênio/contrato SUS" },
+      { no: "Impedimento Ético", txt: "Dono/dirigente de clínica contratada não pode ocupar chefia no SUS" }
+    ],
+    nota: "Essas regras dos arts. 24 a 28 são frequentemente cobradas pelo Tribunal de Contas e pelo Ministério Público: antes de terceirizar ou credenciar exames/consultas, o gestor deve demonstrar a insuficiência da rede própria e garantir que nenhum dirigente da contratada ocupe cargo comissionado na Secretaria."
+  },
+  {
+    tipo: "quiz",
+    modNum: 2,
+    mod: "Módulo 2 • Gestão Tripartite, Direção Única e Papel do Município",
+    titulo: "📝 Avaliação do Módulo 2 (Desbloqueio do Módulo 3)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre Gestão Tripartite, Competências do Município e Participação Complementar Privada para liberar o Módulo 3.",
+    perguntas: [
+      {
+        q: "1. Sobre as Comissões Intergestores (CIT e CIB) e a Direção Única do SUS previstas nos arts. 9º e 14-A da Lei nº 8.080/1990, assinale a alternativa CORRETA:",
+        opcoes: [
+          "O Ministério da Saúde dirige diretamente todas as UBSs dos municípios, não existindo Secretaria Municipal de Saúde.",
+          "A CIT (Tripartite: União, Estados e Municípios) e a CIB (Bipartite: Estado e Municípios) são foros de negociação e pactuação entre gestores para decidir aspectos operacionais, financeiros e redes regionais do SUS, respeitando a direção única em cada esfera.",
+          "A CIT e a CIB são empresas privadas contratadas para fiscalizar os prefeitos."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Quanto à participação complementar da iniciativa privada no SUS e às regras para cargos de chefia (arts. 24 a 28 e 43), assinale a alternativa CORRETA:",
+        opcoes: [
+          "Proprietários e dirigentes de clínicas privadas contratadas pelo SUS podem exercer livremente cargos de chefia na Secretaria de Saúde.",
+          "Quando a rede pública própria for insuficiente, o SUS pode contratar serviços privados (com preferência para entidades filantrópicas/sem fins lucrativos), preservando a gratuidade total ao paciente e sendo vedado aos dirigentes de entidades contratadas exercer cargo de chefia ou função de confiança no SUS.",
+          "Clínicas conveniadas ao SUS podem cobrar uma taxa complementar diretamente do paciente para agilizar exames."
+        ],
+        correta: 1
+      }
+    ],
+    nota: "Excelente! Agora você já domina como o SUS é governado entre União, Estado e Município. Avance para o Módulo 3 para conhecer os Serviços Obrigatórios, Subsistemas e Direitos Garantidos aos Pacientes."
+  },
+
+  // =========================================================================
+  // MÓDULO 3 • SERVIÇOS OBRIGATÓRIOS, SUBSISTEMAS E DIREITOS DOS PACIENTES
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Serviços Obrigatórios, Subsistemas e Direitos dos Pacientes",
+    titulo: "9. Assistência Terapêutica, Medicamentos, PCDTs e CONITEC (Arts. 19-M a 19-W)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "O Que Está Incluído na Assistência Terapêutica Integral? (Arts. 19-M e 19-N)",
+        itens: [
+          "<strong>1. Dispensação de Medicamentos e Produtos de Saúde:</strong> Inclui medicamentos padronizados e <strong>produtos de interesse para a saúde</strong> (órteses, próteses, bolsas coletoras e equipamentos médicos).",
+          "<strong>2. Procedimentos Terapêuticos:</strong> Em regime <strong>domiciliar, ambulatorial e hospitalar</strong>, realizados por serviço próprio, conveniado ou contratado.",
+          "<strong>3. Protocolos Clínicos e Diretrizes Terapêuticas (PCDT):</strong> Documentos oficiais que definem critérios de diagnóstico, tratamento preconizado, posologia, controle clínico e alternativas em caso de falha ou reação adversa (Art. 19-O — incluindo imunoterapia no câncer quando superior, Lei 15.379/2026)."
+        ]
+      },
+      {
+        tipo: "danger",
+        titulo: "Incorporação de Tecnologias (CONITEC) e Vedações Legais (Arts. 19-Q a 19-V)",
+        itens: [
+          "<strong>CONITEC (Art. 19-Q):</strong> Assessora o Ministério da Saúde na incorporação ou exclusão de tecnologias no SUS (prazo de análise de 180 dias + 90 dias, com prioridade para câncer pela Lei 14.758/2023), exigindo evidência científica e avaliação de custo-efetividade.",
+          "<strong>Divisão Tripartite de Medicamentos (Arts. 19-P e 19-U):</strong> Na falta de PCDT, segue as relações pactuadas: RENAME (União/CIT), RESME (Estado/CIB) e REMUME (Município/Conselho Municipal de Saúde).",
+          "<strong>PROIBIÇÃO EXPRESSA (Art. 19-T):</strong> É <strong>vedado</strong> em todas as esferas pagar, dispensar ou reembolsar medicamento/procedimento <strong>experimental ou sem registro na ANVISA</strong> (salvo exceções estritas recomendadas pela Conitec).",
+          "<strong>Combate à Automedicação (Art. 19-V — Lei 14.912/2024):</strong> Dever permanente dos gestores realizar campanhas educativas contra automedicação (especialmente antibióticos e controlados)."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "REMUME / RENAME", txt: "Listas oficiais de medicamentos pactuadas entre Município, Estado e União" },
+      { no: "Órteses e Próteses", txt: "Bolsas coletoras, órteses, próteses e insumos terapêuticos (Art. 19-N)" },
+      { no: "Trava ANVISA (Art. 19-T)", txt: "Proibido dispensar ou pagar produto experimental ou sem registro ANVISA" },
+      { no: "Uso Racional (19-V)", txt: "Campanhas permanentes contra automedicação de antibióticos/controlados" }
+    ],
+    nota: "No dia a dia das UBSs e da Farmácia Municipal de Atibaia, conhecer os arts. 19-M a 19-T ajuda a explicar ao paciente por que o SUS segue a REMUME/RENAME e os Protocolos Clínicos (PCDTs), e por que o município não pode adquirir por conta própria medicamentos experimentais sem registro na ANVISA."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Serviços Obrigatórios, Subsistemas e Direitos dos Pacientes",
+    titulo: "10. Direito da Mulher a Acompanhante e Proteção a Vítimas (Art. 19-J e Art. 7º)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Direito Ampliado a Acompanhante em QUALQUER Atendimento (Art. 19-J — Lei 14.737/2023)",
+        itens: [
+          "<strong>Regra Geral Obrigatória:</strong> Em <strong>consultas, exames e procedimentos</strong> realizados em unidades de saúde públicas ou privadas, <strong>toda mulher tem o direito de fazer-se acompanhar por pessoa maior de idade</strong>, durante todo o atendimento, <strong>independentemente de notificação prévia</strong>!",
+          "<strong>Escolha Livre e Sigilo (§ 1º):</strong> O acompanhante é de livre escolha da paciente (ou representante legal) e tem dever de preservar o sigilo das informações de saúde.",
+          "<strong>Atendimentos com Sedação (§§ 2º e 2º-A):</strong> Se a paciente não indicar acompanhante, a unidade deve indicar (preferencialmente profissional de saúde mulher, sem custo). Se a paciente quiser renunciar ao acompanhante em procedimento com sedação, a renúncia deve ser <strong>por escrito, com no mínimo 24 horas de antecedência</strong>, assinada e arquivada no prontuário!",
+          "<strong>Cartaz Obrigatório (§ 3º):</strong> Todas as unidades de saúde são <strong>obrigadas a manter aviso em local visível</strong> informando sobre esse direito."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Exceções de Segurança e Proteção contra Violência (Art. 19-J §§ 4º-5º e Art. 7º)",
+        itens: [
+          "<strong>UTI e Centro Cirúrgico (§ 4º):</strong> Se houver restrição de segurança/saúde justificada pelo corpo clínico, admite-se apenas acompanhante que seja profissional de saúde.",
+          "<strong>Urgência e Emergência (§ 5º):</strong> Os profissionais podem agir imediatamente para salvar a vida da paciente mesmo na ausência do acompanhante.",
+          "<strong>Acolhimento Sigiloso a Vítimas de Violência (Art. 7º, XIV e Par. Único — Lei 14.847/2024):</strong> Mulheres vítimas de violência doméstica têm direito a atendimento especializado (incluindo acompanhamento psicológico e cirurgias reparadoras) em <strong>ambiente que garanta privacidade e impeça o acesso de terceiros não autorizados, especialmente o agressor</strong>."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Consultas e Exames", txt: "Direito a acompanhante maior de idade sem aviso prévio (Lei 14.737/23)" },
+      { no: "Aviso Visível na UBS/UPA", txt: "Cartaz informativo obrigatório em todas as unidades de saúde (§ 3º)" },
+      { no: "Sedação (24h Antes)", txt: "Renúncia ao acompanhante exige termo escrito 24h antes no prontuário" },
+      { no: "Violência Doméstica", txt: "Atendimento em local reservado bloqueando entrada do agressor" }
+    ],
+    nota: "Atenção recepcionistas, enfermagem e gerentes de UBS/UPA de Atibaia: pela redação atualizada do Art. 19-J (Lei nº 14.737/2023), o direito a acompanhante NÃO vale apenas para o parto — vale para QUALQUER consulta, exame ou procedimento na rede pública ou privada, e o cartaz informativo precisa estar visível na recepção!"
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Serviços Obrigatórios, Subsistemas e Direitos dos Pacientes",
+    titulo: "11. Atenção Domiciliar (Melhor em Casa), Saúde Indígena e TFD (Arts. 19-A a 19-Z)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Atendimento e Internação Domiciliar no SUS (Art. 19-I)",
+        itens: [
+          "<strong>O Que é (Art. 19-I):</strong> Modalidade de cuidado prestado diretamente na residência do paciente (como o Programa <em>Melhor em Casa</em> / SAD), abrangendo prevenção, tratamento e reabilitação.",
+          "<strong>Equipe Multidisciplinar (§§ 1º e 2º):</strong> Inclui procedimentos médicos, de enfermagem, fisioterapêuticos, psicológicos e de assistência social.",
+          "<strong>Requisitos Obrigatórios (§ 3º):</strong> Só pode ser realizado por <strong>indicação médica</strong> e com <strong>expressa concordância do paciente e de sua família</strong>."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Saúde Indígena (Arts. 19-A a 19-H) e Tratamento Fora do Domicílio (Arts. 19-X a 19-Z)",
+        itens: [
+          "<strong>Subsistema de Atenção à Saúde Indígena:</strong> Financiado pela União (DSEIs), com atuação complementar dos Estados e Municípios na atenção secundária e terciária, respeitando a cultura local e com registro obrigatório de raça/cor nos sistemas do SUS (§ 1º-A).",
+          "<strong>Tratamento Fora do Município de Residência — TFD (Arts. 19-X a 19-Z — Lei nº 15.390/2026):</strong> Disciplina legalmente o encaminhamento e suporte assistencial quando o paciente precisa realizar procedimento especializado em outro município pactuado na rede regionalizada."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Atenção Domiciliar", txt: "Equipe multiprofissional em casa com indicação médica + aceite familiar" },
+      { no: "Saúde Indígena", txt: "Atenção diferenciada + retaguarda municipal/estadual especializada" },
+      { no: "TFD (Lei 15.390/2026)", txt: "Regras legais para tratamento especializado fora do município" },
+      { no: "Cuidado Integral", txt: "Continuidade da assistência do domicílio até a alta complexidade" }
+    ],
+    nota: "No atendimento domiciliar (Art. 19-I), o termo de concordância do paciente e da família é condição legal expressa — a equipe não pode impor a internação domiciliar sem o aceite da família."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: true,
+    mod: "Módulo 3 • Serviços Obrigatórios, Subsistemas e Direitos dos Pacientes",
+    titulo: "12. Telessaúde no SUS (Arts. 26-A a 26-H) e Transparência das Filas (Art. 47-A)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Telessaúde no SUS: Direitos do Paciente e do Profissional (Lei 14.510/2022)",
+        itens: [
+          "<strong>O Que Abrange (Arts. 26-A e 26-B):</strong> Prestação remota de serviços de saúde (teleconsulta, teleinterconsulta, telediagnóstico, telemonitoramento) por todas as profissões regulamentadas da saúde, com validade nacional.",
+          "<strong>Direitos Inegociáveis do Paciente (Arts. 26-A e 26-G):</strong><br>• <strong>Consentimento livre e informado</strong> do paciente ou representante legal;<br>• <strong>Direito de recusa</strong> à telessaúde, com <strong>garantia de atendimento presencial sempre que solicitado</strong> (inciso III);<br>• Confidencialidade, responsabilidade digital e obediência à <strong>LGPD</strong> e à Lei do Prontuário Eletrônico.",
+          "<strong>Autonomia do Profissional (Art. 26-C):</strong> O profissional tem liberdade total para decidir se usa a telessaúde ou se indica o atendimento presencial."
+        ]
+      },
+      {
+        tipo: "danger",
+        titulo: "Transparência das Filas de Espera e Impacto nos Repasses (Art. 47-A — Lei 15.233/2025)",
+        itens: [
+          "<strong>Sistema Público de Tempos de Espera (Art. 47-A):</strong> O Ministério da Saúde mantém sistema público com o tempo médio de espera para consultas, exames e procedimentos especializados, respeitando a LGPD (§ 1º).",
+          "<strong>Obrigação Crítica das Secretarias Municipais (§ 2º):</strong> As Secretarias Municipais de Saúde <strong>devem garantir o registro da regulação assistencial e enviar obrigatoriamente esses dados ao Ministério da Saúde</strong>.",
+          "<strong>Consequência Financeira Direta (§ 3º):</strong> Novos pedidos de <strong>habilitações, credenciamentos e majoração de valores</strong> na atenção especializada <strong>SOMENTE serão analisados e concedidos aos municípios que cumprirem o envio obrigatório dos dados de regulação!</strong>"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Telessaúde (26-A a 26-H)", txt: "Consentimento do paciente + direito garantido de optar pelo presencial" },
+      { no: "Sigilo & LGPD", txt: "Transmissão segura de dados e respeito aos conselhos profissionais" },
+      { no: "Regulação & Filas (47-A)", txt: "Envio obrigatório dos tempos de espera ao Ministério da Saúde" },
+      { no: "Alerta ao Gestor (§ 3º)", txt: "Sem envio dos dados de regulação, o Município perde novas habilitações!" }
+    ],
+    nota: "O Art. 47-A (incluído pela Lei nº 15.233/2025) é um dos pontos mais importantes para a equipe de Regulação, T.I. e Gestão de Atibaia: manter a fila de regulação organizada e integrada ao sistema nacional deixou de ser apenas transparência e tornou-se requisito obrigatório para receber novos credenciamentos e recursos federais."
+  },
+  {
+    tipo: "quiz",
+    modNum: 3,
+    mod: "Módulo 3 • Serviços Obrigatórios, Subsistemas e Direitos dos Pacientes",
+    titulo: "📝 Avaliação do Módulo 3 (Desbloqueio do Módulo 4)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre Direitos dos Pacientes, Acompanhante, Telessaúde e Regulação para liberar o Módulo 4.",
+    perguntas: [
+      {
+        q: "1. Sobre o direito da mulher a acompanhante nos serviços de saúde (Art. 19-J) e o atendimento na modalidade Telessaúde (Art. 26-A), assinale a alternativa CORRETA:",
+        opcoes: [
+          "O direito a acompanhante vale apenas na hora do parto, e na Telessaúde o paciente é obrigado a aceitar o atendimento remoto sem opção presencial.",
+          "Toda mulher tem direito a acompanhante maior de idade em consultas, exames e procedimentos (com aviso obrigatório visível na unidade), e na Telessaúde o paciente tem direito de recusa com garantia de atendimento presencial sempre que solicitar.",
+          "A Telessaúde dispensa o consentimento do paciente e não precisa seguir a LGPD."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Segundo o Art. 47-A da Lei nº 8.080/1990 (incluído pela Lei nº 15.233/2025), o que acontece se uma Secretaria Municipal de Saúde deixar de enviar ao Ministério da Saúde os dados da regulação assistencial (tempos de espera)?",
+        opcoes: [
+          "Nada acontece, pois o envio de dados da regulação é totalmente facultativo.",
+          "O município ganha automaticamente um bônus financeiro extra.",
+          "Os pedidos de novas habilitações, credenciamentos e majoração de valores relacionados à atenção especializada não serão analisados nem concedidos pelo Ministério da Saúde."
+        ],
+        correta: 2
+      }
+    ],
+    nota: "Excelente! Agora avançamos para o Módulo 4: Financiamento do SUS, Planejamento Ascendente e os Cuidados do Ordenador de Despesas."
+  },
+
+  // =========================================================================
+  // MÓDULO 4 • FINANCIAMENTO DO SUS E O MANUAL DO ORDENADOR DE DESPESAS
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Financiamento do SUS e o Manual do Ordenador de Despesas",
+    titulo: "13. De Onde Vem o Dinheiro do SUS e Como Ele Chega ao Município (Arts. 31 a 35)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Fontes de Recursos e Conta Especial (Arts. 31 a 33)",
+        itens: [
+          "<strong>Orçamento da Seguridade Social (Art. 31):</strong> Os recursos federais do SUS vêm do Orçamento da Seguridade Social (e demais orçamentos públicos), somados aos recursos próprios dos Estados e dos Municípios.",
+          "<strong>Outras Fontes (Art. 32):</strong> Doações, rendimentos de capital, taxas/multas sanitárias arrecadadas no âmbito do SUS e convênios de pesquisa.",
+          "<strong>Fundo de Saúde / Conta Especial (Art. 33):</strong> Todos os recursos financeiros do SUS devem ser depositados em <strong>conta especial</strong> em cada esfera (no Município, o <strong>Fundo Municipal de Saúde - FMS</strong>) e movimentados <strong>sob fiscalização do respectivo Conselho de Saúde</strong>."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Como São Calculados os Repasses Federais (Art. 35)",
+        itens: [
+          "<strong>Critérios Técnicos de Transferência (Art. 35):</strong> Os valores transferidos aos Estados e Municípios combinam:<br>• Perfil demográfico e perfil epidemiológico da população;<br>• Características quantitativas e qualitativas da rede de saúde local;<br>• Desempenho técnico, econômico e financeiro no período anterior;<br>• Níveis de participação própria do setor saúde no orçamento municipal;<br>• Previsão de investimentos e ressarcimento entre esferas.",
+          "<strong>Auditoria e Controle (Art. 33, § 4º e Art. 35, § 6º):</strong> O Ministério da Saúde audita a conformidade da aplicação dos recursos; havendo desvio ou não aplicação, exige devolução e aplica sanções legais."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Seguridade Social + Tesouro", txt: "Recursos da União, do Estado e contrapartida própria do Município" },
+      { no: "Conta Especial (FMS)", txt: "Dinheiro do SUS fica separado no Fundo Municipal de Saúde (Art. 33)" },
+      { no: "Fiscalização Social", txt: "Movimentação acompanhada pelo Conselho Municipal de Saúde" },
+      { no: "Critérios Técnicos", txt: "Demografia, epidemiologia, capacidade da rede e desempenho" }
+    ],
+    nota: "Regra fundamental de gestão financeira: o dinheiro do Fundo Municipal de Saúde nunca se mistura com o caixa geral da Prefeitura para pagar despesas de outras secretarias."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Financiamento do SUS e o Manual do Ordenador de Despesas",
+    titulo: "14. Planejamento e Orçamento Ascendente: O Plano de Saúde Manda! (Arts. 36 e 37)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "O Processo Ascendente: Da Realidade Local até Brasília (Art. 36)",
+        itens: [
+          "<strong>Planejamento de Baixo para Cima (Ascendente):</strong> Na Lei 8.080/90, o planejamento não começa em Brasília — começa no <strong>nível local (Município)</strong>, passa pelo Estado e chega à União, sempre ouvindo os Conselhos de Saúde.",
+          "<strong>Instrumentos da Gestão do SUS:</strong><br>• <strong>Plano Municipal de Saúde (PMS — 4 anos):</strong> Define diretrizes, objetivos e metas da Saúde de Atibaia;<br>• <strong>Programação Anual de Saúde (PAS):</strong> Detalha as ações e recursos de cada ano;<br>• <strong>Relatório Anual de Gestão (RAG):</strong> Presta contas dos resultados alcançados.",
+          "<strong>Base do Orçamento (Art. 36, § 1º):</strong> Os Planos de Saúde são a base obrigatória de todas as atividades, e seu financiamento deve constar na proposta orçamentária (PPA, LDO, LOA)."
+        ]
+      },
+      {
+        tipo: "danger",
+        titulo: "A Trava Orçamentária do Art. 36, § 2º (Atenção Ordenador!)",
+        itens: [
+          "<strong>O Que Diz o Art. 36, § 2º:</strong> <em>'É VEDADA a transferência de recursos para o financiamento de ações NÃO previstas nos planos de saúde, exceto em situações emergenciais ou de calamidade pública, na área de saúde.'</em>",
+          "<strong>Tradução Prática para o Gestor:</strong> Antes de autorizar uma nova despesa, programa ou convênio relevante na Secretaria, verifique se aquela ação está contemplada no <strong>Plano Municipal de Saúde</strong> e na <strong>Programação Anual de Saúde</strong> aprovados pelo Conselho Municipal de Saúde!"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1. Plano de Saúde (4 anos)", txt: "Base legal obrigatória de todas as ações do Município (Art. 36, § 1º)" },
+      { no: "2. Programação Anual (PAS)", txt: "Metas e orçamento detalhados para execução no exercício" },
+      { no: "3. Trava do Art. 36, § 2º", txt: "Proibido financiar ação fora do Plano (salvo emergência/calamidade)" },
+      { no: "4. Prestação de Contas", txt: "Relatório de Gestão submetido ao Conselho de Saúde e Tribunais" }
+    ],
+    nota: "Quando o setor de compras ou financeiro pergunta 'Essa despesa está prevista no Plano Municipal de Saúde e na PAS?', não é burocracia — é o cumprimento direto do Art. 36, §§ 1º e 2º da Lei 8.080/1990."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Financiamento do SUS e o Manual do Ordenador de Despesas",
+    titulo: "15. Os 6 Pontos Críticos para o Ordenador de Despesas na Saúde",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Pontos 1 a 3: Desvio de Finalidade (Crime!), Subvenções e Bloco/Vinculação",
+        itens: [
+          "<strong>1. Crime de Emprego Irregular de Verbas Públicas (Art. 52):</strong> Utilizar recursos financeiros do SUS em finalidades diversas das previstas na Lei 8.080 constitui <strong>crime previsto no art. 315 do Código Penal</strong>, além de gerar rejeição de contas no TCE-SP e obrigação de recompor o Fundo de Saúde.",
+          "<strong>2. Proibição de Subvenção a Entidades Lucrativas (Art. 38):</strong> É <strong>proibido</strong> conceder subvenções ou auxílios públicos a instituições de saúde <strong>com finalidade lucrativa</strong>. Empresas lucrativas só podem receber mediante <strong>contrato administrativo</strong> após licitação e efetiva prestação do serviço (nunca por repasse de auxílio).",
+          "<strong>3. Respeito à Fonte / Vinculação (Custeio vs. Investimento):</strong> Nunca pague despesa corrente/consumo com recurso carimbado de capital/investimento (ou vice-versa) sem autorização normativa expressa."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Pontos 4 a 6: ANVISA, Conselho de Saúde e Regulação (Art. 47-A)",
+        itens: [
+          "<strong>4. Vedação de Pagamento sem Registro ANVISA (Art. 19-T):</strong> Não autorize compra, pagamento ou reembolso de medicamento, órtese ou procedimento experimental ou sem registro na ANVISA.",
+          "<strong>5. Transparência e Controle do Conselho de Saúde (Art. 33):</strong> Mantenha os balancetes, relatórios quadrimestrais e prestações de contas em dia perante o Conselho Municipal de Saúde.",
+          "<strong>6. Dados de Regulação e Estoque Atualizados (Arts. 6º-A e 47-A):</strong> Acompanhe o envio periódico dos dados de filas de espera ao Ministério da Saúde (para não travar habilitações) e a publicação quinzenal do estoque das farmácias."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1. Zero Desvio (Art. 52)", txt: "Usar verba do SUS fora da Saúde é crime (Código Penal, art. 315)" },
+      { no: "2. Art. 38 (Lucrativas)", txt: "Proibido dar subvenção/auxílio a clínica ou hospital com fins lucrativos" },
+      { no: "3. Trava ANVISA (19-T)", txt: "Só empenhar e pagar insumos/medicamentos regulares na ANVISA" },
+      { no: "4. Conselho & Sistemas", txt: "Prestação de contas ao CMS + envio de filas (47-A) e estoques (6º-A)" }
+    ],
+    nota: "Este slide funciona como um escudo jurídico para o Ordenador de Despesas e para toda a equipe administrativa e contábil da Secretaria de Saúde: checar esses 6 pontos antes de empenhar ou liquidar evita os apontamentos mais graves de auditoria."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: true,
+    mod: "Módulo 4 • Financiamento do SUS e o Manual do Ordenador de Despesas",
+    titulo: "16. Integração Ensino-Serviço, Recursos Humanos e Patrimônio (Arts. 14, 27, 30 e 39)",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "O SUS como Escola: Estágios, Residências e Educação Permanente (Arts. 14 e 27)",
+        itens: [
+          "<strong>Campo de Prática (Art. 27, par. único):</strong> As unidades públicas do SUS constituem campo de prática para ensino e pesquisa (estágios técnicos, graduação, residências médicas e multiprofissionais), mediante convênios e normas específicas com as instituições de ensino.",
+          "<strong>Comissões de Integração Ensino-Serviço (Art. 14):</strong> Articulam prioridades e estratégias de educação continuada para aperfeiçoamento permanente dos servidores do SUS.",
+          "<strong>Pesquisa e Inovação (Art. 46):</strong> O SUS estimula a transferência de tecnologia de universidades e institutos de pesquisa para os serviços de saúde municipais."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Patrimônio Cedido e Informação em Saúde (Arts. 39 e 47)",
+        itens: [
+          "<strong>Bens e Imóveis Cedidos ao Município (Art. 39, §§ 5º e 6º):</strong> Imóveis, equipamentos e bens móveis oriundos do antigo INAMPS ou cedidos pela União/Estado ficam sob guarda e utilização da direção municipal do SUS, devendo ser inventariados e preservados como patrimônio público.",
+          "<strong>Acesso às Bases de Dados (Art. 39, § 8º e Art. 47):</strong> É direito das Secretarias Municipais de Saúde acessar os sistemas informatizados e bases epidemiológicas mantidos pelo Ministério da Saúde para apoiar a gestão local."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "SUS Escola (Art. 27)", txt: "UBSs e UPAs como campo de estágio e residência com supervisão" },
+      { no: "Educação Permanente", txt: "Capacitação contínua dos servidores (Art. 14)" },
+      { no: "Inventário Patrimonial", txt: "Zelo e controle dos bens e imóveis cedidos ao SUS municipal (Art. 39)" },
+      { no: "Sistemas Nacionais", txt: "Uso de dados epidemiológicos para orientar decisões locais (Art. 47)" }
+    ],
+    nota: "Receber estudantes e residentes nas unidades de saúde de Atibaia é previsto na própria Lei Orgânica do SUS (Art. 27) — sempre respeitando a ética, a supervisão técnica e a privacidade dos pacientes."
+  },
+  {
+    tipo: "quiz",
+    modNum: 4,
+    mod: "Módulo 4 • Financiamento do SUS e o Manual do Ordenador de Despesas",
+    titulo: "📝 Avaliação do Módulo 4 (Desbloqueio do Módulo 5)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre Financiamento, Plano de Saúde e Regras do Ordenador de Despesas para liberar o Módulo 5.",
+    perguntas: [
+      {
+        q: "1. Sobre o planejamento orçamentário do SUS e a destinação de recursos públicos (arts. 33, 36 e 38 da Lei nº 8.080/1990), assinale a alternativa CORRETA:",
+        opcoes: [
+          "O dinheiro do Fundo Municipal de Saúde pode ser transferido livremente para pagar obras de asfaltamento ou iluminação pública.",
+          "O planejamento é ascendente (do nível local ao federal), sendo vedada a transferência de recursos para ações não previstas nos Planos de Saúde (salvo emergência ou calamidade pública), bem como é proibida a destinação de subvenções e auxílios a entidades privadas com finalidade lucrativa.",
+          "O Conselho Municipal de Saúde não tem competência para fiscalizar a movimentação da conta especial do SUS."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Segundo o Art. 52 e o Art. 19-T da Lei nº 8.080/1990, o que ocorre se o gestor utilizar recursos do SUS em finalidade diversa da prevista na lei, ou autorizar o pagamento de medicamento experimental sem registro na ANVISA?",
+        opcoes: [
+          "São condutas expressamente proibidas: o desvio de finalidade constitui crime de emprego irregular de verbas públicas (Código Penal, art. 315) e é vedado o pagamento/dispensação de produto experimental ou sem registro na ANVISA (salvo exceções da Conitec).",
+          "Ambas as práticas são recomendadas para agilizar o orçamento no final do ano.",
+          "Apenas o fornecedor responde, não havendo nenhuma responsabilidade para o ordenador de despesas."
+        ],
+        correta: 0
+      }
+    ],
+    nota: "Excelente! Agora avance para o Módulo 5 (Cartilha Prática de Bolso da Saúde de Atibaia & Conclusões Finais) para liberar seu Certificado."
+  },
+
+  // =========================================================================
+  // MÓDULO 5 • CARTILHA PRÁTICA DE BOLSO DA SAÚDE DE ATIBAIA & CONCLUSÕES
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Cartilha Prática de Bolso da Saúde de Atibaia & Conclusões",
+    titulo: "17. Cartilha de Bolso: Guia Rápido para Recepção, ACS, Enfermagem e Farmácia",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "O Que Fazer na Ponta (Atendimento Humanizado e Legal)",
+        itens: [
+          "<strong>1. Acolhimento Universal e Sem Barreiras (Art. 7º, I e IV):</strong> Atender todo cidadão com respeito e atenção humanizada (Lei 15.126/2025), sem preconceito ou privilégios.",
+          "<strong>2. Garantir o Acompanhante (Art. 19-J):</strong> Permitir acompanhante maior de idade para mulheres em qualquer consulta, exame ou procedimento, mantendo o aviso informativo visível na recepção.",
+          "<strong>3. Proteger Vítimas de Violência (Art. 7º, XIV e XV):</strong> Acolher mulheres, crianças e adolescentes vítimas de violência em ambiente reservado, protegendo sua privacidade e restringindo o acesso de terceiros não autorizados.",
+          "<strong>4. Informar com Clareza (Art. 7º, V e VI):</strong> Explicar ao usuário sobre sua condição de saúde, o fluxo da rede (UBS -> Especialidade -> Hospital) e os direitos na Telessaúde (opção pelo presencial)."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Cuidados Específicos na Farmácia e nas Visitas Domiciliares",
+        itens: [
+          "<strong>Na Farmácia Pública (Arts. 6º-A, 19-M e 19-V):</strong> Dispensar medicamentos conforme prescrição e protocolos (REMUME/RENAME/PCDT), orientar contra a automedicação e garantir a atualização quinzenal dos estoques no portal eletrônico.",
+          "<strong>Na Atenção Domiciliar e ACS/ACE (Arts. 3º e 19-I):</strong> Observar os determinantes ambientais e sociais no território (saneamento, água parada, vulnerabilidade) e registrar a concordância expressa do paciente/família no atendimento domiciliar."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Recepção", txt: "Acolhimento universal, aviso de acompanhante visível e sigilo" },
+      { no: "Consultório / Enfermagem", txt: "Atenção humanizada, privacidade a vítimas e consentimento na Telessaúde" },
+      { no: "Farmácia SUS", txt: "Protocolos oficiais, alerta contra automedicação e estoque na web (15d)" },
+      { no: "Território (ACS/ACE)", txt: "Vigilância dos determinantes sociais e aceite familiar no domicílio" }
+    ],
+    nota: "Esta cartilha resume os artigos essenciais da Lei 8.080/90 traduzidos para a rotina diária de cada equipe da Secretaria Municipal de Saúde de Atibaia."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Cartilha Prática de Bolso da Saúde de Atibaia & Conclusões",
+    titulo: "18. Cartilha do Gestor: Guia Rápido de Decisão, Contratos e Finanças",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Checklist de Conformidade da Gestão Municipal (Lei 8.080/90)",
+        itens: [
+          "<strong>☑ 1. Alinhamento ao Plano de Saúde (Art. 36):</strong> A ação ou despesa está prevista no Plano Municipal de Saúde e na Programação Anual de Saúde (PAS)?",
+          "<strong>☑ 2. Conta Especial e Conselho de Saúde (Art. 33):</strong> Os recursos estão movimentados na conta do Fundo Municipal de Saúde com prestação de contas regular ao Conselho Municipal de Saúde?",
+          "<strong>☑ 3. Vínculo e Natureza do Prestador (Arts. 24, 25 e 38):</strong> Há justificativa de insuficiência da rede própria? Entidades filantrópicas tiveram preferência? Zero subvenção/auxílio a empresas lucrativas?",
+          "<strong>☑ 4. Integridade nas Chefias (Arts. 26, § 4º e 28):</strong> As chefias atuam em tempo integral e nenhum dirigente de empresa contratada ocupa cargo de confiança na Secretaria?"
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Obrigações Operacionais e de Transparência Sob Vigilância Federal",
+        itens: [
+          "<strong>☑ 5. Envio da Regulação Assistencial (Art. 47-A):</strong> Os dados de tempos de espera da regulação estão sendo enviados regularmente ao Ministério da Saúde para não bloquear novas habilitações?",
+          "<strong>☑ 6. Divulgação Quinzenal de Medicamentos (Art. 6º-A):</strong> O estoque das farmácias públicas está atualizado no site da Prefeitura a cada 15 dias?",
+          "<strong>☑ 7. Bloqueio de Itens sem ANVISA (Art. 19-T):</strong> Nenhum recurso está sendo usado para pagar produto experimental ou sem registro na ANVISA?"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Planejamento", txt: "Plano de Saúde + PAS + Prestação de contas ao Conselho (CMS)" },
+      { no: "Contratos", txt: "Insuficiência comprovada + Preferência filantrópica + Zero subvenção lucrativa" },
+      { no: "Sistemas & Dados", txt: "Envio das filas (Art. 47-A) + Estoque farmácia quinzenal (Art. 6º-A)" },
+      { no: "Segurança Jurídica", txt: "Verba carimbada no FMS (Art. 52) + Registro ANVISA (Art. 19-T)" }
+    ],
+    nota: "Utilize também o botão '✨ Guia Rápido Lei 8.080' no topo desta página para consultar e copiar este checklist sempre que precisar instruir um processo administrativo."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Cartilha Prática de Bolso da Saúde de Atibaia & Conclusões",
+    titulo: "19. Mitos vs. Verdades sobre a Lei 8.080/1990 no Dia a Dia",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "❌ Mitos Comuns Que Atrapalham o Serviço",
+        itens: [
+          "<strong>Mito 1:</strong> <em>'O SUS só cuida de quem é pobre ou não tem plano de saúde.'</em><br><strong>Verdade (Art. 2º e 7º, I):</strong> O acesso é <strong>universal</strong> — qualquer cidadão (inclusive quem tem plano privado) tem direito a vacinas, vigilância sanitária, SAMU, transplantes e atendimento nas unidades do SUS.",
+          "<strong>Mito 2:</strong> <em>'O Ministério da Saúde manda no Secretário Municipal e pode obrigar o Município sem pactuação.'</em><br><strong>Verdade (Arts. 9º e 14-A):</strong> Cada esfera tem <strong>direção única</strong> e autonomia; as regras operacionais e financeiras são pactuadas na CIT e na CIB.",
+          "<strong>Mito 3:</strong> <em>'Acompanhante na unidade de saúde só é permitido para gestante em trabalho de parto.'</em><br><strong>Verdade (Art. 19-J — Lei 14.737/23):</strong> Toda mulher tem direito a acompanhante maior de idade em <strong>consultas, exames e procedimentos</strong>."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "✅ Mais Verdades Fundamentais da Lei Orgânica do SUS",
+        itens: [
+          "<strong>Mito 4:</strong> <em>'Se sobrar dinheiro no Fundo Municipal de Saúde, a Prefeitura pode usar para tapar buraco na rua.'</em><br><strong>Verdade (Arts. 33 e 52):</strong> Os recursos do SUS são vinculados em conta especial; usá-los fora das finalidades da saúde é <strong>crime</strong> (art. 315 do Código Penal).",
+          "<strong>Mito 5:</strong> <em>'O paciente é obrigado a aceitar teleconsulta se não quiser.'</em><br><strong>Verdade (Art. 26-A, III):</strong> A Telessaúde exige consentimento livre e garante ao paciente o direito de recusar e ser atendido presencialmente."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "SUS é Universal", txt: "Direito de todos os cidadãos, com ou sem plano privado" },
+      { no: "Gestão Pactuada", txt: "Entes autônomos negociando na CIT e na CIB" },
+      { no: "Direitos Reais", txt: "Acompanhante em exames/consultas e escolha pelo presencial na Telessaúde" },
+      { no: "Recurso Protegido", txt: "Verba da Saúde é exclusiva da Saúde (Art. 52)" }
+    ],
+    nota: "Esclarecer esses 5 pontos evita conflitos na recepção e fortalece a segurança técnica de toda a equipe da Secretaria Municipal de Saúde."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: true,
+    mod: "Módulo 5 • Cartilha Prática de Bolso da Saúde de Atibaia & Conclusões",
+    titulo: "20. Conclusões Finais: Conhecer a Lei 8.080 é Fortalecer o SUS em Atibaia",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "A Lei 8.080/1990 Como Ferramenta de Trabalho e Cidadania",
+        itens: [
+          "<strong>De Texto Jurídico a Prática Diária:</strong> A Lei Orgânica da Saúde não é um documento distante guardado em gavetas — ela está viva cada vez que abrimos as portas de uma UBS, realizamos uma visita domiciliar, regulamos um exame ou planejamos o orçamento da Saúde de Atibaia.",
+          "<strong>Segurança para Quem Executa e Quem Decide:</strong> Quando colaboradores e gestores conhecem os princípios, os direitos dos usuários e as regras de financiamento, o serviço público ganha agilidade, humanização e segurança jurídica.",
+          "<strong>Material Sempre à Mão:</strong> Clique em <strong>🖨️ Salvar PDF Completo</strong> no topo desta tela para guardar esta cartilha completa de 20 slides para consulta rápida no seu setor."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Síntese Final da Capacitação",
+        itens: [
+          "<strong>Compromisso da Saúde de Atibaia:</strong> <em>'Conhecer os fundamentos da Lei 8.080/1990 transforma cada servidor em um defensor consciente do SUS — unindo acolhimento humanizado ao cidadão e responsabilidade rigorosa com os recursos públicos.'</em>"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Acesso Universal", txt: "Saúde como direito fundamental e dever do Estado (Art. 2º)" },
+      { no: "Gestão Tripartite", txt: "Cooperação entre União, Estado e Município na CIT/CIB (Art. 14-A)" },
+      { no: "Direitos Garantidos", txt: "Humanização, acompanhante, assistência farmacêutica e Telessaúde" },
+      { no: "Gestão Responsável", txt: "Plano de Saúde, Fundo Municipal e transparência ativa" }
+    ],
+    nota: "Parabéns por concluir o conteúdo técnico da Capacitação sobre a Lei nº 8.080/1990! Responda às 2 últimas questões abaixo para habilitar imediatamente a emissão do seu Certificado de Conclusão em PDF."
+  },
+  {
+    tipo: "quiz",
+    modNum: 5,
+    mod: "Módulo 5 • Cartilha Prática de Bolso da Saúde de Atibaia & Conclusões",
+    titulo: "📝 Avaliação Final do Módulo 5 (Habilitação do Certificado)",
+    subtitulo: "Responda corretamente às 2 questões finais sobre a aplicação prática da Lei nº 8.080/1990 na rotina das unidades e na gestão para liberar seu Certificado em PDF.",
+    perguntas: [
+      {
+        q: "1. Sobre o alcance do SUS e os direitos dos usuários previstos na Lei nº 8.080/1990 atualizada, assinale a alternativa CORRETA:",
+        opcoes: [
+          "O SUS atende apenas pessoas que comprovem baixa renda e não possuam plano de saúde privado.",
+          "O acesso ao SUS é universal e igualitário a toda população, garantindo atenção humanizada, direito a acompanhante para mulheres em consultas, exames e procedimentos, e direito de optar pelo atendimento presencial na Telessaúde.",
+          "O paciente atendido via Telessaúde perde o direito de ser atendido presencialmente caso solicite."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Qual conjunto de práticas resume corretamente os deveres de transparência e gestão previstos na Lei nº 8.080/1990 para os gestores municipais de saúde?",
+        opcoes: [
+          "Executar ações alinhadas ao Plano Municipal de Saúde, movimentar recursos na conta especial do Fundo de Saúde sob fiscalização do Conselho de Saúde, publicar quinzenalmente na internet o estoque das farmácias públicas (Art. 6º-A) e enviar regularmente os dados da regulação assistencial ao Ministério da Saúde (Art. 47-A).",
+          "Manter os estoques das farmácias em sigilo absoluto e não enviar dados de filas de espera ao Ministério da Saúde.",
+          "Conceder subvenções públicas a clínicas privadas com fins lucrativos sem necessidade de contrato."
+        ],
+        correta: 0
+      }
+    ],
+    nota: "Ao acertar esta avaliação final, a aba '🎓 Emissão de Certificado em PDF' será desbloqueada imediatamente para que você insira seu nome e baixe seu certificado oficial!"
+  },
+
+  // =========================================================================
+  // CERTIFICADO FINAL
+  // =========================================================================
+  {
+    tipo: "certificado",
+    modNum: 6,
+    mod: "Certificação Final • Saúde de Atibaia/SP",
+    titulo: "🎓 Emissão do Certificado de Conclusão em PDF",
+    nota: "Parabéns por concluir integralmente os 5 módulos e acertar 100% das avaliações! Preencha seu Nome Completo abaixo para visualizar seu certificado em tempo real e baixá-lo ou imprimi-lo em formato PDF (A4 Paisagem)."
+  }
+];
+
+let current = 0;
+let unlockedModule = 1; // 1 a 5 = Módulos; 6 = Certificado liberado
+const completedQuizzes = { 1: false, 2: false, 3: false, 4: false, 5: false };
+const userQuizSelections = { 1: {}, 2: {}, 3: {}, 4: {}, 5: {} };
+let certUserName = "";
+let certUserRole = "";
+let certIssueDate = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+let certValidationCode = "ATB-SUS-8080-" + Math.floor(100000 + Math.random() * 900000);
+
+const STORAGE_KEY = "atb_saude_save_capacitacao_lei_8080_sus_v1";
+
+function saveProgress() {
+  try {
+    const state = {
+      current: current,
+      unlockedModule: unlockedModule,
+      completedQuizzes: completedQuizzes,
+      userQuizSelections: userQuizSelections,
+      certUserName: certUserName,
+      certUserRole: certUserRole,
+      certIssueDate: certIssueDate,
+      certValidationCode: certValidationCode
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {}
+}
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    if (!state || typeof state !== "object") return;
+
+    if (typeof state.unlockedModule === "number" && state.unlockedModule >= 1 && state.unlockedModule <= 6) {
+      unlockedModule = state.unlockedModule;
+    }
+    if (state.completedQuizzes && typeof state.completedQuizzes === "object") {
+      [1, 2, 3, 4, 5].forEach(m => {
+        if (typeof state.completedQuizzes[m] === "boolean") {
+          completedQuizzes[m] = state.completedQuizzes[m];
+        }
+      });
+    }
+    let maxUnlockedFromQuizzes = 1;
+    for (let m = 1; m <= 5; m++) {
+      if (completedQuizzes[m]) {
+        maxUnlockedFromQuizzes = m + 1;
+      } else {
+        break;
+      }
+    }
+    if (maxUnlockedFromQuizzes > unlockedModule) {
+      unlockedModule = maxUnlockedFromQuizzes;
+    }
+    if (state.userQuizSelections && typeof state.userQuizSelections === "object") {
+      [1, 2, 3, 4, 5].forEach(m => {
+        if (state.userQuizSelections[m] && typeof state.userQuizSelections[m] === "object") {
+          userQuizSelections[m] = state.userQuizSelections[m];
+        }
+      });
+    }
+    if (typeof state.certUserName === "string") certUserName = state.certUserName;
+    if (typeof state.certUserRole === "string") certUserRole = state.certUserRole;
+    if (typeof state.certIssueDate === "string" && state.certIssueDate.trim().length > 0) {
+      certIssueDate = state.certIssueDate;
+    }
+    if (typeof state.certValidationCode === "string" && state.certValidationCode.trim().length > 0) {
+      certValidationCode = state.certValidationCode;
+    }
+    if (typeof state.current === "number" && state.current >= 0 && state.current < slides.length && isSlideUnlocked(state.current)) {
+      current = state.current;
+    } else {
+      current = 0;
+    }
+  } catch (e) {}
+}
+function isSlideUnlocked(idx) {
+  if (idx < 0 || idx >= slides.length) return false;
+  return slides[idx].modNum <= unlockedModule;
+}
+
+function getQuizSlideForMod(modNum) {
+  return slides.find(s => s.tipo === "quiz" && s.modNum === modNum);
+}
+
+function getFirstSlideIdxOfMod(modNum) {
+  return slides.findIndex(s => s.modNum === modNum);
+}
+
+// Função segura de cópia para área de transferência (compatível com iFrames e navegadores modernos)
+function copyTextSafe(text, btnElement) {
+  const originalText = btnElement.innerText;
+  const showSuccess = () => {
+    btnElement.innerText = "✓ Copiado!";
+    btnElement.style.background = "#62a0ea";
+    setTimeout(() => {
+      btnElement.innerText = originalText;
+      btnElement.style.background = "";
+    }, 1800);
+  };
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(showSuccess).catch(() => fallbackCopy(text, showSuccess));
+  } else {
+    fallbackCopy(text, showSuccess);
+  }
+}
+
+function fallbackCopy(text, callback) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand("copy");
+    if (callback) callback();
+  } catch (err) {
+    console.error("Erro ao copiar:", err);
+  }
+  document.body.removeChild(ta);
+}
+
+function copyCardCode(btn) {
+  const pre = btn.closest('.code-wrapper').querySelector('pre');
+  if (pre) copyTextSafe(pre.innerText, btn);
+}
+
+function copyTextFromElement(elId, btn) {
+  const el = document.getElementById(elId);
+  if (el) copyTextSafe(el.innerText, btn);
+}
+
+function selectQuizOption(modNum, qIdx, optIdx) {
+  userQuizSelections[modNum][qIdx] = optIdx;
+  saveProgress();
+}
+
+function renderQuizComponentHTML(modNum) {
+  const qSlide = getQuizSlideForMod(modNum);
+  if (!qSlide) return "";
+  const isDone = completedQuizzes[modNum];
+  const nextTargetName = modNum < 5 ? `Módulo ${modNum + 1}` : "Emissão do Certificado em PDF";
+  const nextModSlideIdx = getFirstSlideIdxOfMod(modNum + 1);
+
+  const questionsHTML = qSlide.perguntas.map((p, qIdx) => {
+    const selectedVal = userQuizSelections[modNum][qIdx];
+    const letters = ["A", "B", "C"];
+    const optsHTML = p.opcoes.map((optText, oIdx) => {
+      const checkedAttr = (selectedVal === oIdx) ? "checked" : "";
+      let extraClass = "";
+      if (isDone && oIdx === p.correta) extraClass = "selected-correct";
+      return `
+        <label class="quiz-option-label ${extraClass}">
+          <input type="radio" name="quiz_m${modNum}_q${qIdx}" value="${oIdx}" ${checkedAttr} onchange="selectQuizOption(${modNum}, ${qIdx}, ${oIdx})">
+          <span><strong>${letters[oIdx]})</strong> ${optText}</span>
+        </label>
+      `;
+    }).join('');
+
+    return `
+      <div class="quiz-question-card" id="qcard_m${modNum}_q${qIdx}">
+        <div class="quiz-question-title">${p.q}</div>
+        <div class="quiz-options-list">${optsHTML}</div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="quiz-container ${isDone ? 'quiz-completed' : ''}" id="quiz-box-mod-${modNum}">
+      <div class="quiz-header-bar">
+        <div class="quiz-badge-title">
+          <span>${isDone ? '✅' : '📝'} Avaliação Obrigatória • Módulo ${modNum}</span>
+        </div>
+        <span class="quiz-status-pill ${isDone ? 'ok' : ''}">
+          ${isDone ? `✓ Aprovado (${nextTargetName} Liberado)` : `🔒 Responda para liberar: ${nextTargetName}`}
+        </span>
+      </div>
+      <div class="quiz-intro">${qSlide.subtitulo}</div>
+      ${questionsHTML}
+      <div class="quiz-actions">
+        <button class="btn-validate-quiz" onclick="validateModuleQuiz(${modNum})">
+          ${isDone ? '🔄 Revalidar Respostas' : `✅ Validar Respostas e Liberar ${nextTargetName}`}
+        </button>
+        ${isDone && nextModSlideIdx !== -1 ? `
+          <button class="btn-advance-mod" onclick="goToSlide(${nextModSlideIdx})">
+            🚀 Avançar para ${nextTargetName} ➡
+          </button>
+        ` : ''}
+      </div>
+      <div id="quiz-feedback-m${modNum}" class="quiz-feedback ${isDone ? 'show ok' : ''}">
+        ${isDone ? `🎉 Excelente! Você acertou as 2 questões do Módulo ${modNum}. O acesso para <strong>${nextTargetName}</strong> já está habilitado!` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function validateModuleQuiz(modNum) {
+  const qSlide = getQuizSlideForMod(modNum);
+  if (!qSlide) return;
+
+  const fb = document.getElementById(`quiz-feedback-m${modNum}`);
+  let answeredCount = 0;
+  let correctCount = 0;
+
+  qSlide.perguntas.forEach((p, qIdx) => {
+    const radios = document.querySelectorAll(`input[name="quiz_m${modNum}_q${qIdx}"]`);
+    let chosen = undefined;
+    radios.forEach(r => {
+      if (r.checked) chosen = parseInt(r.value, 10);
+    });
+    if (chosen !== undefined) {
+      userQuizSelections[modNum][qIdx] = chosen;
+    } else if (userQuizSelections[modNum][qIdx] !== undefined) {
+      chosen = userQuizSelections[modNum][qIdx];
+    }
+
+    const qCard = document.getElementById(`qcard_m${modNum}_q${qIdx}`);
+    if (chosen !== undefined) {
+      answeredCount++;
+      if (chosen === p.correta) {
+        correctCount++;
+        if (qCard) qCard.style.borderLeftColor = "var(--success)";
+      } else {
+        if (qCard) qCard.style.borderLeftColor = "var(--danger)";
+      }
+    } else {
+      if (qCard) qCard.style.borderLeftColor = "var(--warning)";
+    }
+  });
+
+  if (answeredCount < qSlide.perguntas.length) {
+    if (fb) {
+      fb.className = "quiz-feedback show err";
+      fb.innerHTML = "⚠️ Por favor, selecione uma alternativa em cada uma das 2 perguntas antes de validar.";
+    }
+    return;
+  }
+
+  if (correctCount === qSlide.perguntas.length) {
+    completedQuizzes[modNum] = true;
+    if (unlockedModule < modNum + 1) {
+      unlockedModule = modNum + 1;
+    }
+    saveProgress();
+    updateProgressBarUI();
+    buildNav(document.getElementById('search-input') ? document.getElementById('search-input').value : "");
+    const currentScroll = document.getElementById('slide-container').scrollTop;
+    goToSlide(current);
+    document.getElementById('slide-container').scrollTop = currentScroll;
+  } else {
+    if (fb) {
+      fb.className = "quiz-feedback show err";
+      fb.innerHTML = `❌ Você acertou <strong>${correctCount} de ${qSlide.perguntas.length}</strong> questões. Para desbloquear o próximo módulo, ambas as respostas devem estar corretas. Revise a questão destacada em vermelho e tente novamente!`;
+    }
+  }
+}
+
+function renderCertificateDiplomaInner(nameStr, roleStr) {
+  const displayName = (nameStr && nameStr.trim().length > 0) ? nameStr.trim() : "[ DIGITE SEU NOME COMPLETO ACIMA ]";
+  const displayRole = (roleStr && roleStr.trim().length > 0) ? `<div style="font-size:14px; color:#2b6cb0; font-weight:600; margin-top:-10px; margin-bottom:14px;">${roleStr.trim()}</div>` : "";
+
+  return `
+    <div class="cert-diploma-border">
+      <div class="cert-diploma-header">Prefeitura da Estância de Atibaia • Secretaria Municipal de Saúde</div>
+      <div class="cert-diploma-title">Certificado de Conclusão</div>
+      <div class="cert-diploma-subtitle">Núcleo de Educação Permanente e Divisão de Tecnologia da Informação do SUS</div>
+      <div class="cert-diploma-Lead">Certificamos para os devidos fins que</div>
+      <div class="cert-diploma-name" id="preview-cert-name">${displayName}</div>
+      ${displayRole}
+      <div class="cert-diploma-body">
+        concluiu com aproveitamento de <strong>100% nas avaliações práticas e teóricas</strong> o
+        <strong>Curso Introdutório e Prático: Lei Orgânica da Saúde (Lei Federal nº 8.080/1990) Aplicada ao SUS</strong>,
+        abrangendo História do SUS e Determinantes Sociais da Saúde, Princípios e Diretrizes (Universalidade, Integralidade, Equidade e Atenção Humanizada),
+        Gestão Tripartite (CIT, CIB, CONASEMS e COSEMS) e Competências do Município, Serviços Obrigatórios e Direitos dos Usuários
+        (Assistência Farmacêutica/CONITEC, Acompanhante, Atenção Domiciliar, Telessaúde e Regulação), e Financiamento Público e Regras do Ordenador de Despesas.
+      </div>
+      <div class="cert-diploma-footer">
+        <div style="text-align:left;">
+          <strong>Local e Data:</strong> Atibaia/SP, ${certIssueDate}<br>
+          <strong>Carga Horária:</strong> 03 horas capacitacionais<br>
+          <strong>Código de Validação:</strong> ${certValidationCode}
+        </div>
+        <div class="cert-sign-line">
+          Secretaria Municipal de Saúde de Atibaia<br>
+          <span style="font-size:11.5px; font-weight:400; color:#4a5568;">Núcleo de Educação Permanente e Divisão de T.I. do SUS</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderCertificateSlideHTML(s) {
+  const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
+  const disabledAttr = allCompleted ? "" : "disabled";
+  const hasValidName = certUserName.trim().length >= 3;
+  const btnDisabled = (allCompleted && hasValidName) ? "" : "disabled";
+
+  return `
+    <div class="slide-header">
+      <div class="slide-meta">${s.mod}</div>
+      <h2>${s.titulo}</h2>
+    </div>
+
+    <div class="cert-panel">
+      <h3 style="color: var(--success); font-size: 18px; margin-bottom: 8px;">
+        ${allCompleted ? '🎉 Parabéns! Você concluiu todos os 5 Módulos com 100% de acerto!' : '🔒 Conclua as avaliações dos 5 módulos para habilitar a emissão'}
+      </h3>
+      <p style="font-size: 14px; color: var(--text); line-height: 1.55;">
+        Insira abaixo o seu <strong>Nome Completo</strong> (e opcionalmente seu Cargo/Unidade na Secretaria Municipal de Saúde de Atibaia) para personalizar e emitir seu Certificado Oficial em formato <strong>PDF (A4 Paisagem)</strong>.
+      </p>
+
+      <div class="cert-form-row">
+        <div class="cert-input-group">
+          <label for="cert-input-name">Nome Completo do(a) Servidor(a) *</label>
+          <input type="text" id="cert-input-name" placeholder="Ex.: Maria Aparecida da Silva" value="${certUserName.replace(/"/g, '&quot;')}" oninput="onCertInputUpdate()" ${disabledAttr}>
+        </div>
+        <div class="cert-input-group">
+          <label for="cert-input-role">Cargo / Função ou Unidade de Saúde (Opcional)</label>
+          <input type="text" id="cert-input-role" placeholder="Ex.: Enfermeira - UBS Centro / Gestor SUS" value="${certUserRole.replace(/"/g, '&quot;')}" oninput="onCertInputUpdate()" ${disabledAttr}>
+        </div>
+      </div>
+
+      <div class="cert-btn-group">
+        <button id="btn-download-pdf" class="btn-cert-download" onclick="downloadCertificatePDFDirect()" ${btnDisabled}>
+          📥 Baixar Certificado em PDF (Download Direto A4)
+        </button>
+        <button id="btn-print-pdf" class="btn-cert-print" onclick="printCertificateBrowserPDF()" ${btnDisabled}>
+          🖨️ Imprimir / Salvar PDF pelo Navegador
+        </button>
+      </div>
+      <div id="cert-name-hint" style="font-size: 12.5px; color: var(--warning); margin-top: 8px; display: ${hasValidName ? 'none' : 'block'};">
+        * Digite seu nome completo (mínimo 3 letras) no campo acima para liberar os botões de geração do PDF.
+      </div>
+    </div>
+
+    <div class="cert-preview-wrapper" id="cert-live-preview">
+      ${renderCertificateDiplomaInner(certUserName, certUserRole)}
+    </div>
+
+    <div class="notes-box">
+      <div class="notes-title">📌 Nota Explicativa e Validação</div>
+      <div class="notes-text">${s.nota}</div>
+    </div>
+  `;
+}
+
+function onCertInputUpdate() {
+  const nameEl = document.getElementById('cert-input-name');
+  const roleEl = document.getElementById('cert-input-role');
+  if (nameEl) certUserName = nameEl.value;
+  if (roleEl) certUserRole = roleEl.value;
+  saveProgress();
+
+  const previewEl = document.getElementById('cert-live-preview');
+  if (previewEl) {
+    previewEl.innerHTML = renderCertificateDiplomaInner(certUserName, certUserRole);
+  }
+
+  const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
+  const hasValidName = certUserName.trim().length >= 3;
+  const btnDl = document.getElementById('btn-download-pdf');
+  const btnPr = document.getElementById('btn-print-pdf');
+  const hint = document.getElementById('cert-name-hint');
+
+  if (btnDl) btnDl.disabled = !(allCompleted && hasValidName);
+  if (btnPr) btnPr.disabled = !(allCompleted && hasValidName);
+  if (hint) hint.style.display = hasValidName ? "none" : "block";
+}
+
+// Gerador Direto de Arquivo .PDF em JavaScript Puro (100% Offline, Alta Resolução A4 Paisagem)
+function downloadCertificatePDFDirect() {
+  if (certUserName.trim().length < 3) return;
+
+  const canvas = document.createElement('canvas');
+  const W = 2400;
+  const H = 1697; // Proporção exata A4 Paisagem (297 x 210 mm)
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Fundo branco/azul suave
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, '#ffffff');
+  grad.addColorStop(1, '#f0f6fc');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Moldura Externa Azul Institucional
+  ctx.strokeStyle = '#1e4e8c';
+  ctx.lineWidth = 18;
+  ctx.strokeRect(70, 70, W - 140, H - 140);
+
+  // Moldura Interna Dourada/Azul
+  ctx.strokeStyle = '#3584e4';
+  ctx.lineWidth = 5;
+  ctx.strokeRect(98, 98, W - 196, H - 196);
+
+  // Cantoneiras decorativas
+  ctx.fillStyle = '#1e4e8c';
+  const corners = [[70, 70], [W - 110, 70], [70, H - 110], [W - 110, H - 110]];
+  corners.forEach(([cx, cy]) => ctx.fillRect(cx, cy, 40, 40));
+
+  ctx.textAlign = 'center';
+
+  // Cabeçalho Institucional
+  ctx.fillStyle = '#1e4e8c';
+  ctx.font = 'bold 34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('PREFEITURA DA ESTÂNCIA DE ATIBAIA • SECRETARIA MUNICIPAL DE SAÚDE', W / 2, 220);
+
+  // Título Principal
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 86px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('CERTIFICADO DE CONCLUSÃO', W / 2, 340);
+
+  // Subtítulo
+  ctx.fillStyle = '#2b6cb0';
+  ctx.font = 'bold 34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Programa de Educação Permanente e Inovação na Gestão do SUS', W / 2, 405);
+
+  // Texto introdutório
+  ctx.fillStyle = '#4a5568';
+  ctx.font = '34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Certificamos para os devidos fins que', W / 2, 505);
+
+  // Nome do Servidor
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 68px "Segoe UI", Arial, sans-serif';
+  const cleanName = certUserName.trim().toUpperCase();
+  ctx.fillText(cleanName, W / 2, 605);
+
+  // Linha sob o nome
+  ctx.strokeStyle = '#2b6cb0';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(450, 630);
+  ctx.lineTo(W - 450, 630);
+  ctx.stroke();
+
+  // Cargo / Unidade (se preenchido)
+  let bodyStartY = 735;
+  if (certUserRole && certUserRole.trim().length > 0) {
+    ctx.fillStyle = '#2b6cb0';
+    ctx.font = 'bold 32px "Segoe UI", Arial, sans-serif';
+    ctx.fillText(certUserRole.trim(), W / 2, 680);
+    bodyStartY = 760;
+  }
+
+  // Corpo do texto com quebra de linha automática
+  const bodyLines = [
+    'concluiu com 100% de aproveitamento nas avaliações teóricas e práticas o',
+    'CURSO PRÁTICO: LEI ORGÂNICA DA SAÚDE (LEI Nº 8.080/1990) APLICADA AO SUS,',
+    'abrangendo História do SUS, Conceito Ampliado de Saúde, Princípios e Diretrizes,',
+    'Gestão Tripartite (CIT, CIB, CONASEMS, COSEMS) e Competências do Município,',
+    'Direitos dos Usuários (Acompanhante, Assistência Farmacêutica, Telessaúde e Regulação),',
+    'Financiamento Público, Planejamento Ascendente e Regras do Ordenador de Despesas',
+    'na Secretaria Municipal de Saúde de Atibaia.'
+  ];
+
+  ctx.fillStyle = '#2d3748';
+  bodyLines.forEach((line, idx) => {
+    ctx.font = (idx === 1) ? 'bold 34px "Segoe UI", Arial, sans-serif' : '33px "Segoe UI", Arial, sans-serif';
+    ctx.fillText(line, W / 2, bodyStartY + idx * 54);
+  });
+
+  // Rodapé Esquerdo: Data, Carga Horária e Código
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#2d3748';
+  ctx.font = 'bold 28px "Segoe UI", Arial, sans-serif';
+  ctx.fillText(`Local e Data: Atibaia/SP, ${certIssueDate}`, 180, 1410);
+  ctx.font = '28px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Carga Horária: 08 horas capacitacionais (5 Módulos Concluídos)', 180, 1455);
+  ctx.fillText(`Código de Autenticidade: ${certValidationCode}`, 180, 1500);
+
+  // Rodapé Direito: Linha de Assinatura
+  ctx.strokeStyle = '#0f294a';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(W - 820, 1420);
+  ctx.lineTo(W - 180, 1420);
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 30px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Secretaria Municipal de Saúde de Atibaia/SP', W - 500, 1462);
+  ctx.fillStyle = '#4a5568';
+  ctx.font = '25px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Clovis Campaner Filho - Gestor de T.I.', W - 500, 1500);
+
+  // Converte o Canvas para JPEG binário e empacota em um arquivo PDF 1.4 A4 Paisagem real
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.94);
+  const base64Data = dataUrl.split(',')[1];
+  const jpegBinStr = atob(base64Data);
+  const jpegBytes = new Uint8Array(jpegBinStr.length);
+  for (let i = 0; i < jpegBinStr.length; i++) {
+    jpegBytes[i] = jpegBinStr.charCodeAt(i);
+  }
+
+  const pdfBlob = createSinglePageLandscapePDFBlob(jpegBytes, W, H);
+  const safeFileName = cleanName.replace(/[^A-Z0-9À-Ú]/gi, '_').replace(/_+/g, '_');
+  const url = URL.createObjectURL(pdfBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Certificado_Lei_8080_SUS_Atibaia_${safeFileName}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
+}
+
+function createSinglePageLandscapePDFBlob(jpegBytes, imgW, imgH) {
+  const pageW = 842;
+  const pageH = 595;
+  const enc = new TextEncoder();
+  const contentStreamStr = "q " + pageW + " 0 0 " + pageH + " 0 0 cm /Im0 Do Q\n";
+  const contentStreamBytes = enc.encode(contentStreamStr);
+
+  const obj1 = enc.encode("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+  const obj2 = enc.encode("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+  const obj3 = enc.encode("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pageW + " " + pageH + "] /Resources << /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>\nendobj\n");
+  const obj4Head = enc.encode("4 0 obj\n<< /Length " + contentStreamBytes.length + " >>\nstream\n");
+  const obj4Tail = enc.encode("endstream\nendobj\n");
+  const obj5Head = enc.encode("5 0 obj\n<< /Type /XObject /Subtype /Image /Width " + imgW + " /Height " + imgH + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + jpegBytes.length + " >>\nstream\n");
+  const obj5Tail = enc.encode("\nendstream\nendobj\n");
+
+  const header = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34, 0x0a, 0x25, 0xe2, 0xe3, 0xcf, 0xd3, 0x0a]);
+
+  const concatUint8 = (arrays) => {
+    let total = 0;
+    arrays.forEach(arr => total += arr.length);
+    const res = new Uint8Array(total);
+    let offset = 0;
+    arrays.forEach(arr => {
+      res.set(arr, offset);
+      offset += arr.length;
+    });
+    return res;
+  };
+
+  const obj4 = concatUint8([obj4Head, contentStreamBytes, obj4Tail]);
+  const obj5 = concatUint8([obj5Head, jpegBytes, obj5Tail]);
+  const objects = [obj1, obj2, obj3, obj4, obj5];
+
+  const offsets = [];
+  let currentOffset = header.length;
+  objects.forEach(o => {
+    offsets.push(currentOffset);
+    currentOffset += o.length;
+  });
+
+  const xrefOffset = currentOffset;
+  let xrefStr = "xref\n0 " + (objects.length + 1) + "\n0000000000 65535 f \n";
+  offsets.forEach(off => {
+    xrefStr += String(off).padStart(10, '0') + " 00000 n \n";
+  });
+  xrefStr += "trailer\n<< /Size " + (objects.length + 1) + " /Root 1 0 R >>\nstartxref\n" + xrefOffset + "\n%%EOF\n";
+  const xrefBytes = enc.encode(xrefStr);
+
+  const finalPDFBytes = concatUint8([header, ...objects, xrefBytes]);
+  return new Blob([finalPDFBytes], { type: "application/pdf" });
+}
+
+function printCertificateBrowserPDF() {
+  if (certUserName.trim().length < 3) return;
+  const printCertSec = document.getElementById('print-certificate-only');
+  if (printCertSec) {
+    printCertSec.innerHTML = `<div class="cert-preview-wrapper" style="box-shadow:none; width:100%;">${renderCertificateDiplomaInner(certUserName, certUserRole)}</div>`;
+  }
+  document.body.classList.add('print-cert-mode');
+  window.print();
+  setTimeout(() => {
+    document.body.classList.remove('print-cert-mode');
+  }, 800);
+}
+
+function printFullCourseApostila() {
+  document.body.classList.remove('print-cert-mode');
+  window.print();
+}
+
+function renderSlideHTML(s, isPrintMode = false) {
+  if (s.tipo === "quiz") {
+    return `
+      <div class="slide-header">
+        <div class="slide-meta">${s.mod}</div>
+        <h2>${s.titulo}</h2>
+      </div>
+      ${renderQuizComponentHTML(s.modNum)}
+      <div class="notes-box">
+        <div class="notes-title">📌 Regra de Progressão do Curso (Saúde de Atibaia)</div>
+        <div class="notes-text">${s.nota}</div>
+      </div>
+    `;
+  }
+
+  if (s.tipo === "certificado") {
+    return renderCertificateSlideHTML(s);
+  }
+
+  const cardsHTML = s.cards.map(c => `
+    <div class="card ${c.tipo}">
+      <div>
+        <h3>${c.titulo}</h3>
+        <ul>${c.itens.map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>
+      ${c.code ? `
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>Modelo Prático LGPD (Copiar e Usar)</span>
+            <button class="copy-btn" onclick="copyCardCode(this)">Copiar Modelo</button>
+          </div>
+          <pre>${c.code}</pre>
+        </div>
+      ` : ''}
+    </div>
+  `).join('');
+
+  const mapaHTML = `
+    <div class="mindmap">
+      <div class="mm-title">🧠 Mapa Mental e Fluxo Prático do Tópico</div>
+      <div class="mm-tree">
+        ${s.mapa.map(m => `<div class="mm-node"><strong>${m.no}</strong>${m.txt}</div>`).join('')}
+      </div>
+    </div>
+  `;
+
+  // Se for o último slide de conteúdo do módulo (Slides 4, 7, 11, 17, 20), exibe também o bloco interativo das 2 perguntas do módulo logo abaixo!
+  const inlineQuizHTML = (!isPrintMode && s.fimModulo) ? renderQuizComponentHTML(s.modNum) : '';
+
+  return `
+    <div class="slide-header">
+      <div class="slide-meta">${s.mod}</div>
+      <h2>${s.titulo}</h2>
+    </div>
+    <div class="grid">${cardsHTML}</div>
+    ${mapaHTML}
+    <div class="notes-box">
+      <div class="notes-title">📌 Nota Explicativa e Aplicação Prática (Saúde de Atibaia)</div>
+      <div class="notes-text">${s.nota}</div>
+    </div>
+    ${inlineQuizHTML}
+  `;
+}
+
+function updateProgressBarUI() {
+  const doneCount = [1, 2, 3, 4, 5].filter(m => completedQuizzes[m]).length;
+  const pct = Math.round((doneCount / 5) * 100);
+  const countEl = document.getElementById('mod-progress-count');
+  const fillEl = document.getElementById('mod-progress-fill');
+  const statusEl = document.getElementById('mod-lock-status');
+  const certBadgeEl = document.getElementById('cert-lock-badge');
+
+  if (countEl) countEl.innerText = `${doneCount} / 5 Concluídos`;
+  if (fillEl) fillEl.style.width = `${pct}%`;
+
+  if (statusEl) {
+    if (doneCount === 5) {
+      statusEl.innerText = "✅ Todos os 5 módulos liberados!";
+      statusEl.style.color = "var(--success)";
+    } else {
+      statusEl.innerText = `🔓 Liberado até Módulo ${unlockedModule}`;
+      statusEl.style.color = "var(--muted)";
+    }
+  }
+
+  if (certBadgeEl) {
+    if (doneCount === 5) {
+      certBadgeEl.innerText = "🎓 Certificado Liberado!";
+      certBadgeEl.style.color = "var(--success)";
+      certBadgeEl.style.fontWeight = "700";
+    } else {
+      certBadgeEl.innerText = "🔒 Certificado Bloqueado";
+      certBadgeEl.style.color = "var(--warning)";
+    }
+  }
+}
+
+function buildNav(filterText = "") {
+  const nav = document.getElementById('nav-list');
+  nav.innerHTML = "";
+  let lastMod = "";
+  const query = filterText.trim().toLowerCase();
+
+  slides.forEach((s, i) => {
+    const matchTitle = s.titulo.toLowerCase().includes(query);
+    const matchMod = s.mod.toLowerCase().includes(query);
+    const matchNota = (s.nota || "").toLowerCase().includes(query);
+    if (query && !matchTitle && !matchMod && !matchNota) return;
+
+    if (s.mod !== lastMod) {
+      lastMod = s.mod;
+      const mDiv = document.createElement('div');
+      mDiv.className = 'nav-mod';
+      mDiv.innerText = s.mod;
+      nav.appendChild(mDiv);
+    }
+
+    const unlocked = isSlideUnlocked(i);
+    const item = document.createElement('div');
+    let classes = 'nav-item';
+    if (i === current) classes += ' active';
+    if (!unlocked) classes += ' locked';
+    if (s.tipo === 'quiz') {
+      classes += ' quiz-item';
+      if (completedQuizzes[s.modNum]) classes += ' completed';
+    }
+    if (s.tipo === 'certificado') {
+      classes += ' cert-item';
+      if (unlocked) classes += ' unlocked';
+    }
+
+    item.className = classes;
+    item.id = 'nav-' + i;
+
+    let statusIcon = "";
+    if (!unlocked) {
+      statusIcon = '<span class="nav-lock-icon" title="Responda às perguntas do módulo anterior para desbloquear">🔒</span>';
+    } else if (s.tipo === 'quiz' && completedQuizzes[s.modNum]) {
+      statusIcon = '<span class="nav-lock-icon" title="Módulo concluído!">✅</span>';
+    } else if (s.tipo === 'certificado' && unlocked) {
+      statusIcon = '<span class="nav-lock-icon" title="Certificado Liberado!">🎓</span>';
+    }
+
+    item.innerHTML = `<span>${s.titulo}</span>${statusIcon}`;
+
+    if (unlocked) {
+      item.onclick = () => {
+        goToSlide(i);
+        if (window.innerWidth <= 900) {
+          document.getElementById('sidebar').classList.remove('open');
+        }
+      };
+    }
+    nav.appendChild(item);
+  });
+}
+
+function filterNav(val) {
+  buildNav(val);
+}
+
+function init() {
+  loadProgress();
+  updateProgressBarUI();
+  buildNav();
+
+  // Prepara versão completa para impressão em PDF (todos os 20 slides de conteúdo originais)
+  const printAll = document.getElementById('print-all');
+  const contentSlides = slides.filter(s => s.tipo === "conteudo");
+  printAll.innerHTML = contentSlides.map((s, i) => `<div class="print-slide">${renderSlideHTML(s, true)}</div>`).join('');
+
+  updatePocaPreview();
+  goToSlide(current);
+}
+
+function goToSlide(i) {
+  if (!isSlideUnlocked(i)) return;
+  current = i;
+  saveProgress();
+  const container = document.getElementById('slide-container');
+  container.innerHTML = renderSlideHTML(slides[i], false);
+  container.scrollTop = 0;
+
+  document.getElementById('progress-badge').innerText = `Etapa ${i + 1} de ${slides.length}`;
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.toggle('active', el.id === 'nav-' + i);
+  });
+
+  // Atualiza estado dos botões Anterior e Próximo (Trava "Inclicável" se o próximo slide pertencer a um módulo bloqueado)
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  if (btnPrev) {
+    btnPrev.disabled = (i === 0);
+  }
+  if (btnNext) {
+    const canGoNext = (i < slides.length - 1) && isSlideUnlocked(i + 1);
+    btnNext.disabled = !canGoNext;
+    btnNext.classList.toggle('btn-locked', !canGoNext);
+    if (!canGoNext && i < slides.length - 1) {
+      btnNext.innerText = "🔒 Próximo (Responda o Quiz)";
+    } else {
+      btnNext.innerText = "Próximo ➡";
+    }
+  }
+}
+
+function nextSlide() {
+  if (current < slides.length - 1 && isSlideUnlocked(current + 1)) {
+    goToSlide(current + 1);
+  }
+}
+
+function prevSlide() {
+  if (current > 0) goToSlide(current - 1);
+}
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+function togglePocaModal() {
+  document.getElementById('poca-modal').classList.toggle('open');
+}
+
+function updatePocaPreview() {
+  const perfil = document.getElementById('poca-p').value;
+  const setor = document.getElementById('poca-o').value.trim() || "Secretaria Municipal de Saúde de Atibaia/SP";
+
+  const guias = {
+    ordenador: `CHECKLIST DO ORDENADOR DE DESPESAS — LEI Nº 8.080/1990 (${setor}):
+1. CONTA ESPECIAL E CONSELHO (Art. 33): Movimentar recursos exclusivamente na conta do Fundo Municipal de Saúde, sob fiscalização do Conselho Municipal de Saúde.
+2. PLANO DE SAÚDE (Art. 36, §§ 1º e 2º): É VEDADA a transferência/uso de recursos para ações NÃO previstas no Plano Municipal de Saúde (exceto emergência ou calamidade pública).
+3. ENTIDADES LUCRATIVAS (Art. 38): É PROIBIDO conceder subvenções e auxílios a prestadores privados com finalidade lucrativa (remuneração somente por contrato após licitação).
+4. TRAVA ANVISA (Art. 19-T): É VEDADO pagar, dispensar ou reembolsar medicamento/procedimento experimental ou sem registro na ANVISA.
+5. CRIME DE DESVIO (Art. 52): Usar recursos do SUS fora das finalidades da Lei 8.080 constitui crime de emprego irregular de verbas públicas (Código Penal, art. 315).
+6. TRAVA DE HABILITAÇÕES (Art. 47-A, § 3º): Manter o envio obrigatório dos dados da regulação assistencial ao Ministério da Saúde para não bloquear novos credenciamentos.`,
+
+    atendimento: `DIREITOS OBRIGATÓRIOS DO USUÁRIO NA PONTA — LEI Nº 8.080/1990 (${setor}):
+1. ACESSO UNIVERSAL E HUMANIZADO (Art. 7º, I, IV e XVI): Atendimento gratuito, sem preconceitos/privilégios e com atenção humanizada (Lei 15.126/2025).
+2. DIREITO A ACOMPANHANTE (Art. 19-J - Lei 14.737/2023): Toda mulher tem direito a acompanhante maior de idade em consultas, exames e procedimentos, sem aviso prévio (cartaz obrigatório na unidade).
+3. PROTEÇÃO A VÍTIMAS DE VIOLÊNCIA (Art. 7º, XIV e XV): Atendimento especializado em local reservado com privacidade e restrição de acesso ao agressor (Lei 14.847/2024).
+4. FARMÁCIA E ESTOQUE NA WEB (Arts. 6º-A e 19-V): Dispensação conforme REMUME/RENAME/PCDT, orientação contra automedicação e publicação quinzenal do estoque na internet.
+5. TELESSAÚDE (Arts. 26-A a 26-G): Exige consentimento livre e informado, confidencialidade (LGPD) e garante direito de recusa com atendimento presencial sempre que solicitado.
+6. ATENÇÃO DOMICILIAR (Art. 19-I): Equipe multiprofissional mediante indicação médica e concordância expressa do paciente e da família.`,
+
+    municipio: `COMPETÊNCIAS DO MUNICÍPIO E GESTÃO TRIPARTITE — LEI Nº 8.080/1990 (${setor}):
+1. DIREÇÃO ÚNICA (Art. 9º): Exercida no Município pela Secretaria Municipal de Saúde (ênfase na descentralização/municipalização - Art. 7º, IX, 'a').
+2. GESTÃO TRIPARTITE E BIPARTITE (Art. 14-A): CIT (União, Estados e Municípios) e CIB (Estado e Municípios) pactuam aspectos operacionais, financeiros e redes regionais.
+3. EXECUÇÃO MUNICIPAL (Art. 18): Gerir e executar serviços públicos de saúde, vigilância epidemiológica, vigilância sanitária, alimentação/nutrição, saneamento básico, saúde do trabalhador, saúde bucal e política de insumos.
+4. PARTICIPAÇÃO COMPLEMENTAR PRIVADA (Arts. 24 a 26): Permitida apenas quando a rede própria for insuficiente, mediante contrato/convênio, com preferência para entidades filantrópicas/sem fins lucrativos e gratuidade total ao cidadão (Art. 43).
+5. INTEGRIDADE NAS CHEFIAS (Arts. 26, § 4º e 28): Chefias em tempo integral; vedado a proprietários/dirigentes de entidades contratadas exercer cargo de chefia ou confiança no SUS.`,
+
+    regulacao: `REGULAÇÃO ASSISTENCIAL E TRANSPARÊNCIA DAS FILAS — LEI Nº 8.080/1990 (${setor}):
+1. REDE REGIONALIZADA E HIERARQUIZADA (Art. 8º): Organização dos serviços em níveis crescentes de complexidade (Atenção Primária -> Média -> Alta Complexidade).
+2. SISTEMA PÚBLICO DE TEMPOS DE ESPERA (Art. 47-A - Lei 15.233/2025): Transparência do tempo médio de espera para consultas, exames e procedimentos especializados, observada a LGPD.
+3. ENVIO OBRIGATÓRIO DE DADOS (Art. 47-A, § 2º): A Secretaria Municipal deve registrar e enviar obrigatoriamente os dados da regulação assistencial ao Ministério da Saúde.
+4. CONDICIONANTE FINANCEIRA (Art. 47-A, § 3º): Novos pedidos de habilitações, credenciamentos e majoração de valores na atenção especializada só são analisados para entes que cumprirem o envio dos dados.
+5. TRATAMENTO FORA DO DOMICÍLIO - TFD (Arts. 19-X a 19-Z): Encaminhamento regulado quando o procedimento especializado não existir no município de residência.`
+  };
+
+  document.getElementById('poca-generated-output').innerText = guias[perfil] || guias.ordenador;
+}
+
+document.addEventListener('keydown', e => {
+  const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+  if (activeTag === 'input' || activeTag === 'textarea') return;
+
+  if (e.key === 'ArrowRight') nextSlide();
+  if (e.key === 'ArrowLeft') prevSlide();
+  if (e.key === 'Escape') {
+    document.getElementById('poca-modal').classList.remove('open');
+  }
+});
+
+init();
+
+</script>
+</body>
+</html>

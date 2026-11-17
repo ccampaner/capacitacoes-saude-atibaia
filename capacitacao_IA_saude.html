@@ -1,0 +1,2878 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curso Prático: Inteligência Artificial Aplicada à Gestão e Rotina do SUS - Saúde de Atibaia/SP</title>
+<style>
+  :root {
+    --bg: #1e1e1e;
+    --panel: #2a2a2a;
+    --card: #333333;
+    --text: #f0f0f0;
+    --muted: #aaaaaa;
+    --accent: #3584e4;
+    --accent-light: #62a0ea;
+    --success: #2ec27e;
+    --warning: #f5c211;
+    --danger: #e01b24;
+    --border: #444444;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: 310px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    z-index: 50;
+  }
+
+  .brand {
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
+    background: #242424;
+  }
+
+  .brand h1 {
+    font-size: 15px;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .brand p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  .search-box {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: #262626;
+  }
+
+  .search-box input {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    outline: none;
+  }
+
+  .search-box input:focus {
+    border-color: var(--accent-light);
+  }
+
+  #nav-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
+
+  .nav-mod {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--warning);
+    margin: 14px 6px 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .nav-item {
+    padding: 9px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.8px;
+    color: var(--text);
+    margin-bottom: 3px;
+    transition: 0.2s;
+    line-height: 1.35;
+  }
+
+  .nav-item:hover {
+    background: var(--card);
+  }
+
+  .nav-item.active {
+    background: var(--accent);
+    font-weight: 600;
+    color: #fff;
+  }
+
+  /* Main Area */
+  #main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-width: 0;
+  }
+
+  #topbar {
+    min-height: 56px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 24px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #menu-toggle {
+    display: none;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .badge-poca {
+    background: #252f3f;
+    color: var(--accent-light);
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .controls button {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 7px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.5px;
+    transition: 0.2s;
+  }
+
+  .controls button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .controls button.btn-builder {
+    background: #1f3d2d;
+    border-color: var(--success);
+    color: #8ff0a4;
+    font-weight: 600;
+  }
+
+  .controls button.btn-builder:hover {
+    background: var(--success);
+    color: #000;
+  }
+
+  /* Slide Content */
+  #slide-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 44px;
+    max-width: 1240px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .slide-header {
+    margin-bottom: 22px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 14px;
+  }
+
+  .slide-header h2 {
+    font-size: 26px;
+    color: #fff;
+    margin-top: 6px;
+    line-height: 1.25;
+  }
+
+  .slide-meta {
+    font-size: 13px;
+    color: var(--accent-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card.warn { border-left-color: var(--warning); }
+  .card.danger { border-left-color: var(--danger); }
+  .card.ok { border-left-color: var(--success); }
+
+  .card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--accent-light);
+    line-height: 1.35;
+  }
+
+  .card.warn h3 { color: var(--warning); }
+  .card.danger h3 { color: #ff7b7b; }
+  .card.ok h3 { color: var(--success); }
+
+  .card ul {
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .card li {
+    margin-bottom: 7px;
+  }
+
+  .card li strong {
+    color: #ffffff;
+  }
+
+  /* Mind Map Visual Tree */
+  .mindmap {
+    background: #23272e;
+    border: 1px dashed var(--accent-light);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+
+  .mm-title {
+    font-size: 13.5px;
+    text-transform: uppercase;
+    color: var(--warning);
+    margin-bottom: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.4px;
+  }
+
+  .mm-tree {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .mm-node {
+    flex: 1;
+    min-width: 210px;
+    background: var(--card);
+    border-radius: 6px;
+    padding: 13px;
+    border-top: 3px solid var(--success);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .mm-node strong {
+    display: block;
+    color: #fff;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  /* Explanatory Note Box */
+  .notes-box {
+    background: #252f3f;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    margin-top: 20px;
+  }
+
+  .notes-title {
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .notes-text {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #e2e8f0;
+  }
+
+  /* Prompt Copy Box */
+  .code-wrapper {
+    margin-top: 12px;
+    position: relative;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    padding: 6px 12px;
+    border-radius: 6px 6px 0 0;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  pre {
+    background: #141414;
+    padding: 14px;
+    border-radius: 0 0 6px 6px;
+    border: 1px solid var(--border);
+    color: #8ff0a4;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12.5px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
+  }
+
+  .copy-btn {
+    background: var(--success);
+    color: #000;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 11.5px;
+    transition: 0.2s;
+  }
+
+  .copy-btn:hover {
+    filter: brightness(1.1);
+  }
+
+  /* Interactive Modal: Construtor POCA */
+  #poca-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  #poca-modal.open {
+    display: flex;
+  }
+
+  .modal-content {
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    max-width: 780px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .modal-header h3 {
+    color: var(--accent-light);
+    font-size: 18px;
+  }
+
+  .close-modal {
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 11px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .poca-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .poca-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .poca-field label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--warning);
+  }
+
+  .poca-field textarea {
+    background: #191919;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 12.5px;
+    resize: vertical;
+    min-height: 68px;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 900px) {
+    #sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      transform: translateX(-100%);
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #menu-toggle {
+      display: inline-block;
+    }
+    #slide-container {
+      padding: 20px 18px;
+    }
+    .poca-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Print mode */
+  @media print {
+    body {
+      display: block;
+      height: auto;
+      overflow: visible;
+      background: #fff;
+      color: #000;
+    }
+    #sidebar, #topbar, #poca-modal {
+      display: none !important;
+    }
+    #slide-container {
+      display: none !important;
+    }
+    #print-all {
+      display: block !important;
+      padding: 15px;
+    }
+    .print-slide {
+      page-break-after: always;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .card, .mindmap, .notes-box, pre, .code-header {
+      background: #f9f9f9 !important;
+      color: #000 !important;
+      border: 1px solid #aaa !important;
+    }
+    h2, h3, strong, .notes-text, .slide-meta, .mm-title, .notes-title, li {
+      color: #000 !important;
+    }
+    .copy-btn {
+      display: none !important;
+    }
+  }
+
+  #print-all {
+    display: none;
+  }
+
+  /* Progress Bar in Sidebar */
+  .progress-panel {
+    padding: 12px 14px;
+    background: #20252b;
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 6px;
+  }
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #141414;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .progress-status-text {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Locked Navigation Items ("Inclicável") */
+  .nav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-item.locked {
+    opacity: 0.42;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    user-select: none;
+    color: #888888;
+    background: transparent !important;
+  }
+  .nav-item.quiz-item {
+    border-left: 3px solid var(--warning);
+    background: rgba(245, 194, 17, 0.07);
+    font-weight: 600;
+  }
+  .nav-item.quiz-item.completed {
+    border-left-color: var(--success);
+    background: rgba(46, 194, 126, 0.09);
+  }
+  .nav-item.cert-item {
+    border-left: 3px solid var(--accent-light);
+    background: rgba(53, 132, 228, 0.12);
+    font-weight: 700;
+  }
+  .nav-item.cert-item.unlocked {
+    border-left-color: var(--success);
+    background: rgba(46, 194, 126, 0.15);
+    color: #8ff0a4;
+  }
+  .nav-lock-icon {
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Locked Next Button ("Inclicável") */
+  .controls button:disabled,
+  .controls button.btn-locked {
+    opacity: 0.42 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    background: #252525 !important;
+    border-color: #3a3a3a !important;
+    color: #777777 !important;
+  }
+
+  /* Interactive Quiz Styling */
+  .quiz-container {
+    background: #232830;
+    border: 2px solid var(--warning);
+    border-radius: 10px;
+    padding: 24px;
+    margin-top: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+  .quiz-container.quiz-completed {
+    border-color: var(--success);
+  }
+  .quiz-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .quiz-badge-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--warning);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .quiz-container.quiz-completed .quiz-badge-title {
+    color: var(--success);
+  }
+  .quiz-status-pill {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    background: rgba(245, 194, 17, 0.15);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+  }
+  .quiz-status-pill.ok {
+    background: rgba(46, 194, 126, 0.18);
+    color: var(--success);
+    border-color: var(--success);
+  }
+  .quiz-intro {
+    font-size: 14px;
+    color: #d8dee9;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  .quiz-question-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .quiz-question-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 14px;
+    line-height: 1.45;
+  }
+  .quiz-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .quiz-option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #1f1f1f;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13.8px;
+    line-height: 1.45;
+    color: var(--text);
+  }
+  .quiz-option-label:hover {
+    background: #2d333b;
+    border-color: var(--accent-light);
+  }
+  .quiz-option-label input[type="radio"] {
+    margin-top: 3px;
+    accent-color: var(--accent);
+    transform: scale(1.15);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .quiz-option-label.selected-correct {
+    background: rgba(46, 194, 126, 0.16);
+    border-color: var(--success);
+    color: #ffffff;
+  }
+  .quiz-option-label.selected-wrong {
+    background: rgba(224, 27, 36, 0.16);
+    border-color: var(--danger);
+  }
+  .quiz-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .btn-validate-quiz {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-validate-quiz:hover {
+    background: var(--accent-light);
+  }
+  .btn-advance-mod {
+    background: var(--success);
+    color: #000000;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-advance-mod:hover {
+    filter: brightness(1.1);
+  }
+  .quiz-feedback {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    display: none;
+  }
+  .quiz-feedback.show {
+    display: block;
+  }
+  .quiz-feedback.ok {
+    background: rgba(46, 194, 126, 0.16);
+    border: 1px solid var(--success);
+    color: #8ff0a4;
+  }
+  .quiz-feedback.err {
+    background: rgba(224, 27, 36, 0.16);
+    border: 1px solid var(--danger);
+    color: #ff9b9b;
+  }
+
+  /* Certificate Generator & Preview Card */
+  .cert-panel {
+    background: var(--panel);
+    border: 2px solid var(--success);
+    border-radius: 10px;
+    padding: 26px;
+    margin-bottom: 24px;
+  }
+  .cert-form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+    margin-bottom: 18px;
+  }
+  .cert-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cert-input-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--warning);
+  }
+  .cert-input-group input {
+    background: #181818;
+    border: 1px solid var(--border);
+    color: #ffffff;
+    padding: 11px 14px;
+    border-radius: 6px;
+    font-size: 14.5px;
+    outline: none;
+  }
+  .cert-input-group input:focus {
+    border-color: var(--accent-light);
+  }
+  .cert-input-group input:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .cert-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .btn-cert-download {
+    background: var(--success);
+    color: #000000;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-cert-download:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+  .btn-cert-print {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-cert-print:hover:not(:disabled) {
+    background: var(--accent-light);
+  }
+  .btn-cert-download:disabled,
+  .btn-cert-print:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Visual Certificate Preview Box */
+  .cert-preview-wrapper {
+    background: #ffffff;
+    color: #1a202c;
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  .cert-diploma-border {
+    border: 6px double #1e4e8c;
+    padding: 32px 36px;
+    background: linear-gradient(135deg, #ffffff 0%, #f4f8fd 100%);
+    position: relative;
+    text-align: center;
+    min-width: 680px;
+  }
+  .cert-diploma-header {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e4e8c;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .cert-diploma-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f294a;
+    margin: 8px 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .cert-diploma-subtitle {
+    font-size: 14px;
+    color: #2b6cb0;
+    font-weight: 600;
+    margin-bottom: 22px;
+  }
+  .cert-diploma-Lead {
+    font-size: 15px;
+    color: #4a5568;
+    margin-bottom: 8px;
+  }
+  .cert-diploma-name {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f294a;
+    border-bottom: 2px solid #2b6cb0;
+    display: inline-block;
+    padding: 4px 36px 8px;
+    margin: 6px 0 16px;
+    min-width: 360px;
+  }
+  .cert-diploma-body {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #2d3748;
+    max-width: 780px;
+    margin: 0 auto 24px;
+  }
+  .cert-diploma-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 28px;
+    padding-top: 14px;
+    font-size: 12.5px;
+    color: #4a5568;
+  }
+  .cert-sign-line {
+    border-top: 1.5px solid #1e4e8c;
+    padding-top: 6px;
+    width: 240px;
+    font-weight: 700;
+    color: #0f294a;
+  }
+
+  /* Dedicated Print Certificate Container */
+  #print-certificate-only {
+    display: none;
+  }
+
+  @media print {
+    body.print-cert-mode {
+      background: #ffffff !important;
+      color: #000000 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    body.print-cert-mode #sidebar,
+    body.print-cert-mode #topbar,
+    body.print-cert-mode #poca-modal,
+    body.print-cert-mode #slide-container,
+    body.print-cert-mode #print-all {
+      display: none !important;
+    }
+    body.print-cert-mode #print-certificate-only {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 95vh;
+      padding: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <div class="brand">
+    <h1>Saúde de Atibaia/SP</h1>
+    <p>Capacitação em Inteligência Artificial no SUS<br>Protocolo P.O.C.A. • Segurança • Prática</p>
+	<p>Clovis Campaner Filho<br>Gestor de T.I. - Chefe de Divisão de T.I. da Saúde</p>
+  </div>
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="🔍 Filtrar tópico ou slide..." oninput="filterNav(this.value)">
+  </div>
+  <div class="progress-panel">
+    <div class="progress-panel-header">
+      <span>PROGRESSO DOS MÓDULOS</span>
+      <span id="mod-progress-count">0 / 5 Concluídos</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="mod-progress-fill"></div>
+    </div>
+    <div class="progress-status-text">
+      <span id="mod-lock-status">🔒 Módulos 2 a 5 bloqueados</span>
+      <span id="cert-lock-badge">🎓 Bloqueado</span>
+    </div>
+  </div>
+  <div id="nav-list"></div>
+</aside>
+
+<main id="main">
+  <header id="topbar">
+    <div class="top-left">
+      <button id="menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
+      <span id="progress-badge" class="badge">Slide 1 de 20</span>
+      <span class="badge-poca">Método P.O.C.A. • SUS Atibaia</span>
+    </div>
+    <div class="controls">
+      <button class="btn-builder" onclick="togglePocaModal()">✨ Construtor P.O.C.A.</button>
+      <button id="btn-prev" onclick="prevSlide()">⬅ Anterior</button>
+      <button id="btn-next" onclick="nextSlide()">Próximo ➡</button>
+      <button onclick="toggleFullScreen()">⛶ Tela Cheia</button>
+      <button onclick="printFullCourseApostila()">🖨️ Salvar PDF Completo</button>
+    </div>
+  </header>
+
+  <section id="slide-container"></section>
+  <section id="print-all"></section>
+  <section id="print-certificate-only"></section>
+</main>
+
+<!-- Modal Interativo Construtor de Prompts P.O.C.A. -->
+<div id="poca-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>✨ Construtor Interativo de Prompt (Protocolo P.O.C.A.)</h3>
+      <button class="close-modal" onclick="togglePocaModal()">✕ Fechar</button>
+    </div>
+    <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
+      Preencha os 4 campos abaixo (sem inserir dados pessoais de pacientes!) para montar automaticamente um prompt de alta precisão para a Secretaria de Saúde de Atibaia:
+    </p>
+    <div class="poca-form-grid">
+      <div class="poca-field">
+        <label>1. [P] Personificação (Quem a IA deve ser?)</label>
+        <textarea id="poca-p" oninput="updatePocaPreview()">Atue como especialista em Gestão Pública de Saúde do SUS e redator técnico oficial.</textarea>
+      </div>
+      <div class="poca-field">
+        <label>2. [O] Objetivo (O que ela deve entregar?)</label>
+        <textarea id="poca-o" oninput="updatePocaPreview()">Elabore um plano de ação operacional e um ofício circular de orientação para as unidades de saúde.</textarea>
+      </div>
+      <div class="poca-field">
+        <label>3. [C] Contexto (Qual o cenário real em Atibaia?)</label>
+        <textarea id="poca-c" oninput="updatePocaPreview()">Somos da Secretaria Municipal de Saúde de Atibaia/SP. O documento será destinado aos coordenadores de UBS e equipes multiprofissionais para organizar o fluxo de acolhimento na campanha de vacinação.</textarea>
+      </div>
+      <div class="poca-field">
+        <label>4. [A] Ajustes (Formato, tom e restrições)</label>
+        <textarea id="poca-a" oninput="updatePocaPreview()">Apresente em tabela com cronograma, linguagem institucional clara, sem inventar portarias. Caso falte algum dado local, sinalize entre colchetes [INSERIR DADO].</textarea>
+      </div>
+    </div>
+    <div class="code-wrapper">
+      <div class="code-header">
+        <span>Prompt Estruturado Gerado (Pronto para Copiar)</span>
+        <button class="copy-btn" onclick="copyTextFromElement('poca-generated-output', this)">Copiar Prompt</button>
+      </div>
+      <pre id="poca-generated-output"></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = [
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • Desmistificando a IA e o Cenário Atual na Saúde",
+    titulo: "1. Os 4 Perfis de Uso de IA no Serviço Público (Onde Estamos?)",
+    cards: [
+      {
+        tipo: "warn",
+        titulo: "Diagnóstico na Rotina da Saúde: Do Medo à Subutilização",
+        itens: [
+          "<strong>1. O Servidor Receoso / Paralisado:</strong> Não utiliza a Inteligência Artificial por medo de errar, receio de violar regras administrativas ou temor de ser substituído pela tecnologia.",
+          "<strong>2. O Subutilizador (Corretor de Luxo):</strong> Usa uma ferramenta com capacidade de análise estratégica apenas para corrigir vírgulas, trocar sinônimos ou 'deixar um e-mail mais bonito'.",
+          "<strong>Consequência Prática:</strong> Perda de dezenas de horas mensais em tarefas burocráticas repetitivas que poderiam ser convertidas em planejamento e melhor assistência ao cidadão de Atibaia."
+        ]
+      },
+      {
+        tipo: "danger",
+        titulo: "Os Extremos Perigosos: O Buscador e o Terceirizador Cego",
+        itens: [
+          "<strong>3. O Buscador Equivocado (Substituto do Google):</strong> Faz perguntas abertas sobre leis, portarias ou protocolos clínicos sem fornecer o texto-base, correndo alto risco de receber informações inventadas (alucinações).",
+          "<strong>4. O Terceirizador Cego ('Copia e Cola sem Ler'):</strong> Pede para a IA redigir pareceres, termos de referência ou ofícios e encaminha diretamente para assinatura sem conferir uma única linha.",
+          "<strong>5. O Perfil Ideal — Servidor Copiloto e Auditor:</strong> Domina o comando (Prompt), fornece os documentos oficiais, extrai velocidade da máquina e aplica validação técnica e humana rigorosa."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1. Medo / Paralisia", txt: "Superar pela capacitação prática e regras claras de segurança" },
+      { no: "2. Uso Superficial", txt: "Evoluir de mero corretor de texto para estruturador de processos" },
+      { no: "3. Uso como Google", txt: "Substituir perguntas soltas por análise de documentos oficiais" },
+      { no: "4. Meta: Servidor Copiloto", txt: "Você no comando técnico, a IA no trabalho braçal e revisão humana 100%" }
+    ],
+    nota: "Na Secretaria Municipal de Saúde de Atibaia, nosso objetivo não é proibir a Inteligência Artificial nem aceitar seu uso descuidado. A meta desta capacitação é transformar cada servidor e gestor em um 'Copiloto Consciente': alguém que perde o medo da ferramenta, supera o uso raso e jamais assina ou encaminha um documento sem antes auditar sua exatidão técnica e legal."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • Desmistificando a IA e o Cenário Atual na Saúde",
+    titulo: "2. O Que é Inteligência Artificial e Desde Quando a Usamos?",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "Desmistificando: IA Não é Mágica nem Mente Consciente",
+        itens: [
+          "<strong>O que realmente é a IA?</strong> É um ramo da ciência da computação baseado em matemática avançada, estatística e aprendizado de máquina (<em>Machine Learning</em>) capaz de identificar padrões em grandes volumes de dados.",
+          "<strong>A IA 'pensa' ou tem consciência?</strong> Não. Ela não possui intenção, ética própria, empatia clínica ou compreensão humana da realidade de uma UBS ou UPA.",
+          "<strong>Fator Tranquilizador:</strong> A IA é uma calculadora de padrões extremamente veloz. Quem compreende a dor do paciente e a realidade territorial de Atibaia é exclusivamente o servidor público."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Linha do Tempo: Você Já Usa IA Há Mais de 20 Anos!",
+        itens: [
+          "<strong>Anos 1990 e 2000:</strong> Filtros antispam do seu e-mail separando mensagens maliciosas automaticamente.",
+          "<strong>Anos 2010:</strong> Corretores ortográficos preditivos do celular (que sugerem a próxima palavra), rotas em tempo real no Waze/Google Maps e recomendações da Netflix/Spotify.",
+          "<strong>Anos 2020 na Saúde e Bancos:</strong> Reconhecimento facial no aplicativo do banco (Gov.br), triagem de exames radiológicos por imagem e, a partir de 2022, a popularização da <strong>IA Generativa de Texto</strong> (ChatGPT, Gemini, Claude, Copilot)."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "IA Tradicional (Analítica)", txt: "Classifica spam, calcula rotas no Waze e detecta fraudes bancárias" },
+      { no: "Preditiva no Celular", txt: "Teclado do WhatsApp que sugere a próxima palavra que você vai digitar" },
+      { no: "IA na Medicina Diagnóstica", txt: "Apoio na detecção de padrões em tomografias, raio-X e retinografias" },
+      { no: "IA Generativa (Atual)", txt: "Capaz de redigir textos, resumir portarias, criar tabelas e planos de ação" }
+    ],
+    nota: "Muitos funcionários sentem receio ao ouvir o termo 'Inteligência Artificial' por associá-lo à ficção científica. Quando percebemos que já utilizamos IA diariamente no Waze para fugir do trânsito na Fernão Dias ou no teclado do celular para digitar mais rápido, a barreira psicológica desaparece: a IA Generativa nada mais é do que uma evolução muito mais potente daquele corretor preditivo que já conhecemos."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • Desmistificando a IA e o Cenário Atual na Saúde",
+    titulo: "3. A Revolução da IA Generativa e Como Funcionam os LLMs",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "Como Funciona um LLM (Grande Modelo de Linguagem)?",
+        itens: [
+          "<strong>Previsão Estatística de 'Tokens':</strong> Modelos como ChatGPT, Google Gemini e Microsoft Copilot não consultam um 'arquivo de verdades absolutas'. Eles funcionam prevendo qual é a próxima sílaba ou palavra (<em>token</em>) estatisticamente mais provável para continuar um texto.",
+          "<strong>Exemplo Simples:</strong> Se você digita <em>'Sistema Único de...'</em>, a matemática do modelo calcula que há 99,9% de chance de a próxima palavra ser <em>'Saúde'</em>.",
+          "<strong>Por que ela escreve tão bem?</strong> Porque foi treinada com bilhões de textos públicos, aprendendo a estrutura gramatical de ofícios, leis, artigos científicos e manuais."
+        ]
+      },
+      {
+        tipo: "danger",
+        titulo: "O Fenômeno da 'Alucinação': Quando a IA Inventa com Confiança",
+        itens: [
+          "<strong>O que é Alucinação em IA?</strong> Como o objetivo matemático da IA é produzir uma resposta fluida e coerente, quando ela não sabe um fato específico (ex.: uma portaria municipal de Atibaia), ela pode <strong>inventar números de leis, datas ou dados</strong> com total aparência de verdade.",
+          "<strong>Por que não é um 'novo Google'?</strong> O Google busca páginas reais existentes na internet. A IA Generativa <em>constrói</em> frases palavra por palavra por probabilidade.",
+          "<strong>Regra de Ouro:</strong> Quanto mais vago for o seu pedido e menor for a base documental fornecida por você, maior será a probabilidade de a IA alucinar."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1. Entrada (Seu Prompt)", txt: "A pergunta, instrução e documentos que você envia para a IA" },
+      { no: "2. Quebra em Tokens", txt: "A IA transforma seu texto em blocos numéricos e analisa o contexto" },
+      { no: "3. Cálculo de Probabilidade", txt: "Completa o texto palavra por palavra segundo padrões estatísticos" },
+      { no: "4. Risco de Alucinação", txt: "Se faltar contexto real, a IA preenche a lacuna inventando dados plausíveis" }
+    ],
+    nota: "Compreender que a IA funciona por probabilidade estatística de palavras — e não por 'conhecimento da verdade' — muda completamente a forma de trabalhar na Secretaria de Saúde. Se você pedir 'Cite a portaria de Atibaia sobre horário da farmácia', ela pode inventar um número falso que soa perfeito. Mas se você colar o texto da portaria e pedir 'Resuma esta portaria em 5 tópicos', ela será brilhante e precisa."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: true,
+    mod: "Módulo 1 • Desmistificando a IA e o Cenário Atual na Saúde",
+    titulo: "4. O Que a IA Pode Fazer vs. Limites e Travas do Arquiteto (Guardrails)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "O Que a IA Faz com Excelência na Rotina do SUS",
+        itens: [
+          "<strong>Síntese e Tradução Técnica:</strong> Resumir portarias extensas do Ministério da Saúde, traduzir termos médicos/jurídicos para linguagem acessível ao cidadão.",
+          "<strong>Estruturação Documental:</strong> Criar esqueletos de Estudos Técnicos Preliminares (ETP), Termos de Referência (TR), Procedimentos Operacionais Padrão (POPs), ofícios e cronogramas de eventos.",
+          "<strong>Organização e Análise Textual:</strong> Transformar anotações soltas de reuniões em atas estruturadas, criar checklists de fiscalização e revisar clareza, ortografia e tom institucional."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "O Que Ela NÃO Pode Fazer (Travas de Segurança do Arquiteto)",
+        itens: [
+          "<strong>Guardrails (Travas de Segurança de Fábrica):</strong> Os arquitetos de IA implementam camadas rígidas de segurança (<em>System Prompts</em> e alinhamento ético RLHF) que bloqueiam automaticamente respostas perigosas ou ilegais.",
+          "<strong>Bloqueios Clínicos e Éticos:</strong> A IA é programada para recusar diagnósticos médicos definitivos, prescrição autônoma de receitas restritas, incentivo a autolesão, criação de golpes, fraudes em licitações ou ataques cibernéticos.",
+          "<strong>Limitação de Isolamento:</strong> A IA pública NÃO tem acesso direto ao prontuário eletrônico (PEC e-SUS), nem ao estoque da farmácia municipal ou aos processos internos da Prefeitura, a menos que você forneça os dados anonimizados."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Pode Fazer (Produtividade)", txt: "Resumir, estruturar minutas, criar tabelas, revisar e planejar ações" },
+      { no: "Trava Ética do Arquiteto", txt: "Bloqueia fraudes, receitas médicas autônomas, crimes e burla à lei" },
+      { no: "Trava Técnica (Isolamento)", txt: "Não enxerga sistemas internos da Prefeitura nem o PEC e-SUS sozinha" },
+      { no: "Limite Institucional", txt: "Não substitui o ato administrativo, o carimbo médico ou a decisão do gestor" }
+    ],
+    nota: "As travas implementadas pelos arquitetos de sistemas de IA (chamadas de Guardrails) existem para proteger a sociedade contra usos nocivos, como prescrições médicas sem profissional habilitado ou geração de fraudes documentais. Por vezes, se você escrever um prompt mal explicado sobre medicamentos controlados ou auditoria de desvios, a IA pode recusar achando que é algo ilegal — basta contextualizar no prompt que você é gestor público da Saúde atuando na conformidade legal."
+  },
+  {
+    tipo: "quiz",
+    modNum: 1,
+    mod: "Módulo 1 • Desmistificando a IA e o Cenário Atual na Saúde",
+    titulo: "📝 Avaliação do Módulo 1 (Desbloqueio do Módulo 2)",
+    subtitulo: "Responda corretamente às 2 questões abaixo (apenas 1 alternativa correta por questão) para habilitar a visualização do Módulo 2.",
+    perguntas: [
+      {
+        q: "1. Sobre o funcionamento dos Grandes Modelos de Linguagem (LLMs, como ChatGPT, Gemini e Copilot) e o fenômeno da 'Alucinação', assinale a alternativa CORRETA:",
+        opcoes: [
+          "As IAs Generativas consultam exclusivamente bancos de dados oficiais do governo e nunca inventam números de leis ou portarias.",
+          "Os LLMs funcionam prevendo estatisticamente a próxima palavra (token) mais provável; por isso, quando usados como buscador sem contexto documental, podem 'alucinar' (inventar fatos ou normas com aparência de verdade).",
+          "A IA possui consciência própria, empatia clínica e acesso direto automático ao prontuário eletrônico (PEC e-SUS) da rede municipal."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Qual é o perfil ideal de servidor público na utilização da Inteligência Artificial na Secretaria Municipal de Saúde de Atibaia e o papel das travas do arquiteto (Guardrails)?",
+        opcoes: [
+          "O 'Terceirizador Cego', que pede para a IA redigir ofícios e termos de referência e os encaminha diretamente para assinatura sem ler.",
+          "O 'Subutilizador', que restringe o uso da ferramenta apenas para corrigir vírgulas por acreditar que a IA substitui o julgamento do gestor.",
+          "O 'Servidor Copiloto e Auditor', que compreende os limites éticos/técnicos (Guardrails), fornece os documentos oficiais no comando e realiza revisão humana e técnica de 100% do material gerado."
+        ],
+        correta: 2
+      }
+    ],
+    nota: "Acerte as 2 questões acima e clique em 'Validar Respostas' para liberar imediatamente o acesso ao Módulo 2 (Segurança, LGPD e o Que Não Fazer na Secretaria)."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Segurança, LGPD e o Que Não Fazer na Secretaria",
+    titulo: "5. O Que NUNCA Devemos Fazer na IA (Os 5 Pecados Capitais no SUS)",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Pecados 1 a 3: Dados Sensíveis, Busca Cega e Falta de Leitura",
+        itens: [
+          "<strong>1. NUNCA inserir dados identificáveis de pacientes ou servidores:</strong> Jamais cole Nome completo, CPF, Cartão Nacional de Saúde (CNS), RG, endereço, telefone ou prontuário médico real em IAs públicas.",
+          "<strong>2. NUNCA usar a IA como fonte primária de legislação sem conferência:</strong> Não peça para a IA 'buscar qual é a lei vigente' sem checar no portal oficial (Planalto, Saúde Legis ou Imprensa Oficial de Atibaia).",
+          "<strong>3. NUNCA encaminhar ou assinar texto sem revisão integral:</strong> Textos gerados por IA costumam trazer termos genéricos ou referências inexistentes que expõem o servidor e a Secretaria ao ridículo ou a erro administrativo."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Pecados 4 e 5: Delegação de Decisão e Credenciais de Acesso",
+        itens: [
+          "<strong>4. NUNCA delegar o julgamento clínico ou administrativo à máquina:</strong> A IA pode estruturar o formato de uma resposta de Ouvidoria ou de um parecer técnico, mas a decisão de deferir, indeferir ou priorizar um atendimento é 100% humana.",
+          "<strong>5. NUNCA digitar senhas, tokens, chaves de API ou documentos sigilosos:</strong> Textos inseridos em versões gratuitas/públicas de IA podem ser armazenados nos servidores externos das empresas de tecnologia para treinamento futuro do modelo."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "🚫 Zero Prontuário Nominal", txt: "Jamais enviar Nome, CPF, CNS ou endereço de pacientes do SUS" },
+      { no: "🚫 Zero 'Assinatura Cega'", txt: "Proibido copiar da IA e colar no sistema oficial sem ler cada linha" },
+      { no: "🚫 Zero Citação Não Checada", txt: "Toda lei, portaria ou número citado pela IA deve ser conferido na fonte" },
+      { no: "🚫 Zero Decisão Automática", txt: "A IA apoia a redação, mas quem decide o mérito técnico é o servidor" }
+    ],
+    nota: "Estes 5 limites inegociáveis formam o cinturão de segurança da Secretaria de Saúde de Atibaia. O servidor que respeita essas cinco regras elimina 99% dos riscos jurídicos, éticos e disciplinares no uso de Inteligência Artificial no setor público."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Segurança, LGPD e o Que Não Fazer na Secretaria",
+    titulo: "6. Proteção de Dados na Saúde (LGPD - Lei 13.709/2018) e Anonimização",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Dado de Saúde é Dado Pessoal Sensível (Art. 5º, II e Art. 11 LGPD)",
+        itens: [
+          "<strong>Rigor Máximo na Saúde:</strong> Pela Lei Geral de Proteção de Dados (Lei nº 13.709/2018) e pelo sigilo profissional (CFM, COFEN, Conselhos), qualquer informação referente à saúde, histórico clínico, CID ou condição social vinculada a uma pessoa natural identificada ou identificável é <strong>Dado Pessoal Sensível</strong>.",
+          "<strong>Vazamento Acidental:</strong> Colar o relato de uma Ouvidoria contendo o nome da paciente, seu CPF, endereço no bairro Alvinópolis e seu diagnóstico psiquiátrico em uma IA pública configura compartilhamento indevido de dado sensível com terceiros."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "A Solução Prática: Técnica de Anonimização Antes do Prompt",
+        itens: [
+          "<strong>Como usar a IA em casos reais sem violar a LGPD?</strong> Aplique a <strong>Anonimização / Pseudonimização</strong>: remova todos os identificadores pessoais antes de colar o texto na ferramenta.",
+          "<strong>❌ ERRADO (Viola a LGPD):</strong> <em>'Redija resposta para Maria da Silva, CPF 123.456.789-00, CNS 700000, moradora da Rua X em Atibaia, que reclamou de demora na consulta de cardiologia.'</em>",
+          "<strong>✅ CORRETO (100% Seguro e Anonimizado):</strong> <em>'Redija uma minuta de resposta institucional para a Ouvidoria do SUS referente a [PACIENTE IDOSA, 68 ANOS], cadastrada na [UBS X], que relata aguardar agendamento para especialidade de cardiologia há 45 dias. Após inserir no sistema oficial, eu mesmo preencherei os dados reais.'</em>"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1. Identificar Dados Pessoais", txt: "Localizar Nome, CPF, RG, CNS, Data de Nascimento, Endereço e Telefone" },
+      { no: "2. Substituir por Genéricos", txt: "Trocar por [PACIENTE A], [SERVIDOR B], [EMPRESA CONTRATADA X]" },
+      { no: "3. Manter Apenas o Fato Técnico", txt: "Enviar para a IA somente a situação clínica/administrativa abstrata" },
+      { no: "4. Reidentificar Fora da IA", txt: "Colocar os nomes reais apenas no editor interno da Prefeitura (1Doc/Word)" }
+    ],
+    nota: "A técnica de anonimização leva menos de 15 segundos e permite que você utilize todo o poder de redação e análise da Inteligência Artificial com total conformidade à LGPD (Lei nº 13.709/2018). Lembre-se: a IA não precisa saber o nome ou o CPF do paciente para redigir um excelente parecer técnico ou resposta de Ouvidoria."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: true,
+    mod: "Módulo 2 • Segurança, LGPD e o Que Não Fazer na Secretaria",
+    titulo: "7. Alucinação Digital e Responsabilidade Funcional (Quem Assina Responde!)",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "A IA Não Tem Matrícula Funcional Nem Responde ao TCE-SP",
+        itens: [
+          "<strong>Casos Reais no Brasil:</strong> Juízes, advogados e servidores públicos já sofreram processos disciplinares e multas por apresentarem peças contendo leis revogadas, jurisprudências falsas e portarias inexistentes geradas por IA sem conferência.",
+          "<strong>Responsabilidade Pessoal:</strong> Perante a Controladoria, o Ministério Público, os Conselhos de Classe e o Tribunal de Contas do Estado de São Paulo (TCE-SP), a justificativa <em>'foi o ChatGPT que escreveu'</em> não afasta a culpa por negligência, podendo inclusive agravá-la."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Protocolo de Auditoria Humana em 4 Passos",
+        itens: [
+          "<strong>Passo 1 (Checagem Normativa):</strong> A IA citou uma Portaria GM/MS, Resolução da ANVISA ou artigo da Lei 14.133/21? Abra o Google/Planalto e confirme se o número e o texto realmente existem e estão vigentes.",
+          "<strong>Passo 2 (Checagem Matemática):</strong> A IA fez somas, percentuais ou cálculos de dosagem/quantitativos? Refaça na calculadora ou no Excel (LLMs são modelos de linguagem, não calculadoras exatas).",
+          "<strong>Passo 3 (Adequação Local):</strong> O texto reflete o fluxo real da rede municipal de saúde de Atibaia?",
+          "<strong>Passo 4 (Validação Autoral):</strong> Só assine quando você concordar com 100% do conteúdo como se tivesse digitado cada palavra."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1. Auditar Normas e Leis", txt: "Conferir se portarias, artigos e resoluções citados realmente existem" },
+      { no: "2. Auditar Números e Contas", txt: "Conferir quantitativos, somas de planilhas e prazos no Excel/Calculadora" },
+      { no: "3. Auditar Fluxo Municipal", txt: "Ajustar nomes de setores, fluxos de regulação e realidade de Atibaia" },
+      { no: "4. Assumir a Autoria", txt: "A responsabilidade jurídica e ética é sempre do servidor que assina" }
+    ],
+    nota: "Pense na Inteligência Artificial como um estagiário extremamente rápido, culto e prestativo, que trabalha para você em segundos, mas que às vezes tem vergonha de dizer 'não sei' e inventa uma informação para agradar. Você jamais assinaria o trabalho de um estagiário sem ler e conferir os dados críticos: aja exatamente da mesma forma com a IA."
+  },
+  {
+    tipo: "quiz",
+    modNum: 2,
+    mod: "Módulo 2 • Segurança, LGPD e o Que Não Fazer na Secretaria",
+    titulo: "📝 Avaliação do Módulo 2 (Desbloqueio do Módulo 3)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre LGPD, Anonimização e Responsabilidade Funcional para liberar o Módulo 3.",
+    perguntas: [
+      {
+        q: "1. Pela Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018, arts. 5º e 11), dados de saúde são classificados como Dados Pessoais Sensíveis. Como o servidor deve agir ao usar a IA para estruturar uma resposta de Ouvidoria ou parecer sobre um paciente?",
+        opcoes: [
+          "Aplicar a técnica de Anonimização antes do prompt: remover Nome completo, CPF, CNS (Cartão SUS), endereço e telefone, substituindo-os por marcadores genéricos como [PACIENTE A] e [UBS X], reidentificando apenas no sistema interno oficial.",
+          "Colar o relato original completo com Nome, CPF, endereço e diagnóstico psiquiátrico na IA pública, bastando escrever no final do comando 'mantenha sigilo'.",
+          "Inserir o Nome completo e o CPF do paciente normalmente, pois ferramentas gratuitas de IA na internet são integradas ao sigilo médico do SUS."
+        ],
+        correta: 0
+      },
+      {
+        q: "2. Sobre a responsabilidade funcional e o Protocolo de Auditoria Humana em 4 Passos (Checagem Normativa, Matemática, Adequação Local e Validação Autoral), assinale a alternativa CORRETA:",
+        opcoes: [
+          "Caso um documento gerado por IA contenha uma portaria inexistente ou erro de cálculo, a responsabilidade perante o TCE-SP e a Controladoria recai exclusivamente sobre a empresa criadora da IA.",
+          "A Inteligência Artificial não possui matrícula funcional; quem responde administrativa, ética e juridicamente pelo documento assinado é sempre o servidor ou gestor, que deve auditar normas, cálculos e fluxos locais antes de assinar.",
+          "Não é necessário conferir somas matemáticas ou números de portarias citados pela IA, pois modelos de linguagem funcionam como calculadoras jurídicas infalíveis."
+        ],
+        correta: 1
+      }
+    ],
+    nota: "A aplicação rigorosa da Anonimização (LGPD) e do Protocolo de Auditoria em 4 Passos protege o cidadão de Atibaia e blinda o servidor público contra erros administrativos."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Como Usar no Dia a Dia e o Protocolo P.O.C.A.",
+    titulo: "8. Como Usar a IA no Dia a Dia da Saúde (A Regra 80/20 do Copiloto)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "A Regra 80/20: Como Multiplicar sua Produtividade",
+        itens: [
+          "<strong>Os Primeiros 10% (Você — Direcionamento):</strong> Você define o problema, reúne os dados reais (sem nomes pessoais), escolhe a norma aplicável e estrutura o comando (Prompt).",
+          "<strong>Os 80% Intermediários (A IA — Trabalho Braçal):</strong> Em poucos segundos, a IA vence a 'síndrome da folha em branco', estrutura o documento, organiza tabelas, resume anexos extensos e sugere listas de verificação.",
+          "<strong>Os 10% Finais (Você — Lapidação e Auditoria):</strong> Você revisa criticamente, ajusta às particularidades da Secretaria de Saúde de Atibaia, valida os dados e finaliza o documento oficial."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "O Segredo da Precisão: Uso com Ancoragem Documental",
+        itens: [
+          "<strong>Uso Solto (Alto Risco):</strong> Pedir para a IA escrever sobre um tema tirando informações apenas da 'memória' de treinamento dela.",
+          "<strong>Uso Ancorado (Baixíssimo Risco e Alta Qualidade):</strong> Copiar e colar o texto da Portaria, do Contrato ou do Manual do Ministério da Saúde (ou anexar o arquivo PDF) e ordenar: <em>'Responda e estruture o documento baseando-se EXCLUSIVAMENTE no texto oficial anexado abaixo'</em>.",
+          "<strong>Ganho Imediato:</strong> Ao fornecer a fonte oficial no próprio prompt, você reduz drasticamente a chance de alucinação."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "10% Iniciais (Servidor)", txt: "Planeja a demanda, separa a portaria/dados e monta o prompt estruturado" },
+      { no: "80% Execução (IA Copiloto)", txt: "Gera a minuta, resume documentos longos, monta tabelas e checklists" },
+      { no: "10% Finais (Servidor Auditor)", txt: "Revisa fatos, adapta à realidade de Atibaia e valida tecnicamente" },
+      { no: "Ancoragem Documental", txt: "Sempre anexar ou colar a portaria/norma base junto com o seu pedido" }
+    ],
+    nota: "Aplicar a Regra 80/20 na rotina administrativa e assistencial da Saúde permite que tarefas que antes tomavam uma tarde inteira — como estruturar o cronograma de uma campanha de saúde, resumir uma portaria de 40 páginas do Ministério da Saúde ou redigir um descritivo técnico — sejam concluídas em 15 minutos com qualidade superior."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Como Usar no Dia a Dia e o Protocolo P.O.C.A.",
+    titulo: "9. Engenharia de Prompt na Prática: O Protocolo P.O.C.A.",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "P + O: Personificação e Objetivo (Quem é a IA e o que ela fará)",
+        itens: [
+          "<strong>[P] PERSONIFICAÇÃO (Quem a IA deve incorporar):</strong> Diga à IA qual especialista ela deve ser. Isso ativa o vocabulário técnico correto dentro do modelo.<br><em>Exemplo: 'Atue como especialista em Gestão Pública do SUS, Vigilância em Saúde e redação oficial...'</em>",
+          "<strong>[O] OBJETIVO (A tarefa clara com verbo de ação):</strong> Diga exatamente qual é o produto final esperado.<br><em>Exemplo: '...Elabore um Procedimento Operacional Padrão (POP) e um checklist de conferência diária...'</em>"
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "C + A: Contexto e Ajustes (Cenário de Atibaia e Regras de Saída)",
+        itens: [
+          "<strong>[C] CONTEXTO (O cenário real e informações de base):</strong> Explique onde o documento será usado, quem é o público-alvo e quais são as restrições.<br><em>Exemplo: '...O documento será utilizado pelas equipes de enfermagem das UBSs da Secretaria Municipal de Saúde de Atibaia/SP para controle de temperatura de imunobiológicos...'</em>",
+          "<strong>[A] AJUSTES (Formato, tom de voz e travas):</strong> Defina como a resposta deve ser entregue.<br><em>Exemplo: '...Entregue em formato de tabela passo a passo, linguagem técnica e objetiva, sem inventar normas. Onde precisar de dados locais, indique entre colchetes [PREENCHER].'</em>"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "P • Personificação", txt: "Defina a especialidade: Gestor do SUS, Engenheiro Clínico, Enfermeiro Auditor..." },
+      { no: "O • Objetivo", txt: "Use verbos claros: Elabore, Resuma, Compare, Estruture, Transforme em tabela..." },
+      { no: "C • Contexto", txt: "Informe a realidade: Saúde de Atibaia, público-alvo, dados e normas-base..." },
+      { no: "A • Ajustes", txt: "Defina o formato: Tabela, tópicos, tom formal, proibição de inventar leis..." }
+    ],
+    nota: "Por que a maioria das pessoas obtém respostas fracas e genéricas da Inteligência Artificial? Porque fazem pedidos de uma única linha, sem contexto. O Protocolo P.O.C.A. (Personificação, Objetivo, Contexto e Ajustes) é a fórmula padrão adotada neste curso para garantir que a IA compreenda exatamente a necessidade da Secretaria de Saúde de Atibaia logo na primeira tentativa."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Como Usar no Dia a Dia e o Protocolo P.O.C.A.",
+    titulo: "10. Anatomia do Prompt: Comparativo Pedido Fraco vs. Protocolo P.O.C.A.",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "❌ Pedido Fraco (Como a maioria faz — Resultado Inútil)",
+        itens: [
+          "<strong>Comando digitado pelo usuário:</strong> <em>'Faça um plano de ação contra a dengue.'</em>",
+          "<strong>O que a IA entrega:</strong> Um texto escolar e genérico dizendo 'não deixe água parada em pneus, coloque areia nos vasos de planta e procure o médico se tiver febre'.",
+          "<strong>Por que falhou?</strong> Não informou quem pergunta, para qual município, qual o nível técnico esperado, nem quais setores da Secretaria estarão envolvidos."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "✅ Pedido com Protocolo P.O.C.A. (Resultado Profissional para o SUS)",
+        itens: [
+          "Compare abaixo a estrutura completa aplicando os 4 pilares do Protocolo P.O.C.A. (clique em <strong>Copiar Prompt</strong> para testar ou usar como modelo):"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como médico sanitarista e especialista em Vigilância Epidemiológica e Gestão da Atenção Primária no SUS.
+
+[O - OBJETIVO] Elabore um Plano de Contingência Operacional de Combate às Arboviroses (Dengue) para os próximos 60 dias, integrando as ações dos Agentes Comunitários de Saúde (ACS), Agentes de Combate às Endemias (ACE) e equipes das UBSs.
+
+[C - CONTEXTO] O plano será aplicado pela Secretaria Municipal de Saúde de Atibaia/SP diante do período sazonal de chuvas e aumento de notificações. Precisamos organizar: 1) Busca ativa e vistoria territorial; 2) Fluxo de acolhimento com classificação de risco e hidratação imediata nas unidades; 3) Ações educativas na comunidade.
+
+[A - AJUSTES] Apresente o plano estruturado em uma tabela com as colunas: Eixo de Ação, Atividade Prática, Profissional Responsável, Prazo/Frequência e Indicador de Monitoramento. Utilize linguagem técnica oficial do Ministério da Saúde e sinalize entre colchetes [INSERIR DADO LOCAL] os pontos que dependem de preenchimento da equipe.`
+      }
+    ],
+    mapa: [
+      { no: "Sem P.O.C.A.", txt: "Resposta genérica, superficial e que exige horas de retrabalho" },
+      { no: "Com Personificação (P)", txt: "Eleva o vocabulário ao padrão técnico do Ministério da Saúde" },
+      { no: "Com Contexto (C)", txt: "Conecta a resposta à rotina real de UBS, UPA, ACS e ACE de Atibaia" },
+      { no: "Com Ajustes (A)", txt: "Entrega tudo pronto em tabela, com indicadores e campos editáveis" }
+    ],
+    nota: "Observe a diferença brutal entre os dois comandos. No segundo caso, em menos de 1 minuto de digitação seguindo o método P.O.C.A., o servidor obtém uma matriz operacional completa, dividida por eixos, profissionais responsáveis e indicadores de monitoramento, pronta para ser revisada e validada pela equipe técnica da Vigilância e Atenção Básica."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: true,
+    mod: "Módulo 3 • Como Usar no Dia a Dia e o Protocolo P.O.C.A.",
+    titulo: "11. Técnicas Complementares: Ancoragem, Passo a Passo e Prompt Reverso",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "1. Ancoragem (Grounding) e 2. Divisão em Etapas",
+        itens: [
+          "<strong>Técnica 1 — Ancoragem Estrita (Antialucinação):</strong> Sempre que fornecer uma portaria, contrato ou relatório, adicione ao final dos Ajustes: <em>'Utilize EXCLUSIVAMENTE as informações contidas no texto abaixo. Se alguma informação não constar no texto fornecido, responda expressamente: Não consta no documento-base.'</em>",
+          "<strong>Técnica 2 — Raciocínio Passo a Passo (Chain-of-Thought):</strong> Em tarefas complexas, peça primeiro a estrutura: <em>'Primeiro, apresente apenas os tópicos principais do documento para minha aprovação. Após minha confirmação, redigiremos seção por seção.'</em>"
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "3. Técnica do Prompt Reverso (Quando a IA Entrevista Você!)",
+        itens: [
+          "<strong>Não sabe todos os detalhes que precisa colocar no prompt?</strong> Use o <strong>Prompt Reverso</strong>: peça para a IA fazer perguntas a você antes de gerar o resultado final!"
+        ],
+        code: `[P] Atue como consultor sênior em gestão pública de saúde do SUS.
+[O] Preciso elaborar um [NOME DO DOCUMENTO / PROJETO / FLUXO] para o meu setor na Secretaria Municipal de Saúde de Atibaia/SP.
+[C] Quero que o documento fique extremamente completo, técnico e adequado à nossa realidade operacional.
+[A] ANTES de gerar o documento final, faça-me 5 perguntas estratégicas e diretas sobre a realidade do meu setor, recursos disponíveis e objetivos para que você tenha todas as informações necessárias. Aguarde minhas respostas para só então redigir o documento.`
+      }
+    ],
+    mapa: [
+      { no: "Ancoragem Documental", txt: "'Use EXCLUSIVAMENTE o texto abaixo; não invente informações externas'" },
+      { no: "Divisão por Etapas", txt: "Validar o sumário/estrutura primeiro antes de gerar textos longos" },
+      { no: "Prompt Reverso", txt: "'Faça-me 5 perguntas antes de começar para entender meu setor'" },
+      { no: "Iteração (Diálogo)", txt: "A 1ª resposta é um rascunho; converse com a IA pedindo ajustes finos" }
+    ],
+    nota: "A técnica do Prompt Reverso é uma das mais poderosas para quem está começando. Se você precisa criar um fluxo novo na sua unidade ou um termo de referência e não sabe por onde começar, cole o comando acima: a própria IA fará 5 perguntas inteligentes (sobre horário, equipe, público, estrutura física), você responde de forma simples e ela monta o documento completo sob medida."
+  },
+  {
+    tipo: "quiz",
+    modNum: 3,
+    mod: "Módulo 3 • Como Usar no Dia a Dia e o Protocolo P.O.C.A.",
+    titulo: "📝 Avaliação do Módulo 3 (Desbloqueio do Módulo 4)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre a Regra 80/20, o Protocolo P.O.C.A. e técnicas avançadas para desbloquear o Laboratório de Prompts.",
+    perguntas: [
+      {
+        q: "1. O que significam os 4 elementos da estrutura de comandos do Protocolo P.O.C.A. adotado na Secretaria Municipal de Saúde de Atibaia?",
+        opcoes: [
+          "Prontuário, Ouvidoria, Controle Interno e Assinatura Digital.",
+          "Personificação (especialista que a IA deve incorporar), Objetivo (tarefa clara com verbo de ação), Contexto (cenário real em Atibaia, público e dados de base) e Ajustes (formato de saída, tom e restrições).",
+          "Pesquisa de Preços, Orçamento Estimado, Cronograma Físico e Atesto da Nota Fiscal."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Quando o servidor deseja que a IA analise uma Portaria sem inventar regras externas, ou quando não sabe quais detalhes informar para criar um documento complexo do zero, quais técnicas deve utilizar?",
+        opcoes: [
+          "Ancoragem Documental Estrita (anexar/colar o texto oficial exigindo uso exclusivo dele) e Técnica do Prompt Reverso (pedir para a IA fazer 5 perguntas estratégicas sobre o setor antes de redigir o documento final).",
+          "Digitar apenas uma frase curta de três palavras sem contexto e aceitar a primeira resposta gerada sem revisão.",
+          "Pedir para a IA buscar portarias municipais na própria memória de treinamento sem fornecer o texto-base."
+        ],
+        correta: 0
+      }
+    ],
+    nota: "Dominando o Protocolo P.O.C.A., a Ancoragem Documental e o Prompt Reverso, você está pronto para acessar o Módulo 4 com os 12 modelos práticos de prompts para o SUS!"
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Laboratório de Prompts Práticos para o SUS",
+    titulo: "12. Prática 1: Elaboração de Evento — Semana da Enfermagem",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Prompt 1: Planejamento Completo e Cronograma (Semana da Enfermagem)",
+        itens: [
+          "Ideal para organizar eventos de valorização e educação permanente sem desassistir o plantão das UBSs e UPAs:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como especialista em Educação Permanente em Saúde no SUS e Gestão de Eventos Institucionais na Administração Pública.
+
+[O - OBJETIVO] Elabore o projeto completo e a programação detalhada da "Semana da Enfermagem da Secretaria Municipal de Saúde de Atibaia/SP", com duração de 3 dias, voltada para Enfermeiros, Técnicos e Auxiliares de Enfermagem da rede municipal.
+
+[C - CONTEXTO] Nossos profissionais atuam em UBSs, ESFs, UPA, SAMU e Vigilância. O maior desafio logístico é permitir a participação das equipes sem interromper a assistência ao cidadão. Portanto, o evento precisa prever turmas espelhadas (manhã e tarde) ou ações itinerantes, abordando: 1) Valorização, saúde mental e autocuidado do profissional; 2) Segurança do paciente e ética no exercício profissional (COFEN/COREN); 3) Atualização prática em protocolos clínicos e atendimento humanizado.
+
+[A - AJUSTES] Entregue o planejamento contendo:
+1. Sugestão de 5 temas/slogans inspiradores para o evento;
+2. Cronograma em tabela para os 3 dias (Manhã e Tarde) com palestras, oficinas práticas e dinâmicas de acolhimento;
+3. Checklist logístico (espaço físico, coffee break, certificados, divulgação, parcerias institucionais sem custo ou dentro da legalidade pública);
+4. Indicadores de avaliação do evento.`
+      },
+      {
+        tipo: "normal",
+        titulo: "Prompt 2: Ofício Circular de Convite, Cerimonial e Pesquisa de Satisfação",
+        itens: [
+          "Gera toda a documentação formal de comunicação interna e avaliação pós-evento:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como assessor de comunicação institucional e cerimonialista da Secretaria Municipal de Saúde de Atibaia/SP.
+
+[O - OBJETIVO] Com base na realização da Semana da Enfermagem da Saúde de Atibaia, elabore 3 peças documentais prontas para uso:
+1. Minuta de Ofício Circular/Comunicado Interno aos Coordenadores e Chefias de Unidades orientando sobre a liberação organizada por escala dos profissionais de enfermagem;
+2. Roteiro do Cerimonial de Abertura (fala de boas-vindas e agradecimento institucional valorizando o papel histórico da enfermagem no SUS de Atibaia);
+3. Formulário curto de Pesquisa de Satisfação e sugestões de temas futuros (5 perguntas objetivas + 1 aberta).
+
+[C - CONTEXTO] O tom deve ser respeitoso, acolhedor, motivador e alinhado às normas de redação oficial do serviço público municipal.
+
+[A - AJUSTES] Separe claramente as 3 peças por títulos e utilize marcadores entre colchetes como [DATA], [LOCAL] e [NOME DO SECRETÁRIO/COORDENADOR] para preenchimento rápido.`
+      }
+    ],
+    mapa: [
+      { no: "Escala sem Desassistência", txt: "Turmas espelhadas (manhã/tarde) mantendo o atendimento nas unidades" },
+      { no: "Eixos Científico e Humano", txt: "Equilíbrio entre atualização técnica (protocolos) e saúde mental" },
+      { no: "Checklist Logístico", txt: "Antecipação de espaço, som, inscrições, lista de presença e certificados" },
+      { no: "Documentação Pronta", txt: "Ofício para chefias, discurso de abertura e avaliação de impacto" }
+    ],
+    nota: "Eventos institucionais na Saúde como a Semana da Enfermagem, Outubro Rosa, Novembro Azul ou Conferências Municipais exigem dezenas de documentos preparatórios. Com esses dois prompts estruturados no protocolo P.O.C.A., a comissão organizadora gera em minutos toda a matriz operacional, restando apenas validar datas, locais e palestrantes convidados."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Laboratório de Prompts Práticos para o SUS",
+    titulo: "13. Prática 2: Pesquisa e Descritivo Técnico — Ambulância Básica do SAMU (Tipo B)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Prompt 1: Descritivo Técnico Detalhado — Ambulância Tipo B (SAMU 192)",
+        itens: [
+          "Estrutura especificações técnicas rigorosas para Termo de Referência (sem direcionamento de marca):"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como engenheiro mecânico/clínico especialista em especificações de frota de urgência e emergência do SUS e consultor em licitações públicas (Lei Federal nº 14.133/2021).
+
+[O - OBJETIVO] Elabore uma minuta detalhada de Descritivo Técnico para aquisição/locação de Ambulância de Suporte Básico de Vida (Tipo B) destinada ao Atendimento Pré-Hospitalar Móvel (SAMU 192) da Secretaria Municipal de Saúde de Atibaia/SP.
+
+[C - CONTEXTO] O descritivo deve observar os parâmetros da Portaria de Consolidação/Portaria GM/MS nº 2.048/2002, normas da ABNT aplicáveis (como ABNT NBR 14561 - Veículos para atendimento a emergências médicas e resgate) e padrões visuais do SAMU 192, garantindo ampla competitividade entre fabricantes (sem direcionamento de marca ou modelo exclusivo).
+
+[A - AJUSTES] Estruture o descritivo técnico dividido obrigatoriamente nos seguintes blocos:
+1. Características Gerais do Veículo Tipo Furgão (motorização mínima diesel, potência, entre-eixos, altura interna mínima do salão de atendimento, direção, freios ABS, ar-condicionado duplo cabine/salão);
+2. Transformação e Adaptação do Salão de Atendimento (isolamento termoacústico, revestimento interno contínuo lavável e resistente à assepsia hospitalar, piso antiderrapante, janela de comunicação, iluminação LED);
+3. Sistema Elétrico e Eletrônico (bateria auxiliar, inversor de voltagem 12V/110V ou 220V, tomadas internas, painel de controle centralizado);
+4. Sistema de Oxigenoterapia Fixo e Portátil (cilindros, régua tripla, fluxômetro, umidificador, aspirador);
+5. Mobiliário, Armários em material lavável, Banco baú para equipe/acompanhante com cintos de segurança, Balaústre no teto e Maca retrátil em alumínio com colchonete impermeável e prancha rígida;
+6. Sinalização Acústica (sirene eletrônica) e Visual (barra sinalizadora em LED e luzes estroboscópicas) + Grafismo padrão SAMU 192;
+7. Exigências de Garantia, Assistência Técnica, Emplacamento e Laudos Técnicos (CCT/CAT/ABNT).
+Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéricas que a equipe técnica deve revisar.`
+      },
+      {
+        tipo: "warn",
+        titulo: "Prompt 2: Checklist de Recebimento Provisório e Definitivo (Fiscalização)",
+        itens: [
+          "Transforma o descritivo técnico em lista de conferência física para o Fiscal do Contrato no pátio:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como Fiscal Técnico de Contratos Administrativos especialista na Lei 14.133/2021 (art. 140) e gestão de frota da Saúde.
+
+[O - OBJETIVO] Com base no descritivo técnico de uma Ambulância de Suporte Básico (Tipo B - SAMU 192), elabore um Checklist Prático de Vistoria e Recebimento Provisório para ser utilizado em prancheta/tablet no ato da entrega do veículo pela fornecedora.
+
+[C - CONTEXTO] Precisamos evitar o recebimento de veículos com adaptações fora de norma, falhas elétricas, infiltrações, ausência de cilindros ou acabamento inferior ao contratado na Secretaria Municipal de Saúde de Atibaia/SP.
+
+[A - AJUSTES] Gere uma tabela de conferência contendo: Item de Inspeção, Como Testar na Prática (ex: ligar ar-condicionado traseiro por 15 min, testar inversor com equipamento, testar trava da maca, checar vedação e laudos), Status (Conforme / Não Conforme) e Observações, além de um modelo de Termo de Recebimento Provisório com ressalvas.`
+      }
+    ],
+    mapa: [
+      { no: "Normas de Referência", txt: "Portaria GM/MS 2.048/2002 + ABNT NBR 14561 + Lei 14.133/2021" },
+      { no: "Salão de Atendimento", txt: "Revestimento lavável antimicrobiano, oxigenoterapia, elétrica e maca" },
+      { no: "Sem Direcionamento", txt: "Faixas de medidas mínimas que permitem disputa entre várias montadoras" },
+      { no: "Inspeção no Recebimento", txt: "Checklist físico para o fiscal testar cada item antes de atestar a Nota Fiscal" }
+    ],
+    nota: "A elaboração de descritivos técnicos complexos — como ambulâncias Tipo A, B ou D (UTI Móvel), equipamentos odontológicos ou aparelhos de ultrassom — costuma ser um gargalo na Secretaria. A IA estrutura todos os blocos técnicos e normativos em segundos, mas lembre-se da regra de ouro: a equipe técnica (Coordenação do SAMU e Setor de Frota/Compras) deve SEMPRE revisar as medidas numéricas mínimas para garantir que pelo menos 3 marcas do mercado atendam ao edital."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Laboratório de Prompts Práticos para o SUS",
+    titulo: "14. Prática 3: Análise e Resumo Executivo de Portarias do Ministério da Saúde",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Prompt 1: Tradutor e Extrator Executivo de Portarias GM/MS",
+        itens: [
+          "Cole o texto da portaria junto com este prompt para extrair prazos, recursos e obrigações:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como consultor especialista em Financiamento do SUS, Planejamento em Saúde e Legislação Sanitária do Ministério da Saúde.
+
+[O - OBJETIVO] Analise integralmente o texto da Portaria/Norma colada ao final deste comando e elabore um Resumo Executivo Gerencial e um Plano de Ação Imediato para o gestor municipal.
+
+[C - CONTEXTO] Sou gestor da Secretaria Municipal de Saúde de Atibaia/SP e preciso compreender rapidamente os impactos técnicos, financeiros e operacionais desta norma para orientar nossas coordenadorias (Atenção Básica, Média/Alta Complexidade, Vigilância, Regulação e Fundo Municipal de Saúde).
+
+[A - AJUSTES] Utilize EXCLUSIVAMENTE as informações contidas no texto da portaria fornecida abaixo (não invente dados externos). Estruture sua resposta obrigatoriamente em:
+1. Resumo em 1 Parágrafo (Qual o propósito central da portaria?);
+2. Impacto Financeiro (Há recurso novo? É Bloco de Manutenção/Custeio ou Investimento? Qual o valor ou critério de rateio? Exige contrapartida municipal?);
+3. Requisitos e Condicionalidades (O que o município de Atibaia precisa fazer, cadastrar no CNES/e-Gestor ou aprovar no CMS/CIB para receber ou manter o recurso?);
+4. Prazos Críticos e Vigência (Datas-limite de adesão, prestação de contas ou início de obrigatoriedade);
+5. Indicadores e Metas de Monitoramento exigidos;
+6. Checklist de Providências por Setor da Secretaria.
+
+[TEXTO DA PORTARIA]:
+(Cole aqui o texto integral da Portaria ou anexe o arquivo PDF)`
+      },
+      {
+        tipo: "normal",
+        titulo: "Prompt 2: Comparador de Portarias (O Que Mudou da Norma Antiga para a Nova?)",
+        itens: [
+          "Excelente para entender revogações e alterações em programas federais ou estaduais:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como auditor técnico do SUS e especialista em direito sanitário.
+
+[O - OBJETIVO] Compare o [TEXTO 1 - NORMA ANTIGA] com o [TEXTO 2 - NORMA NOVA] fornecidos abaixo e aponte de forma direta todas as alterações práticas para a gestão municipal de saúde.
+
+[C - CONTEXTO] Precisamos atualizar nossas equipes da Secretaria de Saúde de Atibaia sobre o que deixou de valer, o que foi modificado e quais novas obrigações surgiram.
+
+[A - AJUSTES] Baseie-se estritamente nos dois textos fornecidos e apresente uma Tabela Comparativa contendo 4 colunas:
+1) Tema/Tópico; 2) Como era na Norma Antiga; 3) Como ficou na Norma Nova; 4) Impacto Prático / Ação Necessária em Atibaia.`
+      }
+    ],
+    mapa: [
+      { no: "Ancoragem Total", txt: "Sempre colar o texto da Portaria ou anexar o PDF oficial do Saúde Legis/DOU" },
+      { no: "Foco no Fundo de Saúde", txt: "Identifica imediatamente se é Custeio ou Investimento e regras do CNES" },
+      { no: "Radar de Prazos", txt: "Destaca prazos de adesão no e-Gestor AB / InvestSUS e aprovação em CIB/CMS" },
+      { no: "Comparação Antes x Depois", txt: "Mostra linha a linha o que mudou entre duas portarias ou resoluções" }
+    ],
+    nota: "Diariamente o Diário Oficial da União e o Estado publicam dezenas de portarias e resoluções (CIB/CIT) com regras de cofinanciamento, habilitações e metas. Ao usar este prompt com o texto da portaria colado abaixo dele, você transforma 25 páginas de linguagem jurídica densa em um painel de decisão claro em menos de 30 segundos."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Laboratório de Prompts Práticos para o SUS",
+    titulo: "15. Prática 4: Compras e Contratações na Saúde (ETP, TR e Mapa de Riscos)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Prompt 1: Estruturação de Estudo Técnico Preliminar (ETP) e Justificativa SUS",
+        itens: [
+          "Auxilia os setores requisitantes da Saúde a fundamentar demandas conforme o art. 18, §1º da Lei 14.133/2021:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como especialista em Planejamento de Contratações Públicas na área da Saúde (Lei Federal nº 14.133/2021).
+
+[O - OBJETIVO] Estruture uma minuta completa de Estudo Técnico Preliminar (ETP) para fundamentar a contratação/aquisição de [DESCREVER O OBJETO: ex. insumos para curativos especiais / manutenção preventiva e corretiva de equipamentos médico-hospitalares / locação de cilindros de oxigênio domiciliar].
+
+[C - CONTEXTO] A demanda é originada pela Secretaria Municipal de Saúde de Atibaia/SP visando atender [INFORMAR UNIDADES: ex. as 16 unidades de saúde, UPA e Programa Melhor em Casa], garantindo a continuidade da assistência à saúde (art. 196 da CF/88 e Lei 8.080/90) para uma demanda estimada de [INFORMAR DADOS GERAIS].
+
+[A - AJUSTES] Estruture o ETP contemplando todos os elementos do art. 18, §1º da Lei 14.133/2021:
+1. Descrição da necessidade da contratação (interesse público e impacto assistencial da falta do item/serviço);
+2. Alinhamento com o planejamento da Administração;
+3. Requisitos da contratação (técnicos, sanitários ANVISA/INMETRO, prazos de entrega e sustentabilidade);
+4. Estimativa das quantidades e memória de cálculo (deixe campos [INSERIR HISTÓRICO DE CONSUMO]);
+5. Levantamento de mercado (comparando soluções possíveis: ex. compra vs. locação vs. comodato);
+6. Justificativa para o parcelamento ou não da solução (Súmula 247 TCU);
+7. Resultados pretendidos (economicidade e qualidade no atendimento do SUS);
+8. Providências prévias e Declaração de Viabilidade.`
+      },
+      {
+        tipo: "warn",
+        titulo: "Prompt 2: Mapa de Riscos (Art. 169) e Instrumento de Medição de Resultado (IMR)",
+        itens: [
+          "Cria matriz de prevenção de falhas e indicadores objetivos de desconto por queda de qualidade:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como especialista em Governança, Gestão de Riscos e Fiscalização de Contratos na Saúde (Lei 14.133/2021 e IN SEGES 05/2017).
+
+[O - OBJETIVO] Elabore para o contrato/objeto de [INFORMAR O SERVIÇO OU FORNECIMENTO DA SAÚDE]:
+1) Uma Tabela de Mapa de Riscos Contratuais;
+2) Uma minuta de Instrumento de Medição de Resultado (IMR) com níveis de serviço (SLA).
+
+[C - CONTEXTO] Precisamos proteger a Secretaria Municipal de Saúde de Atibaia/SP contra atrasos de entrega, fornecimento de insumos com validade curta, falhas na assistência técnica ou ausência de profissionais em postos de trabalho, permitindo pagamento proporcional à qualidade efetivamente entregue (art. 140 e 144 da Lei 14.133/21).
+
+[A - AJUSTES] 
+- Na Tabela de Mapa de Riscos, inclua: Evento de Risco, Causa, Consequência para o SUS, Probabilidade, Impacto, Ação Preventiva, Ação de Contingência e Responsável (Fiscal Técnico, Fiscal Adm ou Gestor).
+- Na Tabela de IMR, crie 3 indicadores objetivos de qualidade/prazo com faixas de pontuação e ajuste proporcional no pagamento da fatura mensal.`
+      }
+    ],
+    mapa: [
+      { no: "Justificativa Sólida", txt: "Conecta a necessidade técnica da unidade ao direito à saúde e à Lei 8.080/90" },
+      { no: "Levantamento de Soluções", txt: "Compara tecnicamente compra, locação ou comodato (ex.: bombas de infusão)" },
+      { no: "Mapa de Riscos Vivo", txt: "Prevê atrasos, validade mínima de medicamentos (mín. 75%) e contingência" },
+      { no: "IMR Objetivo", txt: "Substitui discussões subjetivas por metas claras de qualidade e prazo" }
+    ],
+    nota: "Muitos processos de compra na saúde atrasam porque o Documento de Formalização de Demanda (DFD), o ETP ou o Termo de Referência chegam ao setor de licitações com justificativas frágeis de duas linhas ('aquisição necessária para manter o setor'). Com esses prompts, o coordenador de área estrutura uma fundamentação técnica robusta, alinhada à Lei 14.133/2021, acelerando a tramitação legal."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Laboratório de Prompts Práticos para o SUS",
+    titulo: "16. Prática 5: Ouvidoria do SUS, Ofícios, MP e Comunicação Cidadã",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Prompt 1: Resposta Técnica e Humanizada (Ouvidoria SUS / MP / Câmara)",
+        itens: [
+          "Transforma apontamentos técnicos (anonimizados!) em respostas formais, empáticas e completas:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como Ouvidor Especialista do SUS e Redator Oficial da Secretaria Municipal de Saúde de Atibaia/SP, com domínio da Lei nº 13.460/2017 (Código de Defesa do Usuário do Serviço Público).
+
+[O - OBJETIVO] Redija uma minuta de resposta institucional clara, respeitosa, técnica e humanizada para atender a uma demanda de [ESCOLHER: Ouvidoria do SUS / Ofício do Ministério Público / Requerimento da Câmara Municipal].
+
+[C - CONTEXTO - DADOS ANONIMIZADOS] 
+- Resumo da manifestação recebida: [DESCREVER A DEMANDA SEM NOMES OU CPF: ex. Cidadão questiona o tempo de espera para realização de exame de ultrassonografia de ombro e solicita informações sobre sua posição na fila].
+- Apuração técnica realizada pelo setor responsável: [INSERIR OS FATOS REAIS APURADOS PELA UNIDADE/REGULAÇÃO: ex. O pedido foi inserido na Central de Regulação sob protocolo [X], classificado como prioridade eletiva P2 conforme protocolo clínico municipal, com previsão de agendamento para a quinzena [Y] no prestador credenciado].
+
+[A - AJUSTES] 
+- Se for para o Cidadão (Ouvidoria): Use linguagem acolhedora, acessível (Linguagem Simples), explicando os critérios técnicos de equidade e regulação do SUS sem jargões confusos, orientando exatamente qual o próximo passo que o paciente deve seguir.
+- Se for para Órgão de Controle (MP/Câmara): Use formato de Ofício padrão oficial, tom estritamente técnico, objetivo e fundamentado nos protocolos de regulação do SUS.`
+      },
+      {
+        tipo: "normal",
+        titulo: "Prompt 2: Tradutor de Nota Técnica para a População e Roteiro para ACS",
+        itens: [
+          "Converte informes epidemiológicos densos em comunicação educativa para a comunidade:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como especialista em Educação em Saúde, Comunicação Pública do SUS e Atenção Primária.
+
+[O - OBJETIVO] Com base na Nota Técnica / Informe Epidemiológico colado abaixo, gere 2 materiais educativos:
+1) Um comunicado curto em Linguagem Simples (perguntas e respostas diretas) para divulgação à população de Atibaia sobre prevenção, sinais de alerta e quando procurar a UBS ou a UPA;
+2) Um Roteiro Prático de Bolso (5 pontos de abordagem domiciliar) para os Agentes Comunitários de Saúde (ACS) orientarem as famílias durante as visitas.
+
+[C - CONTEXTO] Precisamos combater a desinformação e orientar corretamente o fluxo da rede municipal de saúde de Atibaia, evitando sobrecarga desnecessária no pronto-socorro em casos leves e garantindo atendimento rápido aos sinais de gravidade.
+
+[A - AJUSTES] Use tom acolhedor, frases curtas, destaque os Sinais de Alarme em tópicos visíveis e baseie-se exclusivamente nas diretrizes técnicas fornecidas abaixo:
+[COLAR DIRETRIZ / NOTA TÉCNICA]`
+      }
+    ],
+    mapa: [
+      { no: "Anonimização Prévia", txt: "Enviar à IA apenas o fato técnico ([PACIENTE A]), nunca o nome ou CPF" },
+      { no: "Linguagem Simples (Cidadão)", txt: "Respostas de Ouvidoria empáticas, claras e sem siglas incompreensíveis" },
+      { no: "Rigor Formal (MP/Câmara)", txt: "Ofícios objetivos, cronológicos e fundamentados nos protocolos de regulação" },
+      { no: "Apoio aos ACS na Ponta", txt: "Transforma notas técnicas em roteiros práticos para visita domiciliar" }
+    ],
+    nota: "Na Ouvidoria do SUS e nas respostas ao Ministério Público ou Poder Legislativo, o servidor muitas vezes tem todas as informações técnicas corretas na cabeça, mas leva horas tentando encontrar as palavras adequadas para estruturar o ofício. Com os dados previamente anonimizados, a IA redige a minuta em segundos, unindo precisão técnica e respeito ao cidadão."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: true,
+    mod: "Módulo 4 • Laboratório de Prompts Práticos para o SUS",
+    titulo: "17. Prática 6: Padronização de Rotinas (POPs), Atas e Gestão de Equipes",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Prompt 1: Gerador de Procedimento Operacional Padrão (POP) para Unidades",
+        itens: [
+          "Padroniza rotinas assistenciais ou administrativas em UBS, UPA, Farmácia e Vigilância:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como especialista em Qualidade, Segurança do Paciente e Padronização de Processos em Serviços de Saúde do SUS.
+
+[O - OBJETIVO] Elabore um Procedimento Operacional Padrão (POP) completo e estruturado sobre a rotina de: [DESCREVER A ROTINA: ex. Recebimento, conferência e armazenamento de medicamentos termolábeis na Farmácia da UBS / Limpeza e desinfecção concorrente e terminal de sala de curativos / Acolhimento e fluxo de encaminhamento de pacientes na recepção].
+
+[C - CONTEXTO] O POP será utilizado para treinamento e consulta diária dos servidores da Secretaria Municipal de Saúde de Atibaia/SP, devendo ser claro, auditável e seguro.
+
+[A - AJUSTES] Estruture o POP nos seguintes campos oficiais:
+1. Título do Procedimento e Objetivo;
+2. Setor de Aplicação e Profissionais Responsáveis pela Execução;
+3. Materiais, Equipamentos e EPIs Necessários;
+4. Descrição Detalhada do Passo a Passo (em ordem cronológica numerada);
+5. Pontos Críticos de Controle e Segurança (O que não pode falhar);
+6. Conduta em Caso de Não Conformidade / Intercorrência (Fluxo de Contingência);
+7. Referências Técnicas/Normativas (sinalize para validação da chefia).`
+      },
+      {
+        tipo: "normal",
+        titulo: "Prompt 2: Organizador de Atas de Reunião e Plano de Ação 5W2H",
+        itens: [
+          "Transforma rascunhos e anotações rápidas de reunião em ata formal e matriz de tarefas:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como secretário executivo e especialista em gestão de projetos na saúde pública.
+
+[O - OBJETIVO] Transforme as anotações brutas da reunião coladas abaixo em:
+1) Uma Ata de Reunião formal, clara e organizada por pautas e deliberações;
+2) Uma Tabela de Plano de Ação (modelo 5W2H) com todas as tarefas combinadas.
+
+[C - CONTEXTO] Reunião realizada na Secretaria Municipal de Saúde de Atibaia/SP entre [INFORMAR SETORES PARTICIPANTES].
+
+[A - AJUSTES] Não invente deliberações que não estejam nas anotações. Na tabela de Plano de Ação, crie as colunas: O que será feito (Ação), Por que (Objetivo), Onde (Setor/Unidade), Quem é o Responsável, Quando (Prazo) e Como será executado. Caso falte o responsável ou prazo de algum item nas anotações, escreva [DEFINIR RESPONSÁVEL/PRAZO].
+
+[ANOTAÇÕES BRUTAS DA REUNIÃO]:
+(Cole aqui os tópicos anotados durante a reunião)`
+      }
+    ],
+    mapa: [
+      { no: "Padronização de POPs", txt: "Garante que o procedimento seja feito com a mesma qualidade em qualquer turno" },
+      { no: "Fluxo de Contingência", txt: "Ensina à equipe exatamente o que fazer se ocorrer uma intercorrência" },
+      { no: "Atas em 1 Minuto", txt: "Converte anotações soltas em registro institucional limpo e objetivo" },
+      { no: "Matriz 5W2H", txt: "Garante que nenhuma decisão de reunião se perca por falta de prazo ou dono" }
+    ],
+    nota: "Quantas reuniões importantes na saúde terminam sem que as decisões virem ações práticas por falta de tempo para redigir a ata e cobrar os prazos? E quantas unidades sofrem quando um servidor experiente sai de férias porque a rotina não estava documentada em um POP? Esses dois prompts resolvem problemas crônicos de gestão do conhecimento na Secretaria."
+  },
+  {
+    tipo: "quiz",
+    modNum: 4,
+    mod: "Módulo 4 • Laboratório de Prompts Práticos para o SUS",
+    titulo: "📝 Avaliação do Módulo 4 (Desbloqueio do Módulo 5)",
+    subtitulo: "Responda corretamente às 2 questões sobre a aplicação prática dos prompts na gestão do SUS (Eventos, SAMU, Portarias, Compras, Ouvidoria e POPs) para liberar o Módulo 5.",
+    perguntas: [
+      {
+        q: "1. Na elaboração de Descritivo Técnico de Ambulância Tipo B do SAMU (Portaria GM/MS 2.048/2002 e ABNT NBR 14561) ou de ETP/Mapa de Riscos (Lei 14.133/2021) com auxílio de IA, qual conduta técnica é obrigatória?",
+        opcoes: [
+          "A equipe técnica da Secretaria (SAMU/Frota/Setor Requisitante) deve validar todas as medidas numéricas mínimas para garantir ampla competitividade sem direcionamento de marca, utilizando também o Checklist de Vistoria no Recebimento Provisório.",
+          "Basta copiar o descritivo gerado pela IA e publicar o edital sem conferência da equipe de frota ou engenharia clínica.",
+          "A IA substitui a necessidade de elaborar Estudo Técnico Preliminar (ETP), Mapa de Riscos e Instrumento de Medição de Resultado (IMR)."
+        ],
+        correta: 0
+      },
+      {
+        q: "2. Sobre o uso de prompts práticos para análise de Portarias do Ministério da Saúde, respostas de Ouvidoria/MP e criação de POPs/Atas nas unidades de Atibaia, assinale a alternativa CORRETA:",
+        opcoes: [
+          "Para analisar uma Portaria GM/MS, nunca se deve colar o texto oficial no prompt, deixando que a IA adivinhe os prazos e valores de custeio.",
+          "Em Ouvidoria do SUS (cidadão) usa-se Linguagem Simples e acolhedora (com dados previamente anonimizados), enquanto para MP/Câmara adota-se formato de Ofício estritamente técnico e fundamentado nos protocolos de regulação.",
+          "Nas atas de reunião e POPs gerados com apoio da IA, a ferramenta deve inventar deliberações e responsáveis que não foram discutidos pela equipe."
+        ],
+        correta: 1
+      }
+    ],
+    nota: "Excelente! Agora resta apenas o Módulo 5 (Governança, Auditoria e Conclusões Finais) para habilitar a emissão do seu Certificado de Conclusão em PDF."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Governança, Auditoria e Conclusões Finais",
+    titulo: "18. Guia Rápido de Ferramentas e Quando Usar Cada Recurso",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "Qual Modo ou Recurso da IA Devo Utilizar para Cada Tarefa?",
+        itens: [
+          "<strong>1. Chat com Texto + Protocolo P.O.C.A. (Redação e Estruturação):</strong> Ideal para criar ofícios, POPs, cronogramas de eventos, checklists, planos de ação e revisar textos institucionais.",
+          "<strong>2. Upload de Arquivos PDF / Textos Longos (Ancoragem):</strong> Ideal para analisar portarias do Ministério da Saúde, editais, termos de referência e relatórios técnicos extensos (lembre-se: sempre documentos públicos ou anonimizados).",
+          "<strong>3. IA com Busca Conectada à Web (Pesquisa Preliminar):</strong> Útil para localizar referências gerais ou notícias recentes, mas <strong>exige conferência obrigatória</strong> clicando no link oficial (`.gov.br`) antes de usar qualquer dado."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Quando NÃO Usar IA Generativa de Texto?",
+        itens: [
+          "<strong>Cálculos Financeiros e Estatísticos Pesados:</strong> Para somar milhares de linhas de produção ambulatorial (SIA/SIH) ou calcular planilhas de custos trabalhistas ao centavo, use o <strong>Excel / Planilhas</strong> (você pode pedir para a IA criar a <em>fórmula do Excel</em> para você colar na sua planilha!).",
+          "<strong>Busca de Jurisprudência ou Portaria Específica sem Fonte:</strong> Prefira pesquisar primeiro no Google, no portal <em>Saúde Legis</em> ou na Imprensa Oficial de Atibaia, copiar o texto oficial encontrado e só então levá-lo para a IA analisar."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Redigir e Planejar", txt: "Usar Chat + Protocolo P.O.C.A. para criar minutas, POPs e cronogramas" },
+      { no: "Analisar Portarias/Editais", txt: "Anexar o PDF oficial e exigir resposta exclusiva com base no documento" },
+      { no: "Fazer Contas e Tabelas", txt: "Pedir para a IA gerar a fórmula do Excel, mas calcular na planilha real" },
+      { no: "Pesquisar Leis Vigentes", txt: "Buscar o texto no portal oficial (.gov.br) antes de pedir análise à IA" }
+    ],
+    nota: "Uma dica extraordinária para o dia a dia administrativo na Secretaria de Saúde: em vez de colar uma tabela com dados na IA para ela somar, diga à IA: 'Tenho uma planilha no Excel onde a coluna B tem a Unidade de Saúde e a coluna D tem a quantidade de atendimentos; qual fórmula PROCV ou SOMASE eu uso para somar apenas a UBS Centro?'. Ela entrega a fórmula pronta e seus dados não saem do seu computador!"
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Governança, Auditoria e Conclusões Finais",
+    titulo: "19. Checklist de Segurança e Validação Antes de Assinar (O Crivo do Gestor)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Os 5 Pontos Obrigatórios Antes de Dar 'Enviar' ou Assinar",
+        itens: [
+          "<strong>☑ 1. Filtro LGPD (Zero Dados Pessoais):</strong> Verifiquei se não inseri Nome, CPF, CNS, endereço ou prontuário identificável de nenhum paciente ou servidor no prompt?",
+          "<strong>☑ 2. Filtro Antialucinação (Leis e Normas):</strong> Conferi em fonte oficial (`.gov.br`) todos os números de leis, portarias do Ministério da Saúde, resoluções da ANVISA ou normas da ABNT citados no texto?",
+          "<strong>☑ 3. Filtro Matemático (Números e Prazos):</strong> Conferi na calculadora/Excel se os quantitativos, somas, percentuais e prazos estão matematicamente exatos?"
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Validação Territorial e Autoria Consciente",
+        itens: [
+          "<strong>☑ 4. Filtro de Realidade Local (Atibaia/SP):</strong> Removi expressões genéricas ou estrangeiras da IA e adaptei o texto ao fluxo real das unidades, regulação e estrutura da Secretaria Municipal de Saúde de Atibaia?",
+          "<strong>☑ 5. Filtro de Autoria e Responsabilidade:</strong> Li o documento do início ao fim e estou plenamente seguro para assumir a autoria técnica, ética e administrativa de cada frase escrita?"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1º Crivo: LGPD Limpa", txt: "Nenhum CPF, CNS ou nome de paciente foi exposto na ferramenta" },
+      { no: "2º Crivo: Fatos e Leis", txt: "Todas as portarias e números foram conferidos na fonte oficial" },
+      { no: "3º Crivo: Realidade Local", txt: "O documento reflete exatamente a rede de Saúde de Atibaia" },
+      { no: "4º Crivo: Leitura Integral", txt: "Assinatura consciente após revisão humana de 100% do texto" }
+    ],
+    nota: "Adote este checklist de 5 pontos como um hábito mental automático em toda a Secretaria de Saúde. Ele leva menos de dois minutos para ser executado e separa o uso amador e arriscado do uso profissional, ético e de alta performance no serviço público."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: true,
+    mod: "Módulo 5 • Governança, Auditoria e Conclusões Finais",
+    titulo: "20. Conclusões Finais: O Futuro da Gestão Pública na Saúde de Atibaia",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Síntese Transformadora: Tecnologia a Serviço da Vida",
+        itens: [
+          "<strong>Do Medo ao Domínio Consciente:</strong> A Inteligência Artificial não é um bicho de sete cabeças nem uma ameaça ao servidor público comprometido; é uma ferramenta de apoio que exige comando técnico e supervisão humana.",
+          "<strong>Mais Tempo para o que Importa:</strong> Cada hora que economizamos na formatação de uma ata, na síntese de uma portaria ou na estruturação de um termo de referência é uma hora a mais dedicada a planejar melhor o atendimento, ouvir as equipes e acolher a população de Atibaia.",
+          "<strong>Método + Ética = Excelência:</strong> Com o <strong>Protocolo P.O.C.A.</strong>, a <strong>Anonimização (LGPD)</strong> e a <strong>Auditoria Humana</strong>, nossa Secretaria dá um salto de qualidade e governança."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "O Que a Inteligência Artificial Jamais Substituirá no SUS",
+        itens: [
+          "<strong>O Fator Humano Insubstituível:</strong> A IA processa textos em milissegundos, mas jamais saberá o que é segurar a mão de um paciente ansioso na UPA, olhar nos olhos de uma mãe na sala de vacina da UBS ou tomar uma decisão corajosa de gestão para salvar vidas.",
+          "<strong>A Premissa Final do Curso:</strong> <em>'A Inteligência Artificial não substituirá o servidor público da saúde — mas o servidor que utiliza a IA com método, ética e senso crítico transformará a eficiência e a qualidade do SUS em Atibaia.'</em>"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Perder o Medo", txt: "Compreender que a IA é estatística e está sob o nosso comando" },
+      { no: "Usar com Método (P.O.C.A.)", txt: "Personificação + Objetivo + Contexto de Atibaia + Ajustes claros" },
+      { no: "Proteger o Cidadão (LGPD)", txt: "Anonimizar sempre e jamais expor dados sensíveis de saúde" },
+      { no: "Auditar e Humanizar", txt: "Conferir tudo antes de assinar e colocar a tecnologia a serviço da vida" }
+    ],
+    nota: "Parabéns por concluir esta capacitação da Secretaria Municipal de Saúde de Atibaia/SP! Utilize o botão '🖨️ Salvar PDF Completo' no topo da tela para guardar este material como guia de consulta rápida no seu setor e use o '✨ Construtor P.O.C.A.' sempre que precisar estruturar novos comandos. Que a tecnologia nos ajude na burocracia para que possamos ser cada vez mais humanos no cuidado!"
+  },
+  {
+    tipo: "quiz",
+    modNum: 5,
+    mod: "Módulo 5 • Governança, Auditoria e Conclusões Finais",
+    titulo: "📝 Avaliação Final do Módulo 5 (Habilitação do Certificado)",
+    subtitulo: "Responda corretamente às 2 questões finais sobre governança, uso com planilhas e o Checklist de 5 Pontos (Crivo do Gestor) para habilitar a emissão do seu Certificado em PDF.",
+    perguntas: [
+      {
+        q: "1. Quando o servidor precisa realizar cálculos financeiros pesados, somar milhares de linhas de produção ambulatorial (SIA/SIH) ou calcular planilhas de custos trabalhistas ao centavo, qual é a orientação correta?",
+        opcoes: [
+          "Enviar toda a base de dados bruta com nomes de pacientes para o chat de texto da IA somar manualmente.",
+          "Utilizar o Excel / Planilhas para o cálculo exato, podendo pedir à IA que gere a fórmula exata (ex.: PROCV, SOMASE) para colar na planilha sem precisar expor os dados.",
+          "Evitar o uso de planilhas eletrônicas, pois modelos de linguagem (LLMs) nunca cometem erros aritméticos."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Quais são os 5 filtros obrigatórios do 'Crivo do Gestor' (Checklist de Segurança e Validação) antes de assinar ou encaminhar qualquer documento elaborado com apoio de IA na Saúde de Atibaia?",
+        opcoes: [
+          "1) Filtro LGPD (zero dados pessoais); 2) Filtro Antialucinação (conferir leis/portarias na fonte .gov.br); 3) Filtro Matemático (checar contas e prazos); 4) Filtro de Realidade Local (adaptar ao fluxo de Atibaia/SP); e 5) Filtro de Autoria e Responsabilidade (leitura integral).",
+          "Apenas verificar se o texto não possui erros de digitação e encaminhar imediatamente para assinatura do Secretário.",
+          "Confirmar somente se o texto ficou longo, mantendo termos genéricos e referências não verificadas."
+        ],
+        correta: 0
+      }
+    ],
+    nota: "Ao acertar esta avaliação final, a aba '🎓 Emissão de Certificado em PDF' será desbloqueada imediatamente para que você insira seu nome e gere seu diploma oficial!"
+  },
+  {
+    tipo: "certificado",
+    modNum: 6,
+    mod: "Certificação Final • Saúde de Atibaia/SP",
+    titulo: "🎓 Emissão do Certificado de Conclusão em PDF",
+    nota: "Parabéns por concluir integralmente os 5 módulos e acertar 100% das avaliações! Preencha seu Nome Completo abaixo para visualizar seu certificado em tempo real e baixá-lo ou imprimi-lo em formato PDF (A4 Paisagem)."
+  }
+];
+
+let current = 0;
+let unlockedModule = 1; // 1 a 5 = Módulos; 6 = Certificado liberado
+const completedQuizzes = { 1: false, 2: false, 3: false, 4: false, 5: false };
+const userQuizSelections = { 1: {}, 2: {}, 3: {}, 4: {}, 5: {} };
+let certUserName = "";
+let certUserRole = "";
+let certIssueDate = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+let certValidationCode = "ATB-SUS-IA-" + Math.floor(100000 + Math.random() * 900000);
+
+const STORAGE_KEY = "atb_saude_save_capacitacao_IA_saude_v1";
+
+function saveProgress() {
+  try {
+    const state = {
+      current: current,
+      unlockedModule: unlockedModule,
+      completedQuizzes: completedQuizzes,
+      userQuizSelections: userQuizSelections,
+      certUserName: certUserName,
+      certUserRole: certUserRole,
+      certIssueDate: certIssueDate,
+      certValidationCode: certValidationCode
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {}
+}
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    if (!state || typeof state !== "object") return;
+
+    if (typeof state.unlockedModule === "number" && state.unlockedModule >= 1 && state.unlockedModule <= 6) {
+      unlockedModule = state.unlockedModule;
+    }
+    if (state.completedQuizzes && typeof state.completedQuizzes === "object") {
+      [1, 2, 3, 4, 5].forEach(m => {
+        if (typeof state.completedQuizzes[m] === "boolean") {
+          completedQuizzes[m] = state.completedQuizzes[m];
+        }
+      });
+    }
+    let maxUnlockedFromQuizzes = 1;
+    for (let m = 1; m <= 5; m++) {
+      if (completedQuizzes[m]) {
+        maxUnlockedFromQuizzes = m + 1;
+      } else {
+        break;
+      }
+    }
+    if (maxUnlockedFromQuizzes > unlockedModule) {
+      unlockedModule = maxUnlockedFromQuizzes;
+    }
+    if (state.userQuizSelections && typeof state.userQuizSelections === "object") {
+      [1, 2, 3, 4, 5].forEach(m => {
+        if (state.userQuizSelections[m] && typeof state.userQuizSelections[m] === "object") {
+          userQuizSelections[m] = state.userQuizSelections[m];
+        }
+      });
+    }
+    if (typeof state.certUserName === "string") certUserName = state.certUserName;
+    if (typeof state.certUserRole === "string") certUserRole = state.certUserRole;
+    if (typeof state.certIssueDate === "string" && state.certIssueDate.trim().length > 0) {
+      certIssueDate = state.certIssueDate;
+    }
+    if (typeof state.certValidationCode === "string" && state.certValidationCode.trim().length > 0) {
+      certValidationCode = state.certValidationCode;
+    }
+    if (typeof state.current === "number" && state.current >= 0 && state.current < slides.length && isSlideUnlocked(state.current)) {
+      current = state.current;
+    } else {
+      current = 0;
+    }
+  } catch (e) {}
+}
+function isSlideUnlocked(idx) {
+  if (idx < 0 || idx >= slides.length) return false;
+  return slides[idx].modNum <= unlockedModule;
+}
+
+function getQuizSlideForMod(modNum) {
+  return slides.find(s => s.tipo === "quiz" && s.modNum === modNum);
+}
+
+function getFirstSlideIdxOfMod(modNum) {
+  return slides.findIndex(s => s.modNum === modNum);
+}
+
+// Função segura de cópia para área de transferência (compatível com iFrames e navegadores modernos)
+function copyTextSafe(text, btnElement) {
+  const originalText = btnElement.innerText;
+  const showSuccess = () => {
+    btnElement.innerText = "✓ Copiado!";
+    btnElement.style.background = "#62a0ea";
+    setTimeout(() => {
+      btnElement.innerText = originalText;
+      btnElement.style.background = "";
+    }, 1800);
+  };
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(showSuccess).catch(() => fallbackCopy(text, showSuccess));
+  } else {
+    fallbackCopy(text, showSuccess);
+  }
+}
+
+function fallbackCopy(text, callback) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand("copy");
+    if (callback) callback();
+  } catch (err) {
+    console.error("Erro ao copiar:", err);
+  }
+  document.body.removeChild(ta);
+}
+
+function copyCardCode(btn) {
+  const pre = btn.closest('.code-wrapper').querySelector('pre');
+  if (pre) copyTextSafe(pre.innerText, btn);
+}
+
+function copyTextFromElement(elId, btn) {
+  const el = document.getElementById(elId);
+  if (el) copyTextSafe(el.innerText, btn);
+}
+
+function selectQuizOption(modNum, qIdx, optIdx) {
+  userQuizSelections[modNum][qIdx] = optIdx;
+  saveProgress();
+}
+
+function renderQuizComponentHTML(modNum) {
+  const qSlide = getQuizSlideForMod(modNum);
+  if (!qSlide) return "";
+  const isDone = completedQuizzes[modNum];
+  const nextTargetName = modNum < 5 ? `Módulo ${modNum + 1}` : "Emissão do Certificado em PDF";
+  const nextModSlideIdx = getFirstSlideIdxOfMod(modNum + 1);
+
+  const questionsHTML = qSlide.perguntas.map((p, qIdx) => {
+    const selectedVal = userQuizSelections[modNum][qIdx];
+    const letters = ["A", "B", "C"];
+    const optsHTML = p.opcoes.map((optText, oIdx) => {
+      const checkedAttr = (selectedVal === oIdx) ? "checked" : "";
+      let extraClass = "";
+      if (isDone && oIdx === p.correta) extraClass = "selected-correct";
+      return `
+        <label class="quiz-option-label ${extraClass}">
+          <input type="radio" name="quiz_m${modNum}_q${qIdx}" value="${oIdx}" ${checkedAttr} onchange="selectQuizOption(${modNum}, ${qIdx}, ${oIdx})">
+          <span><strong>${letters[oIdx]})</strong> ${optText}</span>
+        </label>
+      `;
+    }).join('');
+
+    return `
+      <div class="quiz-question-card" id="qcard_m${modNum}_q${qIdx}">
+        <div class="quiz-question-title">${p.q}</div>
+        <div class="quiz-options-list">${optsHTML}</div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="quiz-container ${isDone ? 'quiz-completed' : ''}" id="quiz-box-mod-${modNum}">
+      <div class="quiz-header-bar">
+        <div class="quiz-badge-title">
+          <span>${isDone ? '✅' : '📝'} Avaliação Obrigatória • Módulo ${modNum}</span>
+        </div>
+        <span class="quiz-status-pill ${isDone ? 'ok' : ''}">
+          ${isDone ? `✓ Aprovado (${nextTargetName} Liberado)` : `🔒 Responda para liberar: ${nextTargetName}`}
+        </span>
+      </div>
+      <div class="quiz-intro">${qSlide.subtitulo}</div>
+      ${questionsHTML}
+      <div class="quiz-actions">
+        <button class="btn-validate-quiz" onclick="validateModuleQuiz(${modNum})">
+          ${isDone ? '🔄 Revalidar Respostas' : `✅ Validar Respostas e Liberar ${nextTargetName}`}
+        </button>
+        ${isDone && nextModSlideIdx !== -1 ? `
+          <button class="btn-advance-mod" onclick="goToSlide(${nextModSlideIdx})">
+            🚀 Avançar para ${nextTargetName} ➡
+          </button>
+        ` : ''}
+      </div>
+      <div id="quiz-feedback-m${modNum}" class="quiz-feedback ${isDone ? 'show ok' : ''}">
+        ${isDone ? `🎉 Excelente! Você acertou as 2 questões do Módulo ${modNum}. O acesso para <strong>${nextTargetName}</strong> já está habilitado!` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function validateModuleQuiz(modNum) {
+  const qSlide = getQuizSlideForMod(modNum);
+  if (!qSlide) return;
+
+  const fb = document.getElementById(`quiz-feedback-m${modNum}`);
+  let answeredCount = 0;
+  let correctCount = 0;
+
+  qSlide.perguntas.forEach((p, qIdx) => {
+    const radios = document.querySelectorAll(`input[name="quiz_m${modNum}_q${qIdx}"]`);
+    let chosen = undefined;
+    radios.forEach(r => {
+      if (r.checked) chosen = parseInt(r.value, 10);
+    });
+    if (chosen !== undefined) {
+      userQuizSelections[modNum][qIdx] = chosen;
+    } else if (userQuizSelections[modNum][qIdx] !== undefined) {
+      chosen = userQuizSelections[modNum][qIdx];
+    }
+
+    const qCard = document.getElementById(`qcard_m${modNum}_q${qIdx}`);
+    if (chosen !== undefined) {
+      answeredCount++;
+      if (chosen === p.correta) {
+        correctCount++;
+        if (qCard) qCard.style.borderLeftColor = "var(--success)";
+      } else {
+        if (qCard) qCard.style.borderLeftColor = "var(--danger)";
+      }
+    } else {
+      if (qCard) qCard.style.borderLeftColor = "var(--warning)";
+    }
+  });
+
+  if (answeredCount < qSlide.perguntas.length) {
+    if (fb) {
+      fb.className = "quiz-feedback show err";
+      fb.innerHTML = "⚠️ Por favor, selecione uma alternativa em cada uma das 2 perguntas antes de validar.";
+    }
+    return;
+  }
+
+  if (correctCount === qSlide.perguntas.length) {
+    completedQuizzes[modNum] = true;
+    if (unlockedModule < modNum + 1) {
+      unlockedModule = modNum + 1;
+    }
+    saveProgress();
+    updateProgressBarUI();
+    buildNav(document.getElementById('search-input') ? document.getElementById('search-input').value : "");
+    const currentScroll = document.getElementById('slide-container').scrollTop;
+    goToSlide(current);
+    document.getElementById('slide-container').scrollTop = currentScroll;
+  } else {
+    if (fb) {
+      fb.className = "quiz-feedback show err";
+      fb.innerHTML = `❌ Você acertou <strong>${correctCount} de ${qSlide.perguntas.length}</strong> questões. Para desbloquear o próximo módulo, ambas as respostas devem estar corretas. Revise a questão destacada em vermelho e tente novamente!`;
+    }
+  }
+}
+
+function renderCertificateDiplomaInner(nameStr, roleStr) {
+  const displayName = (nameStr && nameStr.trim().length > 0) ? nameStr.trim() : "[ DIGITE SEU NOME COMPLETO ACIMA ]";
+  const displayRole = (roleStr && roleStr.trim().length > 0) ? `<div style="font-size:14px; color:#2b6cb0; font-weight:600; margin-top:-10px; margin-bottom:14px;">${roleStr.trim()}</div>` : "";
+
+  return `
+    <div class="cert-diploma-border">
+      <div class="cert-diploma-header">Prefeitura da Estância de Atibaia • Secretaria Municipal de Saúde</div>
+      <div class="cert-diploma-title">Certificado de Conclusão</div>
+      <div class="cert-diploma-subtitle">Núcleo de Educação Permanente e Divisão de Tecnologia da Informação do SUS</div>
+      <div class="cert-diploma-Lead">Certificamos para os devidos fins que</div>
+      <div class="cert-diploma-name" id="preview-cert-name">${displayName}</div>
+      ${displayRole}
+      <div class="cert-diploma-body">
+        concluiu com aproveitamento de <strong>100% nas avaliações práticas e teóricas</strong> o
+        <strong>Curso Prático: Inteligência Artificial Aplicada à Gestão e Rotina do SUS</strong>,
+        abrangendo Fundamentos de IA e LLMs, Travas de Segurança (Guardrails), Proteção de Dados Sensíveis na Saúde e Anonimização (LGPD - Lei nº 13.709/2018),
+        Engenharia de Prompts pelo <strong>Protocolo P.O.C.A.</strong> (Personificação, Objetivo, Contexto e Ajustes),
+        Laboratório Prático para o SUS (Planejamento de Eventos, Descritivos Técnicos SAMU/Licitações Lei nº 14.133/2021, Análise de Portarias GM/MS, Ouvidoria e POPs)
+        e Governança com Auditoria Humana.
+      </div>
+      <div class="cert-diploma-footer">
+        <div style="text-align:left;">
+          <strong>Local e Data:</strong> Atibaia/SP, ${certIssueDate}<br>
+          <strong>Carga Horária:</strong> 03 horas capacitacionais<br>
+          <strong>Código de Validação:</strong> ${certValidationCode}
+        </div>
+        <div class="cert-sign-line">
+          Secretaria Municipal de Saúde de Atibaia<br>
+          <span style="font-size:11.5px; font-weight:400; color:#4a5568;">Núcleo de Educação Permanente e Divisão de T.I. do SUS</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderCertificateSlideHTML(s) {
+  const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
+  const disabledAttr = allCompleted ? "" : "disabled";
+  const hasValidName = certUserName.trim().length >= 3;
+  const btnDisabled = (allCompleted && hasValidName) ? "" : "disabled";
+
+  return `
+    <div class="slide-header">
+      <div class="slide-meta">${s.mod}</div>
+      <h2>${s.titulo}</h2>
+    </div>
+
+    <div class="cert-panel">
+      <h3 style="color: var(--success); font-size: 18px; margin-bottom: 8px;">
+        ${allCompleted ? '🎉 Parabéns! Você concluiu todos os 5 Módulos com 100% de acerto!' : '🔒 Conclua as avaliações dos 5 módulos para habilitar a emissão'}
+      </h3>
+      <p style="font-size: 14px; color: var(--text); line-height: 1.55;">
+        Insira abaixo o seu <strong>Nome Completo</strong> (e opcionalmente seu Cargo/Unidade na Secretaria Municipal de Saúde de Atibaia) para personalizar e emitir seu Certificado Oficial em formato <strong>PDF (A4 Paisagem)</strong>.
+      </p>
+
+      <div class="cert-form-row">
+        <div class="cert-input-group">
+          <label for="cert-input-name">Nome Completo do(a) Servidor(a) *</label>
+          <input type="text" id="cert-input-name" placeholder="Ex.: Maria Aparecida da Silva" value="${certUserName.replace(/"/g, '&quot;')}" oninput="onCertInputUpdate()" ${disabledAttr}>
+        </div>
+        <div class="cert-input-group">
+          <label for="cert-input-role">Cargo / Função ou Unidade de Saúde (Opcional)</label>
+          <input type="text" id="cert-input-role" placeholder="Ex.: Enfermeira - UBS Centro / Gestor SUS" value="${certUserRole.replace(/"/g, '&quot;')}" oninput="onCertInputUpdate()" ${disabledAttr}>
+        </div>
+      </div>
+
+      <div class="cert-btn-group">
+        <button id="btn-download-pdf" class="btn-cert-download" onclick="downloadCertificatePDFDirect()" ${btnDisabled}>
+          📥 Baixar Certificado em PDF (Download Direto A4)
+        </button>
+        <button id="btn-print-pdf" class="btn-cert-print" onclick="printCertificateBrowserPDF()" ${btnDisabled}>
+          🖨️ Imprimir / Salvar PDF pelo Navegador
+        </button>
+      </div>
+      <div id="cert-name-hint" style="font-size: 12.5px; color: var(--warning); margin-top: 8px; display: ${hasValidName ? 'none' : 'block'};">
+        * Digite seu nome completo (mínimo 3 letras) no campo acima para liberar os botões de geração do PDF.
+      </div>
+    </div>
+
+    <div class="cert-preview-wrapper" id="cert-live-preview">
+      ${renderCertificateDiplomaInner(certUserName, certUserRole)}
+    </div>
+
+    <div class="notes-box">
+      <div class="notes-title">📌 Nota Explicativa e Validação</div>
+      <div class="notes-text">${s.nota}</div>
+    </div>
+  `;
+}
+
+function onCertInputUpdate() {
+  const nameEl = document.getElementById('cert-input-name');
+  const roleEl = document.getElementById('cert-input-role');
+  if (nameEl) certUserName = nameEl.value;
+  if (roleEl) certUserRole = roleEl.value;
+  saveProgress();
+
+  const previewEl = document.getElementById('cert-live-preview');
+  if (previewEl) {
+    previewEl.innerHTML = renderCertificateDiplomaInner(certUserName, certUserRole);
+  }
+
+  const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
+  const hasValidName = certUserName.trim().length >= 3;
+  const btnDl = document.getElementById('btn-download-pdf');
+  const btnPr = document.getElementById('btn-print-pdf');
+  const hint = document.getElementById('cert-name-hint');
+
+  if (btnDl) btnDl.disabled = !(allCompleted && hasValidName);
+  if (btnPr) btnPr.disabled = !(allCompleted && hasValidName);
+  if (hint) hint.style.display = hasValidName ? "none" : "block";
+}
+
+// Gerador Direto de Arquivo .PDF em JavaScript Puro (100% Offline, Alta Resolução A4 Paisagem)
+function downloadCertificatePDFDirect() {
+  if (certUserName.trim().length < 3) return;
+
+  const canvas = document.createElement('canvas');
+  const W = 2400;
+  const H = 1697; // Proporção exata A4 Paisagem (297 x 210 mm)
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Fundo branco/azul suave
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, '#ffffff');
+  grad.addColorStop(1, '#f0f6fc');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Moldura Externa Azul Institucional
+  ctx.strokeStyle = '#1e4e8c';
+  ctx.lineWidth = 18;
+  ctx.strokeRect(70, 70, W - 140, H - 140);
+
+  // Moldura Interna Dourada/Azul
+  ctx.strokeStyle = '#3584e4';
+  ctx.lineWidth = 5;
+  ctx.strokeRect(98, 98, W - 196, H - 196);
+
+  // Cantoneiras decorativas
+  ctx.fillStyle = '#1e4e8c';
+  const corners = [[70, 70], [W - 110, 70], [70, H - 110], [W - 110, H - 110]];
+  corners.forEach(([cx, cy]) => ctx.fillRect(cx, cy, 40, 40));
+
+  ctx.textAlign = 'center';
+
+  // Cabeçalho Institucional
+  ctx.fillStyle = '#1e4e8c';
+  ctx.font = 'bold 34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('PREFEITURA DA ESTÂNCIA DE ATIBAIA • SECRETARIA MUNICIPAL DE SAÚDE', W / 2, 220);
+
+  // Título Principal
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 86px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('CERTIFICADO DE CONCLUSÃO', W / 2, 340);
+
+  // Subtítulo
+  ctx.fillStyle = '#2b6cb0';
+  ctx.font = 'bold 34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Programa de Educação Permanente e Inovação na Gestão do SUS', W / 2, 405);
+
+  // Texto introdutório
+  ctx.fillStyle = '#4a5568';
+  ctx.font = '34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Certificamos para os devidos fins que', W / 2, 505);
+
+  // Nome do Servidor
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 68px "Segoe UI", Arial, sans-serif';
+  const cleanName = certUserName.trim().toUpperCase();
+  ctx.fillText(cleanName, W / 2, 605);
+
+  // Linha sob o nome
+  ctx.strokeStyle = '#2b6cb0';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(450, 630);
+  ctx.lineTo(W - 450, 630);
+  ctx.stroke();
+
+  // Cargo / Unidade (se preenchido)
+  let bodyStartY = 735;
+  if (certUserRole && certUserRole.trim().length > 0) {
+    ctx.fillStyle = '#2b6cb0';
+    ctx.font = 'bold 32px "Segoe UI", Arial, sans-serif';
+    ctx.fillText(certUserRole.trim(), W / 2, 680);
+    bodyStartY = 760;
+  }
+
+  // Corpo do texto com quebra de linha automática
+  const bodyLines = [
+    'concluiu com 100% de aproveitamento nas avaliações teóricas e práticas o',
+    'CURSO PRÁTICO: INTELIGÊNCIA ARTIFICIAL APLICADA À GESTÃO E ROTINA DO SUS,',
+    'abrangendo Fundamentos de IA e LLMs, Travas de Segurança do Arquiteto (Guardrails),',
+    'Proteção de Dados Sensíveis e Anonimização na Saúde (LGPD - Lei Federal nº 13.709/2018),',
+    'Engenharia de Prompts pelo Protocolo P.O.C.A. (Personificação, Objetivo, Contexto e Ajustes),',
+    'Laboratório Prático para o SUS (Eventos, Descritivos SAMU/Licitações Lei 14.133/2021,',
+    'Análise de Portarias GM/MS, Ouvidoria e POPs) e Governança com Auditoria Humana.'
+  ];
+
+  ctx.fillStyle = '#2d3748';
+  bodyLines.forEach((line, idx) => {
+    ctx.font = (idx === 1) ? 'bold 34px "Segoe UI", Arial, sans-serif' : '33px "Segoe UI", Arial, sans-serif';
+    ctx.fillText(line, W / 2, bodyStartY + idx * 54);
+  });
+
+  // Rodapé Esquerdo: Data, Carga Horária e Código
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#2d3748';
+  ctx.font = 'bold 28px "Segoe UI", Arial, sans-serif';
+  ctx.fillText(`Local e Data: Atibaia/SP, ${certIssueDate}`, 180, 1410);
+  ctx.font = '28px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Carga Horária: 08 horas capacitacionais (5 Módulos Concluídos)', 180, 1455);
+  ctx.fillText(`Código de Autenticidade: ${certValidationCode}`, 180, 1500);
+
+  // Rodapé Direito: Linha de Assinatura
+  ctx.strokeStyle = '#0f294a';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(W - 820, 1420);
+  ctx.lineTo(W - 180, 1420);
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 30px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Secretaria Municipal de Saúde de Atibaia/SP', W - 500, 1462);
+  ctx.fillStyle = '#4a5568';
+  ctx.font = '25px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Clovis Campaner Filho - Gestor de T.I.', W - 500, 1500);
+
+  // Converte o Canvas para JPEG binário e empacota em um arquivo PDF 1.4 A4 Paisagem real
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.94);
+  const base64Data = dataUrl.split(',')[1];
+  const jpegBinStr = atob(base64Data);
+  const jpegBytes = new Uint8Array(jpegBinStr.length);
+  for (let i = 0; i < jpegBinStr.length; i++) {
+    jpegBytes[i] = jpegBinStr.charCodeAt(i);
+  }
+
+  const pdfBlob = createSinglePageLandscapePDFBlob(jpegBytes, W, H);
+  const safeFileName = cleanName.replace(/[^A-Z0-9À-Ú]/gi, '_').replace(/_+/g, '_');
+  const url = URL.createObjectURL(pdfBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Certificado_IA_SUS_Atibaia_${safeFileName}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
+}
+
+function createSinglePageLandscapePDFBlob(jpegBytes, imgW, imgH) {
+  const pageW = 842;
+  const pageH = 595;
+  const enc = new TextEncoder();
+  const contentStreamStr = "q " + pageW + " 0 0 " + pageH + " 0 0 cm /Im0 Do Q\n";
+  const contentStreamBytes = enc.encode(contentStreamStr);
+
+  const obj1 = enc.encode("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+  const obj2 = enc.encode("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+  const obj3 = enc.encode("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pageW + " " + pageH + "] /Resources << /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>\nendobj\n");
+  const obj4Head = enc.encode("4 0 obj\n<< /Length " + contentStreamBytes.length + " >>\nstream\n");
+  const obj4Tail = enc.encode("endstream\nendobj\n");
+  const obj5Head = enc.encode("5 0 obj\n<< /Type /XObject /Subtype /Image /Width " + imgW + " /Height " + imgH + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + jpegBytes.length + " >>\nstream\n");
+  const obj5Tail = enc.encode("\nendstream\nendobj\n");
+
+  const header = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34, 0x0a, 0x25, 0xe2, 0xe3, 0xcf, 0xd3, 0x0a]);
+
+  const concatUint8 = (arrays) => {
+    let total = 0;
+    arrays.forEach(arr => total += arr.length);
+    const res = new Uint8Array(total);
+    let offset = 0;
+    arrays.forEach(arr => {
+      res.set(arr, offset);
+      offset += arr.length;
+    });
+    return res;
+  };
+
+  const obj4 = concatUint8([obj4Head, contentStreamBytes, obj4Tail]);
+  const obj5 = concatUint8([obj5Head, jpegBytes, obj5Tail]);
+  const objects = [obj1, obj2, obj3, obj4, obj5];
+
+  const offsets = [];
+  let currentOffset = header.length;
+  objects.forEach(o => {
+    offsets.push(currentOffset);
+    currentOffset += o.length;
+  });
+
+  const xrefOffset = currentOffset;
+  let xrefStr = "xref\n0 " + (objects.length + 1) + "\n0000000000 65535 f \n";
+  offsets.forEach(off => {
+    xrefStr += String(off).padStart(10, '0') + " 00000 n \n";
+  });
+  xrefStr += "trailer\n<< /Size " + (objects.length + 1) + " /Root 1 0 R >>\nstartxref\n" + xrefOffset + "\n%%EOF\n";
+  const xrefBytes = enc.encode(xrefStr);
+
+  const finalPDFBytes = concatUint8([header, ...objects, xrefBytes]);
+  return new Blob([finalPDFBytes], { type: "application/pdf" });
+}
+
+function printCertificateBrowserPDF() {
+  if (certUserName.trim().length < 3) return;
+  const printCertSec = document.getElementById('print-certificate-only');
+  if (printCertSec) {
+    printCertSec.innerHTML = `<div class="cert-preview-wrapper" style="box-shadow:none; width:100%;">${renderCertificateDiplomaInner(certUserName, certUserRole)}</div>`;
+  }
+  document.body.classList.add('print-cert-mode');
+  window.print();
+  setTimeout(() => {
+    document.body.classList.remove('print-cert-mode');
+  }, 800);
+}
+
+function printFullCourseApostila() {
+  document.body.classList.remove('print-cert-mode');
+  window.print();
+}
+
+function renderSlideHTML(s, isPrintMode = false) {
+  if (s.tipo === "quiz") {
+    return `
+      <div class="slide-header">
+        <div class="slide-meta">${s.mod}</div>
+        <h2>${s.titulo}</h2>
+      </div>
+      ${renderQuizComponentHTML(s.modNum)}
+      <div class="notes-box">
+        <div class="notes-title">📌 Regra de Progressão do Curso (Saúde de Atibaia)</div>
+        <div class="notes-text">${s.nota}</div>
+      </div>
+    `;
+  }
+
+  if (s.tipo === "certificado") {
+    return renderCertificateSlideHTML(s);
+  }
+
+  const cardsHTML = s.cards.map(c => `
+    <div class="card ${c.tipo}">
+      <div>
+        <h3>${c.titulo}</h3>
+        <ul>${c.itens.map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>
+      ${c.code ? `
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>Modelo Prático de Prompt (Protocolo P.O.C.A.)</span>
+            <button class="copy-btn" onclick="copyCardCode(this)">Copiar Prompt</button>
+          </div>
+          <pre>${c.code}</pre>
+        </div>
+      ` : ''}
+    </div>
+  `).join('');
+
+  const mapaHTML = `
+    <div class="mindmap">
+      <div class="mm-title">🧠 Mapa Mental e Fluxo Prático do Tópico</div>
+      <div class="mm-tree">
+        ${s.mapa.map(m => `<div class="mm-node"><strong>${m.no}</strong>${m.txt}</div>`).join('')}
+      </div>
+    </div>
+  `;
+
+  // Se for o último slide de conteúdo do módulo (Slides 4, 7, 11, 17, 20), exibe também o bloco interativo das 2 perguntas do módulo logo abaixo!
+  const inlineQuizHTML = (!isPrintMode && s.fimModulo) ? renderQuizComponentHTML(s.modNum) : '';
+
+  return `
+    <div class="slide-header">
+      <div class="slide-meta">${s.mod}</div>
+      <h2>${s.titulo}</h2>
+    </div>
+    <div class="grid">${cardsHTML}</div>
+    ${mapaHTML}
+    <div class="notes-box">
+      <div class="notes-title">📌 Nota Explicativa e Aplicação Prática (Saúde de Atibaia)</div>
+      <div class="notes-text">${s.nota}</div>
+    </div>
+    ${inlineQuizHTML}
+  `;
+}
+
+function updateProgressBarUI() {
+  const doneCount = [1, 2, 3, 4, 5].filter(m => completedQuizzes[m]).length;
+  const pct = Math.round((doneCount / 5) * 100);
+  const countEl = document.getElementById('mod-progress-count');
+  const fillEl = document.getElementById('mod-progress-fill');
+  const statusEl = document.getElementById('mod-lock-status');
+  const certBadgeEl = document.getElementById('cert-lock-badge');
+
+  if (countEl) countEl.innerText = `${doneCount} / 5 Concluídos`;
+  if (fillEl) fillEl.style.width = `${pct}%`;
+
+  if (statusEl) {
+    if (doneCount === 5) {
+      statusEl.innerText = "✅ Todos os 5 módulos liberados!";
+      statusEl.style.color = "var(--success)";
+    } else {
+      statusEl.innerText = `🔓 Liberado até Módulo ${unlockedModule}`;
+      statusEl.style.color = "var(--muted)";
+    }
+  }
+
+  if (certBadgeEl) {
+    if (doneCount === 5) {
+      certBadgeEl.innerText = "🎓 Certificado Liberado!";
+      certBadgeEl.style.color = "var(--success)";
+      certBadgeEl.style.fontWeight = "700";
+    } else {
+      certBadgeEl.innerText = "🔒 Certificado Bloqueado";
+      certBadgeEl.style.color = "var(--warning)";
+    }
+  }
+}
+
+function buildNav(filterText = "") {
+  const nav = document.getElementById('nav-list');
+  nav.innerHTML = "";
+  let lastMod = "";
+  const query = filterText.trim().toLowerCase();
+
+  slides.forEach((s, i) => {
+    const matchTitle = s.titulo.toLowerCase().includes(query);
+    const matchMod = s.mod.toLowerCase().includes(query);
+    const matchNota = (s.nota || "").toLowerCase().includes(query);
+    if (query && !matchTitle && !matchMod && !matchNota) return;
+
+    if (s.mod !== lastMod) {
+      lastMod = s.mod;
+      const mDiv = document.createElement('div');
+      mDiv.className = 'nav-mod';
+      mDiv.innerText = s.mod;
+      nav.appendChild(mDiv);
+    }
+
+    const unlocked = isSlideUnlocked(i);
+    const item = document.createElement('div');
+    let classes = 'nav-item';
+    if (i === current) classes += ' active';
+    if (!unlocked) classes += ' locked';
+    if (s.tipo === 'quiz') {
+      classes += ' quiz-item';
+      if (completedQuizzes[s.modNum]) classes += ' completed';
+    }
+    if (s.tipo === 'certificado') {
+      classes += ' cert-item';
+      if (unlocked) classes += ' unlocked';
+    }
+
+    item.className = classes;
+    item.id = 'nav-' + i;
+
+    let statusIcon = "";
+    if (!unlocked) {
+      statusIcon = '<span class="nav-lock-icon" title="Responda às perguntas do módulo anterior para desbloquear">🔒</span>';
+    } else if (s.tipo === 'quiz' && completedQuizzes[s.modNum]) {
+      statusIcon = '<span class="nav-lock-icon" title="Módulo concluído!">✅</span>';
+    } else if (s.tipo === 'certificado' && unlocked) {
+      statusIcon = '<span class="nav-lock-icon" title="Certificado Liberado!">🎓</span>';
+    }
+
+    item.innerHTML = `<span>${s.titulo}</span>${statusIcon}`;
+
+    if (unlocked) {
+      item.onclick = () => {
+        goToSlide(i);
+        if (window.innerWidth <= 900) {
+          document.getElementById('sidebar').classList.remove('open');
+        }
+      };
+    }
+    nav.appendChild(item);
+  });
+}
+
+function filterNav(val) {
+  buildNav(val);
+}
+
+function init() {
+  loadProgress();
+  updateProgressBarUI();
+  buildNav();
+
+  // Prepara versão completa para impressão em PDF (todos os 20 slides de conteúdo originais)
+  const printAll = document.getElementById('print-all');
+  const contentSlides = slides.filter(s => s.tipo === "conteudo");
+  printAll.innerHTML = contentSlides.map((s, i) => `<div class="print-slide">${renderSlideHTML(s, true)}</div>`).join('');
+
+  updatePocaPreview();
+  goToSlide(current);
+}
+
+function goToSlide(i) {
+  if (!isSlideUnlocked(i)) return;
+  current = i;
+  saveProgress();
+  const container = document.getElementById('slide-container');
+  container.innerHTML = renderSlideHTML(slides[i], false);
+  container.scrollTop = 0;
+
+  document.getElementById('progress-badge').innerText = `Etapa ${i + 1} de ${slides.length}`;
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.toggle('active', el.id === 'nav-' + i);
+  });
+
+  // Atualiza estado dos botões Anterior e Próximo (Trava "Inclicável" se o próximo slide pertencer a um módulo bloqueado)
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  if (btnPrev) {
+    btnPrev.disabled = (i === 0);
+  }
+  if (btnNext) {
+    const canGoNext = (i < slides.length - 1) && isSlideUnlocked(i + 1);
+    btnNext.disabled = !canGoNext;
+    btnNext.classList.toggle('btn-locked', !canGoNext);
+    if (!canGoNext && i < slides.length - 1) {
+      btnNext.innerText = "🔒 Próximo (Responda o Quiz)";
+    } else {
+      btnNext.innerText = "Próximo ➡";
+    }
+  }
+}
+
+function nextSlide() {
+  if (current < slides.length - 1 && isSlideUnlocked(current + 1)) {
+    goToSlide(current + 1);
+  }
+}
+
+function prevSlide() {
+  if (current > 0) goToSlide(current - 1);
+}
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+function togglePocaModal() {
+  document.getElementById('poca-modal').classList.toggle('open');
+}
+
+function updatePocaPreview() {
+  const p = document.getElementById('poca-p').value.trim();
+  const o = document.getElementById('poca-o').value.trim();
+  const c = document.getElementById('poca-c').value.trim();
+  const a = document.getElementById('poca-a').value.trim();
+
+  const output = `[P - PERSONIFICAÇÃO]\n${p}\n\n[O - OBJETIVO]\n${o}\n\n[C - CONTEXTO]\n${c}\n\n[A - AJUSTES]\n${a}`;
+  document.getElementById('poca-generated-output').innerText = output;
+}
+
+document.addEventListener('keydown', e => {
+  const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+  if (activeTag === 'input' || activeTag === 'textarea') return;
+
+  if (e.key === 'ArrowRight') nextSlide();
+  if (e.key === 'ArrowLeft') prevSlide();
+  if (e.key === 'Escape') {
+    document.getElementById('poca-modal').classList.remove('open');
+  }
+});
+
+init();
+
+</script>
+</body>
+</html>

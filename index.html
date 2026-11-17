@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Capacitações • Secretaria Municipal de Saúde de Atibaia/SP</title>
+    <style>
+        :root {
+            --bg-color: #242424;
+            --surface-color: #303030;
+            --surface-hover: #383838;
+            --text-color: #ffffff;
+            --text-muted: #a0a0a0;
+            --primary-color: #3584e4;
+            --primary-light: #62a0ea;
+            --success-color: #2ec27e;
+            --warning-color: #f5c211;
+            --border-color: #444444;
+            --border-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 36px 20px;
+        }
+
+        .header {
+            text-align: center;
+            max-width: 820px;
+            margin-bottom: 36px;
+        }
+
+        .header-pill {
+            display: inline-block;
+            background: rgba(53, 132, 228, 0.16);
+            color: var(--primary-light);
+            border: 1px solid var(--primary-color);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 14px;
+        }
+
+        .header h1 {
+            font-size: 2.35em;
+            color: #ffffff;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        .header h1 span {
+            color: var(--primary-light);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 1.02em;
+            line-height: 1.5;
+        }
+
+        .summary-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 32px;
+            width: 100%;
+            max-width: 1120px;
+        }
+
+        .summary-chip {
+            background: var(--surface-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-size: 13px;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-chip strong {
+            color: var(--primary-light);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(265px, 1fr));
+            gap: 22px;
+            width: 100%;
+            max-width: 1160px;
+        }
+
+        .card {
+            background: var(--surface-color);
+            border: 2px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: 24px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            color: var(--text-color);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            background: var(--surface-hover);
+            border-color: var(--primary-color);
+        }
+
+        .card.completed {
+            border-color: var(--success-color);
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 14px;
+        }
+
+        .card-icon {
+            font-size: 2.8em;
+            line-height: 1;
+        }
+
+        .status-badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: #232323;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .status-badge.in-progress {
+            background: rgba(245, 194, 17, 0.14);
+            color: var(--warning-color);
+            border-color: var(--warning-color);
+        }
+
+        .status-badge.done {
+            background: rgba(46, 194, 126, 0.16);
+            color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .card-category {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--primary-light);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 6px;
+        }
+
+        .card h3 {
+            font-size: 1.2em;
+            color: #ffffff;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 0.88em;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        .card-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 11.5px;
+            color: #cccccc;
+        }
+
+        .meta-tag {
+            background: #242424;
+            border: 1px solid #3f3f3f;
+            padding: 3px 8px;
+            border-radius: 5px;
+        }
+
+        .card-progress-wrap {
+            margin-bottom: 16px;
+        }
+
+        .card-progress-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .card-progress-bar {
+            width: 100%;
+            height: 7px;
+            background: #1c1c1c;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #3d3d3d;
+        }
+
+        .card-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+            transition: width 0.35s ease;
+        }
+
+        .card-cta {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background: var(--primary-color);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13.5px;
+            padding: 11px 14px;
+            border-radius: 7px;
+            transition: background 0.2s ease;
+        }
+
+        .card:hover .card-cta {
+            background: var(--primary-light);
+        }
+
+        .card.completed .card-cta {
+            background: var(--success-color);
+            color: #000000;
+        }
+
+        .footer {
+            margin-top: 42px;
+            text-align: center;
+            color: #777777;
+            font-size: 0.85em;
+            line-height: 1.6;
+        }
+
+        .footer strong {
+            color: #aaaaaa;
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.75em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <div class="header-pill">Secretaria Municipal de Saúde de Atibaia/SP • Educação Permanente &amp; T.I.</div>
+        <h1>Portal de <span>Capacitações Interativas</span></h1>
+        <p>Selecione uma das trilhas abaixo para iniciar ou continuar seus estudos. Seu progresso e suas respostas ficam salvos automaticamente neste navegador.</p>
+    </header>
+
+    <div class="summary-bar">
+        <div class="summary-chip">📚 <strong>4 Capacitações</strong> Disponíveis</div>
+        <div class="summary-chip">💾 <strong>Salvamento Automático</strong> no Navegador</div>
+        <div class="summary-chip">🎓 <strong>Certificado em PDF</strong> ao Concluir os 5 Módulos</div>
+    </div>
+
+    <main class="grid">
+        <!-- CURSO 1: IA NA SAÚDE -->
+        <a href="capacitacao_IA_saude.html" class="card" id="card-ia-saude" data-storage="atb_saude_save_capacitacao_IA_saude_v1">
+            <div>
+                <div class="card-top">
+                    <div class="card-icon">🤖</div>
+                    <span class="status-badge" id="badge-ia-saude">Não iniciado</span>
+                </div>
+                <div class="card-category">Gestão &amp; Rotina do SUS</div>
+                <h3>Inteligência Artificial Aplicada ao SUS</h3>
+                <p>Desmistificando a IA, limites de segurança, LGPD na prática, Protocolo P.O.C.A. e laboratório de prompts para a Saúde de Atibaia.</p>
+            </div>
+            <div>
+                <div class="card-meta">
+                    <span class="meta-tag">5 Módulos</span>
+                    <span class="meta-tag">20 Slides + Quiz</span>
+                    <span class="meta-tag">Certificado PDF</span>
+                </div>
+                <div class="card-progress-wrap">
+                    <div class="card-progress-info">
+                        <span>Progresso</span>
+                        <span id="pct-ia-saude">0 / 5 módulos</span>
+                    </div>
+                    <div class="card-progress-bar">
+                        <div class="card-progress-fill" id="bar-ia-saude"></div>
+                    </div>
+                </div>
+                <span class="card-cta" id="cta-ia-saude">Acessar Capacitação ➡</span>
+            </div>
+        </a>
+
+        <!-- CURSO 2: LEI 8.080/1990 -->
+        <a href="capacitacao_lei_8080_sus.html" class="card" id="card-lei-8080" data-storage="atb_saude_save_capacitacao_lei_8080_sus_v1">
+            <div>
+                <div class="card-top">
+                    <div class="card-icon">🏥</div>
+                    <span class="status-badge" id="badge-lei-8080">Não iniciado</span>
+                </div>
+                <div class="card-category">Legislação &amp; Gestão Pública</div>
+                <h3>Lei Orgânica da Saúde (Lei nº 8.080/1990)</h3>
+                <p>Cartilha prática atualizada: história do SUS, princípios, gestão tripartite (CIT/CIB), direitos dos pacientes, financiamento e ordenador de despesas.</p>
+            </div>
+            <div>
+                <div class="card-meta">
+                    <span class="meta-tag">5 Módulos</span>
+                    <span class="meta-tag">20 Slides + Quiz</span>
+                    <span class="meta-tag">Certificado PDF</span>
+                </div>
+                <div class="card-progress-wrap">
+                    <div class="card-progress-info">
+                        <span>Progresso</span>
+                        <span id="pct-lei-8080">0 / 5 módulos</span>
+                    </div>
+                    <div class="card-progress-bar">
+                        <div class="card-progress-fill" id="bar-lei-8080"></div>
+                    </div>
+                </div>
+                <span class="card-cta" id="cta-lei-8080">Acessar Capacitação ➡</span>
+            </div>
+        </a>
+
+        <!-- CURSO 3: LGPD NA SAÚDE -->
+        <a href="capacitacao_LGPD_saude.html" class="card" id="card-lgpd" data-storage="atb_saude_save_capacitacao_LGPD_saude_v1">
+            <div>
+                <div class="card-top">
+                    <div class="card-icon">🛡️</div>
+                    <span class="status-badge" id="badge-lgpd">Não iniciado</span>
+                </div>
+                <div class="card-category">Privacidade &amp; Segurança</div>
+                <h3>LGPD Aplicada à Rotina da Saúde</h3>
+                <p>Conscientização prática sobre dados sensíveis, minimização, Planilhas Google, Forms, WhatsApp, uso seguro de IA, mesa limpa e prontuários.</p>
+            </div>
+            <div>
+                <div class="card-meta">
+                    <span class="meta-tag">5 Módulos</span>
+                    <span class="meta-tag">21 Slides + Quiz</span>
+                    <span class="meta-tag">Certificado PDF</span>
+                </div>
+                <div class="card-progress-wrap">
+                    <div class="card-progress-info">
+                        <span>Progresso</span>
+                        <span id="pct-lgpd">0 / 5 módulos</span>
+                    </div>
+                    <div class="card-progress-bar">
+                        <div class="card-progress-fill" id="bar-lgpd"></div>
+                    </div>
+                </div>
+                <span class="card-cta" id="cta-lgpd">Acessar Capacitação ➡</span>
+            </div>
+        </a>
+
+        <!-- CURSO 4: IA PARA DESENVOLVIMENTO DE SOFTWARES -->
+        <a href="curso_ia_desenvolvimento_softwares.html" class="card" id="card-ia-dev" data-storage="atb_saude_save_curso_ia_dev_softwares_v1">
+            <div>
+                <div class="card-top">
+                    <div class="card-icon">💻</div>
+                    <span class="status-badge" id="badge-ia-dev">Não iniciado</span>
+                </div>
+                <div class="card-category">Tecnologia &amp; Engenharia</div>
+                <h3>IA Aplicada ao Desenvolvimento de Softwares</h3>
+                <p>Da planilha ao sistema modular: arquitetura, PRD e SQL, Protocolo P.O.C.A. Dev, sprints, Git, depuração, testes QA e segurança AppSec.</p>
+            </div>
+            <div>
+                <div class="card-meta">
+                    <span class="meta-tag">5 Módulos</span>
+                    <span class="meta-tag">20 Slides + Quiz</span>
+                    <span class="meta-tag">Certificado PDF</span>
+                </div>
+                <div class="card-progress-wrap">
+                    <div class="card-progress-info">
+                        <span>Progresso</span>
+                        <span id="pct-ia-dev">0 / 5 módulos</span>
+                    </div>
+                    <div class="card-progress-bar">
+                        <div class="card-progress-fill" id="bar-ia-dev"></div>
+                    </div>
+                </div>
+                <span class="card-cta" id="cta-ia-dev">Acessar Capacitação ➡</span>
+            </div>
+        </a>
+    </main>
+
+    <footer class="footer">
+        <strong>Secretaria Municipal de Saúde de Atibaia/SP</strong> • Núcleo de Educação Permanente &amp; Divisão de Tecnologia da Informação<br>
+        Clovis Campaner Filho — Gestor de T.I. • Chefe de Divisão de T.I. da Saúde
+    </footer>
+
+    <script>
+        function updateCardsProgress() {
+            const items = [
+                { key: "atb_saude_save_capacitacao_IA_saude_v1", card: "card-ia-saude", badge: "badge-ia-saude", pct: "pct-ia-saude", bar: "bar-ia-saude", cta: "cta-ia-saude" },
+                { key: "atb_saude_save_capacitacao_lei_8080_sus_v1", card: "card-lei-8080", badge: "badge-lei-8080", pct: "pct-lei-8080", bar: "bar-lei-8080", cta: "cta-lei-8080" },
+                { key: "atb_saude_save_capacitacao_LGPD_saude_v1", card: "card-lgpd", badge: "badge-lgpd", pct: "pct-lgpd", bar: "bar-lgpd", cta: "cta-lgpd" },
+                { key: "atb_saude_save_curso_ia_dev_softwares_v1", card: "card-ia-dev", badge: "badge-ia-dev", pct: "pct-ia-dev", bar: "bar-ia-dev", cta: "cta-ia-dev" }
+            ];
+
+            items.forEach(item => {
+                try {
+                    const raw = localStorage.getItem(item.key);
+                    if (!raw) return;
+                    const state = JSON.parse(raw);
+                    if (!state || typeof state !== "object") return;
+
+                    let doneCount = 0;
+                    if (state.completedQuizzes) {
+                        [1, 2, 3, 4, 5].forEach(m => {
+                            if (state.completedQuizzes[m] === true) doneCount++;
+                        });
+                    }
+
+                    const percent = Math.round((doneCount / 5) * 100);
+                    const cardEl = document.getElementById(item.card);
+                    const badgeEl = document.getElementById(item.badge);
+                    const pctEl = document.getElementById(item.pct);
+                    const barEl = document.getElementById(item.bar);
+                    const ctaEl = document.getElementById(item.cta);
+
+                    if (pctEl) pctEl.innerText = `${doneCount} / 5 módulos (${percent}%)`;
+                    if (barEl) barEl.style.width = `${percent}%`;
+
+                    if (doneCount === 5) {
+                        if (cardEl) cardEl.classList.add("completed");
+                        if (badgeEl) {
+                            badgeEl.className = "status-badge done";
+                            badgeEl.innerText = "✓ Concluído";
+                        }
+                        if (ctaEl) ctaEl.innerText = "🎓 Ver Certificado / Revisar";
+                    } else if (doneCount > 0 || (typeof state.current === "number" && state.current > 0)) {
+                        if (badgeEl) {
+                            badgeEl.className = "status-badge in-progress";
+                            badgeEl.innerText = "Em andamento";
+                        }
+                        if (ctaEl) ctaEl.innerText = "Continuar de onde parei ➡";
+                    }
+                } catch (e) {}
+            });
+        }
+
+        window.addEventListener("DOMContentLoaded", updateCardsProgress);
+        window.addEventListener("pageshow", updateCardsProgress);
+    </script>
+</body>
+</html>

@@ -1,0 +1,2818 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curso Prático: Inteligência Artificial Aplicada ao Desenvolvimento de Softwares e Sistemas</title>
+<style>
+  :root {
+    --bg: #1e1e1e;
+    --panel: #2a2a2a;
+    --card: #333333;
+    --text: #f0f0f0;
+    --muted: #aaaaaa;
+    --accent: #3584e4;
+    --accent-light: #62a0ea;
+    --success: #2ec27e;
+    --warning: #f5c211;
+    --danger: #e01b24;
+    --border: #444444;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: 310px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    z-index: 50;
+  }
+
+  .brand {
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
+    background: #242424;
+  }
+
+  .brand h1 {
+    font-size: 15px;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .brand p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  .search-box {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: #262626;
+  }
+
+  .search-box input {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    outline: none;
+  }
+
+  .search-box input:focus {
+    border-color: var(--accent-light);
+  }
+
+  #nav-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
+
+  .nav-mod {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--warning);
+    margin: 14px 6px 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .nav-item {
+    padding: 9px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.8px;
+    color: var(--text);
+    margin-bottom: 3px;
+    transition: 0.2s;
+    line-height: 1.35;
+  }
+
+  .nav-item:hover {
+    background: var(--card);
+  }
+
+  .nav-item.active {
+    background: var(--accent);
+    font-weight: 600;
+    color: #fff;
+  }
+
+  /* Main Area */
+  #main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-width: 0;
+  }
+
+  #topbar {
+    min-height: 56px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 24px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #menu-toggle {
+    display: none;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .badge-poca {
+    background: #252f3f;
+    color: var(--accent-light);
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .controls button {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 7px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.5px;
+    transition: 0.2s;
+  }
+
+  .controls button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .controls button.btn-builder {
+    background: #1f3d2d;
+    border-color: var(--success);
+    color: #8ff0a4;
+    font-weight: 600;
+  }
+
+  .controls button.btn-builder:hover {
+    background: var(--success);
+    color: #000;
+  }
+
+  /* Slide Content */
+  #slide-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 44px;
+    max-width: 1240px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .slide-header {
+    margin-bottom: 22px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 14px;
+  }
+
+  .slide-header h2 {
+    font-size: 26px;
+    color: #fff;
+    margin-top: 6px;
+    line-height: 1.25;
+  }
+
+  .slide-meta {
+    font-size: 13px;
+    color: var(--accent-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card.warn { border-left-color: var(--warning); }
+  .card.danger { border-left-color: var(--danger); }
+  .card.ok { border-left-color: var(--success); }
+
+  .card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--accent-light);
+    line-height: 1.35;
+  }
+
+  .card.warn h3 { color: var(--warning); }
+  .card.danger h3 { color: #ff7b7b; }
+  .card.ok h3 { color: var(--success); }
+
+  .card ul {
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .card li {
+    margin-bottom: 7px;
+  }
+
+  .card li strong {
+    color: #ffffff;
+  }
+
+  /* Mind Map Visual Tree */
+  .mindmap {
+    background: #23272e;
+    border: 1px dashed var(--accent-light);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+
+  .mm-title {
+    font-size: 13.5px;
+    text-transform: uppercase;
+    color: var(--warning);
+    margin-bottom: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.4px;
+  }
+
+  .mm-tree {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .mm-node {
+    flex: 1;
+    min-width: 210px;
+    background: var(--card);
+    border-radius: 6px;
+    padding: 13px;
+    border-top: 3px solid var(--success);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .mm-node strong {
+    display: block;
+    color: #fff;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  /* Explanatory Note Box */
+  .notes-box {
+    background: #252f3f;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    margin-top: 20px;
+  }
+
+  .notes-title {
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .notes-text {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #e2e8f0;
+  }
+
+  /* Prompt Copy Box */
+  .code-wrapper {
+    margin-top: 12px;
+    position: relative;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    padding: 6px 12px;
+    border-radius: 6px 6px 0 0;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  pre {
+    background: #141414;
+    padding: 14px;
+    border-radius: 0 0 6px 6px;
+    border: 1px solid var(--border);
+    color: #8ff0a4;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12.5px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
+  }
+
+  .copy-btn {
+    background: var(--success);
+    color: #000;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 11.5px;
+    transition: 0.2s;
+  }
+
+  .copy-btn:hover {
+    filter: brightness(1.1);
+  }
+
+  /* Interactive Modal: Construtor POCA */
+  #poca-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  #poca-modal.open {
+    display: flex;
+  }
+
+  .modal-content {
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    max-width: 780px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .modal-header h3 {
+    color: var(--accent-light);
+    font-size: 18px;
+  }
+
+  .close-modal {
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 11px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .poca-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .poca-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .poca-field label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--warning);
+  }
+
+  .poca-field textarea {
+    background: #191919;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 12.5px;
+    resize: vertical;
+    min-height: 68px;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 900px) {
+    #sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      transform: translateX(-100%);
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #menu-toggle {
+      display: inline-block;
+    }
+    #slide-container {
+      padding: 20px 18px;
+    }
+    .poca-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Print mode */
+  @media print {
+    body {
+      display: block;
+      height: auto;
+      overflow: visible;
+      background: #fff;
+      color: #000;
+    }
+    #sidebar, #topbar, #poca-modal {
+      display: none !important;
+    }
+    #slide-container {
+      display: none !important;
+    }
+    #print-all {
+      display: block !important;
+      padding: 15px;
+    }
+    .print-slide {
+      page-break-after: always;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .card, .mindmap, .notes-box, pre, .code-header {
+      background: #f9f9f9 !important;
+      color: #000 !important;
+      border: 1px solid #aaa !important;
+    }
+    h2, h3, strong, .notes-text, .slide-meta, .mm-title, .notes-title, li {
+      color: #000 !important;
+    }
+    .copy-btn {
+      display: none !important;
+    }
+  }
+
+  #print-all {
+    display: none;
+  }
+
+  /* Progress Bar in Sidebar */
+  .progress-panel {
+    padding: 12px 14px;
+    background: #20252b;
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 6px;
+  }
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #141414;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .progress-status-text {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Locked Navigation Items ("Inclicável") */
+  .nav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-item.locked {
+    opacity: 0.42;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    user-select: none;
+    color: #888888;
+    background: transparent !important;
+  }
+  .nav-item.quiz-item {
+    border-left: 3px solid var(--warning);
+    background: rgba(245, 194, 17, 0.07);
+    font-weight: 600;
+  }
+  .nav-item.quiz-item.completed {
+    border-left-color: var(--success);
+    background: rgba(46, 194, 126, 0.09);
+  }
+  .nav-item.cert-item {
+    border-left: 3px solid var(--accent-light);
+    background: rgba(53, 132, 228, 0.12);
+    font-weight: 700;
+  }
+  .nav-item.cert-item.unlocked {
+    border-left-color: var(--success);
+    background: rgba(46, 194, 126, 0.15);
+    color: #8ff0a4;
+  }
+  .nav-lock-icon {
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Locked Next Button ("Inclicável") */
+  .controls button:disabled,
+  .controls button.btn-locked {
+    opacity: 0.42 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    background: #252525 !important;
+    border-color: #3a3a3a !important;
+    color: #777777 !important;
+  }
+
+  /* Interactive Quiz Styling */
+  .quiz-container {
+    background: #232830;
+    border: 2px solid var(--warning);
+    border-radius: 10px;
+    padding: 24px;
+    margin-top: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+  .quiz-container.quiz-completed {
+    border-color: var(--success);
+  }
+  .quiz-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .quiz-badge-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--warning);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .quiz-container.quiz-completed .quiz-badge-title {
+    color: var(--success);
+  }
+  .quiz-status-pill {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    background: rgba(245, 194, 17, 0.15);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+  }
+  .quiz-status-pill.ok {
+    background: rgba(46, 194, 126, 0.18);
+    color: var(--success);
+    border-color: var(--success);
+  }
+  .quiz-intro {
+    font-size: 14px;
+    color: #d8dee9;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  .quiz-question-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .quiz-question-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 14px;
+    line-height: 1.45;
+  }
+  .quiz-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .quiz-option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #1f1f1f;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13.8px;
+    line-height: 1.45;
+    color: var(--text);
+  }
+  .quiz-option-label:hover {
+    background: #2d333b;
+    border-color: var(--accent-light);
+  }
+  .quiz-option-label input[type="radio"] {
+    margin-top: 3px;
+    accent-color: var(--accent);
+    transform: scale(1.15);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .quiz-option-label.selected-correct {
+    background: rgba(46, 194, 126, 0.16);
+    border-color: var(--success);
+    color: #ffffff;
+  }
+  .quiz-option-label.selected-wrong {
+    background: rgba(224, 27, 36, 0.16);
+    border-color: var(--danger);
+  }
+  .quiz-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .btn-validate-quiz {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-validate-quiz:hover {
+    background: var(--accent-light);
+  }
+  .btn-advance-mod {
+    background: var(--success);
+    color: #000000;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-advance-mod:hover {
+    filter: brightness(1.1);
+  }
+  .quiz-feedback {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    display: none;
+  }
+  .quiz-feedback.show {
+    display: block;
+  }
+  .quiz-feedback.ok {
+    background: rgba(46, 194, 126, 0.16);
+    border: 1px solid var(--success);
+    color: #8ff0a4;
+  }
+  .quiz-feedback.err {
+    background: rgba(224, 27, 36, 0.16);
+    border: 1px solid var(--danger);
+    color: #ff9b9b;
+  }
+
+  /* Certificate Generator & Preview Card */
+  .cert-panel {
+    background: var(--panel);
+    border: 2px solid var(--success);
+    border-radius: 10px;
+    padding: 26px;
+    margin-bottom: 24px;
+  }
+  .cert-form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+    margin-bottom: 18px;
+  }
+  .cert-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cert-input-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--warning);
+  }
+  .cert-input-group input {
+    background: #181818;
+    border: 1px solid var(--border);
+    color: #ffffff;
+    padding: 11px 14px;
+    border-radius: 6px;
+    font-size: 14.5px;
+    outline: none;
+  }
+  .cert-input-group input:focus {
+    border-color: var(--accent-light);
+  }
+  .cert-input-group input:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .cert-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .btn-cert-download {
+    background: var(--success);
+    color: #000000;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-cert-download:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+  .btn-cert-print {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-cert-print:hover:not(:disabled) {
+    background: var(--accent-light);
+  }
+  .btn-cert-download:disabled,
+  .btn-cert-print:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Visual Certificate Preview Box */
+  .cert-preview-wrapper {
+    background: #ffffff;
+    color: #1a202c;
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  .cert-diploma-border {
+    border: 6px double #1e4e8c;
+    padding: 32px 36px;
+    background: linear-gradient(135deg, #ffffff 0%, #f4f8fd 100%);
+    position: relative;
+    text-align: center;
+    min-width: 680px;
+  }
+  .cert-diploma-header {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e4e8c;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .cert-diploma-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f294a;
+    margin: 8px 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .cert-diploma-subtitle {
+    font-size: 14px;
+    color: #2b6cb0;
+    font-weight: 600;
+    margin-bottom: 22px;
+  }
+  .cert-diploma-Lead {
+    font-size: 15px;
+    color: #4a5568;
+    margin-bottom: 8px;
+  }
+  .cert-diploma-name {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f294a;
+    border-bottom: 2px solid #2b6cb0;
+    display: inline-block;
+    padding: 4px 36px 8px;
+    margin: 6px 0 16px;
+    min-width: 360px;
+  }
+  .cert-diploma-body {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #2d3748;
+    max-width: 780px;
+    margin: 0 auto 24px;
+  }
+  .cert-diploma-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 28px;
+    padding-top: 14px;
+    font-size: 12.5px;
+    color: #4a5568;
+  }
+  .cert-sign-line {
+    border-top: 1.5px solid #1e4e8c;
+    padding-top: 6px;
+    width: 240px;
+    font-weight: 700;
+    color: #0f294a;
+  }
+
+  /* Dedicated Print Certificate Container */
+  #print-certificate-only {
+    display: none;
+  }
+
+  @media print {
+    body.print-cert-mode {
+      background: #ffffff !important;
+      color: #000000 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    body.print-cert-mode #sidebar,
+    body.print-cert-mode #topbar,
+    body.print-cert-mode #poca-modal,
+    body.print-cert-mode #slide-container,
+    body.print-cert-mode #print-all {
+      display: none !important;
+    }
+    body.print-cert-mode #print-certificate-only {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 95vh;
+      padding: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <div class="brand">
+    <h1>Engenharia & Dev com IA</h1>
+    <p>Capacitação Prática: Desenvolvimento de Softwares e Sistemas com IA<br>Arquitetura • Protocolo P.O.C.A. • Segurança</p>
+  </div>
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="🔍 Filtrar tópico ou slide..." oninput="filterNav(this.value)">
+  </div>
+  <div class="progress-panel">
+    <div class="progress-panel-header">
+      <span>PROGRESSO DOS MÓDULOS</span>
+      <span id="mod-progress-count">0 / 5 Concluídos</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="mod-progress-fill"></div>
+    </div>
+    <div class="progress-status-text">
+      <span id="mod-lock-status">🔒 Módulos 2 a 5 bloqueados</span>
+      <span id="cert-lock-badge">🎓 Bloqueado</span>
+    </div>
+  </div>
+  <div id="nav-list"></div>
+</aside>
+
+<main id="main">
+  <header id="topbar">
+    <div class="top-left">
+      <button id="menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
+      <span id="progress-badge" class="badge">Slide 1 de 20</span>
+      <span class="badge-poca">Protocolo P.O.C.A. Dev • Clean Code</span>
+    </div>
+    <div class="controls">
+      <button class="btn-builder" onclick="togglePocaModal()">✨ Construtor P.O.C.A.</button>
+      <button id="btn-prev" onclick="prevSlide()">⬅ Anterior</button>
+      <button id="btn-next" onclick="nextSlide()">Próximo ➡</button>
+      <button onclick="toggleFullScreen()">⛶ Tela Cheia</button>
+      <button onclick="printFullCourseApostila()">🖨️ Salvar PDF Completo</button>
+    </div>
+  </header>
+
+  <section id="slide-container"></section>
+  <section id="print-all"></section>
+  <section id="print-certificate-only"></section>
+</main>
+
+<!-- Modal Interativo Construtor de Prompts P.O.C.A. -->
+<div id="poca-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>✨ Construtor Interativo de Prompt (Protocolo P.O.C.A.)</h3>
+      <button class="close-modal" onclick="togglePocaModal()">✕ Fechar</button>
+    </div>
+    <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
+      Preencha os 4 campos abaixo (sem colar senhas, tokens ou dados reais de produção!) para montar um prompt técnico de alta precisão para desenvolvimento de sistemas:
+    </p>
+    <div class="poca-form-grid">
+      <div class="poca-field">
+        <label>1. [P] Personificação (Stack e Senioridade)</label>
+        <textarea id="poca-p" oninput="updatePocaPreview()">Atue como Engenheiro de Software Sênior especialista em Python 3.11, Flask, SQLite e JavaScript moderno (ES6).</textarea>
+      </div>
+      <div class="poca-field">
+        <label>2. [O] Objetivo (Módulo ou Funcionalidade Atômica)</label>
+        <textarea id="poca-o" oninput="updatePocaPreview()">Crie o módulo completo de cadastro, listagem paginada e filtro de busca para o controle de solicitações internas.</textarea>
+      </div>
+      <div class="poca-field">
+        <label>3. [C] Contexto (Arquitetura, Banco e Regras)</label>
+        <textarea id="poca-c" oninput="updatePocaPreview()">O projeto segue arquitetura modular (app.py, database/db.py, services/, templates/). A tabela principal possui colunas: id, titulo, setor, status, criado_em e ativo.</textarea>
+      </div>
+      <div class="poca-field">
+        <label>4. [A] Ajustes (Segurança, Padrão e Entrega)</label>
+        <textarea id="poca-a" oninput="updatePocaPreview()">Use consultas SQL parametrizadas (?), valide entradas no backend com try/except, mantenha tema escuro Adwaita Dark e entregue o código 100% completo sem omitir trechos.</textarea>
+      </div>
+    </div>
+    <div class="code-wrapper">
+      <div class="code-header">
+        <span>Prompt Estruturado Gerado (Pronto para Copiar)</span>
+        <button class="copy-btn" onclick="copyTextFromElement('poca-generated-output', this)">Copiar Prompt</button>
+      </div>
+      <pre id="poca-generated-output"></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = [
+  // =========================================================================
+  // MÓDULO 1 • DA PLANILHA AO SISTEMA COMPLETO: O NOVO PAPEL DO DEV COM IA
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • Da Planilha ao Sistema Completo: O Novo Papel do Dev com IA",
+    titulo: "1. Do 'Mini-Sistema' à Engenharia de Software: Além do Vibe Coding",
+    cards: [
+      {
+        tipo: "warn",
+        titulo: "O Ponto de Partida: O Sucesso dos Mini-Sistemas e Onde Eles Travam",
+        itens: [
+          "<strong>O Poder Inicial da IA:</strong> Usar IA para substituir planilhas lentas, criar formulários web, automatizar relatórios e gerar scripts rápidos economiza dezenas de horas e resolve dores reais imediatas.",
+          "<strong>O Limite do 'Vibe Coding' (Pedir sem Estrutura):</strong> Quando o mini-sistema cresce e ganha novas telas, relatórios e usuários simultâneos, colocar tudo em um único arquivo gigante (<em>Código Espaguete</em>) faz com que pedir uma alteração em um botão quebre outras três funções.",
+          "<strong>Sintoma Clássico:</strong> A IA começa a apagar trechos antigos, duplicar funções e gerar erros em cascata."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "O Próximo Nível: De 'Digitador de Código' a Arquiteto de Sistemas",
+        itens: [
+          "<strong>Mudança de Mentalidade:</strong> Você deixa de apenas 'pedir código pronto' e passa a atuar como <strong>Arquiteto e Revisor Técnico</strong> — definindo como os dados se relacionam, como os arquivos se organizam e quais regras não podem falhar.",
+          "<strong>A IA como Aceleradora Técnica:</strong> Com boa arquitetura, a IA escreve rotas, consultas SQL, interfaces responsivas e testes automatizados em minutos, mantendo o sistema limpo e fácil de evoluir.",
+          "<strong>Resultado Prático:</strong> Sistemas duráveis, seguros, rápidos e preparados para crescer sem dor de cabeça."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1. Automação / Planilha", txt: "Scripts e formulários simples que resolvem tarefas pontuais" },
+      { no: "2. Protótipo Funcional", txt: "Primeiras telas e banco local criados rapidamente com IA" },
+      { no: "3. Arquitetura Modular", txt: "Separação clara entre Banco de Dados, Regras de Negócio e Interface" },
+      { no: "4. Sistema Profissional", txt: "Código versionado (Git), validado, seguro e pronto para múltiplos usuários" }
+    ],
+    nota: "Quem já utiliza IA para criar mini-sistemas e automatizar tarefas já superou a barreira mais difícil: transformar processos manuais em soluções digitais. O objetivo desta capacitação é fornecer os conceitos e boas práticas de engenharia de software para você escalar essas criações com segurança, organização e domínio técnico."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • Da Planilha ao Sistema Completo: O Novo Papel do Dev com IA",
+    titulo: "2. Como os LLMs Enxergam Código: Tokens, Janela de Contexto e Alucinações",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "Tokens e Janela de Contexto: A 'Mesa de Trabalho' da IA",
+        itens: [
+          "<strong>Como a IA lê seu código:</strong> Modelos de linguagem (LLMs) quebram seu código em pequenos blocos chamados <em>tokens</em> (palavras, símbolos, indentação) e calculam estatisticamente a continuação mais coerente.",
+          "<strong>Janela de Contexto (Memória de Curto Prazo):</strong> É o limite máximo de código e conversa que a IA consegue manter ativo ao mesmo tempo. Quando você cola um arquivo de 2.500 linhas e faz 20 pedidos seguidos no mesmo chat, a IA sofre perda de atenção no meio do arquivo (<em>Lost in the Middle</em>).",
+          "<strong>Boa Prática Imediata:</strong> Inicie um novo chat sempre que mudar de módulo/funcionalidade e envie apenas os arquivos diretamente ligados àquela tarefa."
+        ]
+      },
+      {
+        tipo: "danger",
+        titulo: "Alucinações Técnicas na Programação (Como Evitar)",
+        itens: [
+          "<strong>Bibliotecas e Funções Fantasmas:</strong> A IA pode sugerir importar uma biblioteca que não existe, usar parâmetros de uma versão antiga de framework (ex.: Flask 1.x vs 3.x) ou inventar métodos que parecem reais.",
+          "<strong>Omissão Silenciosa:</strong> Em arquivos longos, a IA tende a resumir partes com comentários como <code>// ... restante do código igual ...</code>, fazendo você perder código ao colar.",
+          "<strong>Regra de Ouro:</strong> Trabalhe com arquivos pequenos (100 a 300 linhas) e exija no prompt: <em>'Entregue o código completo do módulo alterado, sem omitir trechos'</em>."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Tokens de Código", txt: "Cada símbolo, variável e linha consome espaço na memória do modelo" },
+      { no: "Contexto Limpo", txt: "Abrir chat novo por tarefa evita que instruções antigas confundam a IA" },
+      { no: "Checar Versões", txt: "Informar no prompt a versão da linguagem/framework (ex.: Python 3.11)" },
+      { no: "Arquivos Enxutos", txt: "Módulos menores = precisão máxima e zero omissão de código" }
+    ],
+    nota: "Entender que a janela de contexto da IA funciona como uma mesa de trabalho física explica por que projetos em arquivo único falham quando crescem: se a mesa estiver entulhada com 3.000 linhas de HTML, CSS, SQL e Python misturados, a IA derruba peças. Quando você organiza em pastas, coloca apenas a peça certa sobre a mesa."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • Da Planilha ao Sistema Completo: O Novo Papel do Dev com IA",
+    titulo: "3. Arquitetura e Modularização: Separando Dados, Regras e Telas",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Separação de Responsabilidades (Separation of Concerns)",
+        itens: [
+          "<strong>1. Camada Visual (Frontend — HTML/CSS/JS):</strong> Cuida apenas da aparência, formulários, tabelas na tela e interação do usuário. Não deve conter regras críticas de segurança nem acesso direto ao banco.",
+          "<strong>2. Camada de Rotas/API (Controllers — Flask/FastAPI/Node):</strong> Recebe o pedido do navegador, valida os dados enviados, chama a regra de negócio e devolve a resposta (HTML ou JSON).",
+          "<strong>3. Camada de Regras (Services) e Dados (Models/DB):</strong> Onde ficam os cálculos, validações e consultas SQL isoladas."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Estrutura de Pastas Padrão para Projetos Modernos",
+        itens: [
+          "Adote esta árvore limpa desde o início (peça para a IA gerar os arquivos respeitando exatamente essa divisão):"
+        ],
+        code: `meu_sistema/
+├── app.py                 # Inicialização do servidor e registro de rotas
+├── config.py              # Configurações e leitura do arquivo .env
+├── .env                   # Senhas, chaves secretas e configs locais (NUNCA vai pro Git)
+├── requirements.txt       # Lista de bibliotecas Python necessárias
+├── database/
+│   ├── schema.sql         # Estrutura oficial das tabelas (CREATE TABLE)
+│   └── db.py              # Conexão segura e funções auxiliares do banco
+├── services/
+│   └── regras_negocio.py  # Cálculos, validações e geração de relatórios
+├── templates/             # Páginas HTML (base.html, index.html, form.html)
+└── static/                # Arquivos CSS, JavaScript e imagens`
+      }
+    ],
+    mapa: [
+      { no: "templates/ e static/", txt: "Interface visual (HTML, CSS, JS) limpa e sem lógica pesada" },
+      { no: "app.py (Rotas)", txt: "Porta de entrada: recebe requisições HTTP e valida entradas" },
+      { no: "services/ (Regras)", txt: "Coração do sistema: cálculos, regras de negócio e exportações" },
+      { no: "database/ (Dados)", txt: "Esquema SQL normalizado e consultas parametrizadas isoladas" }
+    ],
+    nota: "Com essa estrutura de pastas, se você quiser mudar a cor de um botão, pede para a IA mexer apenas em 'static/style.css'. Se quiser mudar um cálculo de relatório, envia apenas 'services/regras_negocio.py'. O restante do sistema permanece 100% intacto e protegido."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: true,
+    mod: "Módulo 1 • Da Planilha ao Sistema Completo: O Novo Papel do Dev com IA",
+    titulo: "4. Planejamento Antes do Código: PRD e Modelagem de Dados com IA",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Passo Zero: O PRD (Documento de Requisitos) Antes da 1ª Linha",
+        itens: [
+          "<strong>Pare de começar pela tela:</strong> Antes de pedir HTML ou Python, peça para a IA ajudar a escrever um <strong>PRD enxuto</strong> definindo: 1) Qual problema o sistema resolve; 2) Quem são os perfis de usuário (Admin, Operador, Consulta); 3) Quais são os fluxos principais; 4) O que o sistema <em>não</em> fará nesta versão (escopo).",
+          "<strong>Ganho Prático:</strong> Clareza total de escopo evita retrabalho e funcionalidades soltas."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Modelagem de Banco Relacional: Saindo da 'Mentalidade de Planilha'",
+        itens: [
+          "<strong>Erro Comum de Quem Vem de Planilhas:</strong> Criar uma única tabela gigante com 40 colunas repetindo nome de cliente, setor ou produto em toda linha.",
+          "<strong>Normalização com IA:</strong> Divida os dados em tabelas relacionadas por <strong>Chave Primária (ID)</strong> e <strong>Chave Estrangeira (FK)</strong>. Peça à IA: <em>'Modele as tabelas SQL normalizadas (3ª Forma Normal) com tipos de dados, chaves estrangeiras, índices e restrições NOT NULL/UNIQUE'</em>."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1. Escopo e Perfis (PRD)", txt: "Definir objetivos, telas necessárias e níveis de permissão" },
+      { no: "2. Entidades e Relações", txt: "Separar cadastros (Usuários, Setores) de movimentações (Registros)" },
+      { no: "3. Esquema SQL (schema.sql)", txt: "Validar colunas, chaves estrangeiras (FK) e índices de busca" },
+      { no: "4. Dados de Teste (Seed)", txt: "Popular o banco com registros fictícios antes de criar as telas" }
+    ],
+    nota: "Na engenharia de software, 'dados bem modelados tornam o código simples; dados mal modelados tornam o código um pesadelo'. Sempre valide o arquivo schema.sql gerado pela IA antes de pedir a criação das telas e rotas."
+  },
+  {
+    tipo: "quiz",
+    modNum: 1,
+    mod: "Módulo 1 • Da Planilha ao Sistema Completo: O Novo Papel do Dev com IA",
+    titulo: "📝 Avaliação do Módulo 1 (Desbloqueio do Módulo 2)",
+    subtitulo: "Responda corretamente às 2 questões abaixo (apenas 1 alternativa correta por questão) para habilitar a visualização do Módulo 2.",
+    perguntas: [
+      {
+        q: "1. Por que colocar todo o código de um sistema em um único arquivo gigante prejudica o desenvolvimento assistido por IA à medida que o projeto cresce?",
+        opcoes: [
+          "Porque a IA não consegue ler arquivos com extensão .py ou .html.",
+          "Porque estoura ou polui a Janela de Contexto do modelo, aumentando a chance de omissões silenciosas, perda de foco e quebra de funcionalidades existentes ao alterar uma parte do código.",
+          "Porque bancos de dados SQLite só funcionam se houver no mínimo 50 arquivos separados."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Qual deve ser a ordem recomendada ao iniciar o desenvolvimento de um novo sistema com Inteligência Artificial?",
+        opcoes: [
+          "Pedir imediatamente o layout CSS animado, depois inventar os campos na tela e por último pensar em como salvar os dados.",
+          "Copiar um código aleatório da internet e pedir para a IA ir adicionando botões sem planejamento.",
+          "Definir primeiro o escopo/requisitos (PRD) e modelar as tabelas normalizadas do banco de dados (schema.sql) com chaves e relacionamentos antes de codificar as rotas e interfaces."
+        ],
+        correta: 2
+      }
+    ],
+    nota: "Acerte as 2 questões acima e clique em 'Validar Respostas' para liberar imediatamente o Módulo 2 (Engenharia de Prompt para Desenvolvedores — Protocolo P.O.C.A. Dev)."
+  },
+
+  // =========================================================================
+  // MÓDULO 2 • ENGENHARIA DE PROMPT PARA DESENVOLVEDORES (PROTOCOLO P.O.C.A. DEV)
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Engenharia de Prompt para Desenvolvedores (Protocolo P.O.C.A. Dev)",
+    titulo: "5. O Protocolo P.O.C.A. Aplicado à Programação de Sistemas",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "P + O: Personificação Técnica e Objetivo Atômico",
+        itens: [
+          "<strong>[P] PERSONIFICAÇÃO (Stack, Senioridade e Boas Práticas):</strong> Defina exatamente qual engenheiro a IA deve incorporar e qual stack tecnológica usar.<br><em>Exemplo: 'Atue como Engenheiro de Software Sênior especialista em Python 3.11, Flask, SQLite e JavaScript moderno (Vanilla ES6).'</em>",
+          "<strong>[O] OBJETIVO (Tarefa Única e Clara):</strong> Peça uma entrega específica e testável.<br><em>Exemplo: 'Crie o módulo de cadastro e listagem paginada de equipamentos com filtro por setor.'</em>"
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "C + A: Contexto Arquitetural e Ajustes de Saída",
+        itens: [
+          "<strong>[C] CONTEXTO (Estrutura Real do Projeto):</strong> Cole o <code>schema.sql</code> das tabelas envolvidas, a árvore de pastas e o código do arquivo atual que será integrado.",
+          "<strong>[A] AJUSTES (Travas de Qualidade e Formato):</strong><br>• <em>'Use consultas SQL parametrizadas (?);'</em><br>• <em>'Trate exceções com try/except e retorne mensagens claras;'</em><br>• <em>'Entregue o arquivo 100% completo, sem abreviações ou comentários do tipo // restante do código.'</em>"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "P • Stack & Papel", txt: "Linguagem, versões, banco de dados e nível de rigor técnico" },
+      { no: "O • Entrega Atômica", txt: "Um endpoint, uma tela ou uma função específica por vez" },
+      { no: "C • Schema & Arquivos", txt: "Tabelas SQL reais e contratos de entrada/saída do projeto" },
+      { no: "A • Regras de Código", txt: "Código completo (sem cortes), seguro, comentado e no padrão visual" }
+    ],
+    nota: "A qualidade do código gerado pela IA é diretamente proporcional à precisão do contexto técnico fornecido. Quando você inclui o CREATE TABLE no [C] Contexto, a IA nunca erra o nome de uma coluna do banco de dados."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Engenharia de Prompt para Desenvolvedores (Protocolo P.O.C.A. Dev)",
+    titulo: "6. Desenvolvimento Iterativo (Em Sprints) vs. Pedido Monolítico",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "❌ O Erro do Prompt Monolítico ('Crie o Sistema Inteiro Agora')",
+        itens: [
+          "<strong>Pedido típico de iniciante:</strong> <em>'Crie um sistema completo de ordens de serviço com login, níveis de acesso, dashboard com gráficos, upload de fotos, geração de PDF e envio de e-mail.'</em>",
+          "<strong>Por que falha:</strong> A IA ultrapassa o limite de saída, simplifica regras importantes, cria funções fictícias e entrega dezenas de bugs interligados difíceis de isolar."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "✅ Construção Incremental em Sprints de 15 Minutos",
+        itens: [
+          "<strong>Sprint 1 (Fundação):</strong> Criar <code>schema.sql</code> + script de inicialização do banco + dados fictícios.",
+          "<strong>Sprint 2 (Core CRUD):</strong> Criar rotas e telas básicas de Cadastrar, Listar, Editar e Excluir e testar no navegador.",
+          "<strong>Sprint 3 (Regras e Filtros):</strong> Adicionar busca, paginação, validações de regras de negócio e status.",
+          "<strong>Sprint 4 (Recursos Avançados):</strong> Adicionar autenticação/perfis, dashboard gerencial e exportação PDF/XLSX."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Sprint 1: Banco", txt: "Tabelas, chaves e conexão testadas isoladamente" },
+      { no: "Sprint 2: CRUD Base", txt: "Fluxo principal funcionando de ponta a ponta" },
+      { no: "Sprint 3: Regras", txt: "Validações, filtros, buscas e tratamento de erros" },
+      { no: "Sprint 4: Extras", txt: "Gráficos, relatórios PDF/Excel e refinamento visual" }
+    ],
+    nota: "Ao construir em Sprints curtos, você testa cada peça no navegador em 2 minutos. Se surgir um erro na Sprint 3, você tem certeza absoluta de que o problema está nas linhas recém-adicionadas, e não no banco ou no CRUD base."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Engenharia de Prompt para Desenvolvedores (Protocolo P.O.C.A. Dev)",
+    titulo: "7. Técnicas Avançadas: Few-Shot, Chain-of-Thought e Prompt Reverso Dev",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "1. Few-Shot (Molde de Padrão) e 2. Chain-of-Thought (Pensar Antes)",
+        itens: [
+          "<strong>Few-Shot (Fornecer um Exemplo Real):</strong> Quando você já tem uma tela ou rota pronta e quer criar outra igual (ex.: já tem <em>Cadastro de Clientes</em> e quer <em>Cadastro de Fornecedores</em>), cole o código pronto e diga: <em>'Siga exatamente a mesma estrutura, nomes de classes CSS e padrão de rotas do código-exemplo abaixo'</em>.",
+          "<strong>Chain-of-Thought (Raciocínio Passo a Passo):</strong> Em lógicas complexas (ex.: cálculo de escala, rateio financeiro ou baixa automática de estoque), ordene: <em>'Antes de escrever qualquer código, descreva o passo a passo lógico da regra e os possíveis casos de exceção'</em>."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "3. Prompt Reverso para Engenharia de Requisitos (Copiar e Usar)",
+        itens: [
+          "Use quando tiver uma ideia de sistema, mas quiser que a IA ajude a descobrir lacunas antes de codar:"
+        ],
+        code: `[P] Atue como Arquiteto de Software Sênior e Analista de Sistemas.
+[O] Quero desenvolver um sistema para [DESCREVER O OBJETIVO: ex. controlar empréstimos de equipamentos e manutenção preventiva].
+[C] O sistema será usado por cerca de [N] usuários simultâneos na rede interna e substituirá controles manuais atuais.
+[A] ANTES de propor o banco de dados ou escrever código, faça-me 6 perguntas técnicas e de regra de negócio essenciais (sobre fluxos, permissões, relatórios, exceções e integrações) para evitar retrabalho. Aguarde minhas respostas.`
+      }
+    ],
+    mapa: [
+      { no: "Few-Shot (Padrão)", txt: "Usar um módulo pronto seu como gabarito para os próximos módulos" },
+      { no: "Chain-of-Thought", txt: "Pedir a lógica em texto antes do código em algoritmos complexos" },
+      { no: "Prompt Reverso", txt: "Deixar a IA entrevistar você para descobrir regras ocultas" },
+      { no: "Consistência Visual", txt: "Todas as telas do sistema nascem com o mesmo layout e UX" }
+    ],
+    nota: "A combinação de Prompt Reverso no início do projeto com Few-Shot na criação das telas subsequentes reduz em mais de 70% o tempo de desenvolvimento de sistemas administrativos e operacionais."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: true,
+    mod: "Módulo 2 • Engenharia de Prompt para Desenvolvedores (Protocolo P.O.C.A. Dev)",
+    titulo: "8. Boas Práticas de Código Limpo (Clean Code) e Documentação com IA",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Princípios de Código Limpo para Exigir nos Prompts",
+        itens: [
+          "<strong>DRY (Don't Repeat Yourself — Não se Repita):</strong> Se você percebeu que a mesma lógica de formatar data, validar CPF ou gerar cabeçalho de PDF aparece em 3 arquivos diferentes, peça à IA: <em>'Extraia essa lógica repetida para uma função reutilizável em utils.py'</em>.",
+          "<strong>KISS (Keep It Simple — Mantenha Simples):</strong> Evite código excessivamente abstrato ou cheio de 'truques' difíceis de ler. Código simples é mais fácil de auditar e manter.",
+          "<strong>Nomes Claros e Semânticos:</strong> Exija variáveis e funções que dizem o que fazem (ex.: <code>buscar_pedidos_pendentes()</code> em vez de <code>get_data2()</code>)."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Documentação Viva Gerada pela Própria IA",
+        itens: [
+          "<strong>README.md Automático:</strong> Ao finalizar um módulo ou sistema, envie a estrutura de arquivos e peça à IA gerar um <code>README.md</code> contendo: visão geral do sistema, pré-requisitos, como criar o <code>.env</code>, comandos de instalação e como rodar.",
+          "<strong>Docstrings e Contratos:</strong> Peça comentários curtos no topo das funções explicando quais parâmetros entram e o que retorna."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Princípio DRY", txt: "Centralizar funções repetidas em arquivos utilitários (utils)" },
+      { no: "Princípio KISS", txt: "Preferir soluções diretas, legíveis e sem complexidade desnecessária" },
+      { no: "Nomes Descritivos", txt: "Variáveis e funções autoexplicativas em português ou inglês consistente" },
+      { no: "README.md Pronto", txt: "Manual técnico de instalação e execução gerado ao final do projeto" }
+    ],
+    nota: "Daqui a seis meses, quando você precisar adicionar um novo relatório no sistema que criou hoje, um código limpo com funções pequenas e um README.md claro permitirão que você (e a IA) entendam tudo em 2 minutos."
+  },
+  {
+    tipo: "quiz",
+    modNum: 2,
+    mod: "Módulo 2 • Engenharia de Prompt para Desenvolvedores (Protocolo P.O.C.A. Dev)",
+    titulo: "📝 Avaliação do Módulo 2 (Desbloqueio do Módulo 3)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre o Protocolo P.O.C.A. Dev, Sprints Incrementais e Clean Code para liberar o Módulo 3.",
+    perguntas: [
+      {
+        q: "1. Qual é a principal vantagem de desenvolver um sistema em Sprints Incrementais (Banco -> CRUD Base -> Regras -> Relatórios) em vez de pedir o sistema inteiro em um único prompt?",
+        opcoes: [
+          "Evita estourar o limite de resposta da IA, permite testar cada camada isoladamente e facilita localizar exatamente onde surgiu qualquer erro.",
+          "Porque a IA cobra mais caro se o prompt tiver mais de 10 linhas.",
+          "Porque linguagens como Python e JavaScript não permitem criar mais de uma tela por dia."
+        ],
+        correta: 0
+      },
+      {
+        q: "2. Na engenharia de prompt para software, para que servem as técnicas Few-Shot e DRY (Don't Repeat Yourself)?",
+        opcoes: [
+          "Few-Shot serve para apagar o banco de dados; DRY serve para repetir o mesmo código em todas as páginas.",
+          "Few-Shot fornece um código-exemplo pronto do projeto para a IA seguir o mesmo padrão visual/estrutural; DRY orienta a extrair lógicas repetidas para funções únicas e reutilizáveis.",
+          "Ambas servem exclusivamente para traduzir textos do inglês para o português."
+        ],
+        correta: 1
+      }
+    ],
+    nota: "Excelente! Agora você já domina como estruturar comandos técnicos de alta precisão. Avance para o Módulo 3 para aprender Depuração, Versionamento (Git) e Testes."
+  },
+
+  // =========================================================================
+  // MÓDULO 3 • DEPURAÇÃO (DEBUGGING), VERSIONAMENTO (GIT) E TESTES
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Depuração (Debugging), Versionamento (Git) e Testes",
+    titulo: "9. Como Resolver Bugs com IA sem Entrar no 'Loop Infinito de Erros'",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Por Que o 'Deu Erro, Arrume' Gera Loops Infinitos?",
+        itens: [
+          "<strong>O Ciclo Frustrante:</strong> Você cola apenas uma mensagem genérica <em>'Não funcionou, deu erro 500'</em>. A IA tenta adivinhar o que houve, altera o código errado, cria um novo bug e você fica trocando mensagens sem sair do lugar.",
+          "<strong>Regra de Ouro da Depuração:</strong> A IA não enxerga seu terminal nem o Console do navegador (F12) a menos que você copie e cole a mensagem exata."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "O Protocolo de Depuração Cirúrgica em 4 Passos",
+        itens: [
+          "<strong>1. Ação Realizada:</strong> Diga o que você clicou/enviou e o que esperava acontecer.",
+          "<strong>2. Traceback / Log Completo:</strong> Copie todo o rastreamento do erro no terminal Python ou na aba <em>Console / Network</em> do navegador (F12).",
+          "<strong>3. Código Envolvido:</strong> Cole a função ou rota exata onde o erro apontou.",
+          "<strong>4. Pedido de Diagnóstico:</strong> <em>'Explique a causa raiz do erro em 2 linhas antes de apresentar o código corrigido.'</em>"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1. Descrever o Cenário", txt: "Qual ação foi executada e qual comportamento era esperado" },
+      { no: "2. Colar Log Completo", txt: "Traceback inteiro do servidor ou erro do Console F12 do navegador" },
+      { no: "3. Isolar o Código", txt: "Enviar a função/rota exata indicada na linha do traceback" },
+      { no: "4. Exigir Causa Raiz", txt: "Entender o porquê da falha antes de aplicar o ajuste" }
+    ],
+    nota: "Quando você pede para a IA explicar a causa raiz antes de reescrever o código, ela ativa um raciocínio analítico muito mais preciso e evita alterar partes do programa que não tinham relação com o defeito."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Depuração (Debugging), Versionamento (Git) e Testes",
+    titulo: "10. Controle de Versão com Git e GitHub: Seu 'Botão de Voltar no Tempo'",
+    cards: [
+      {
+        tipo: "warn",
+        titulo: "O Risco de Programar com IA Sem Versionamento",
+        itens: [
+          "<strong>Cenário Real:</strong> Seu sistema está funcionando perfeitamente. Você pede à IA uma refatoração visual ou uma nova funcionalidade, substitui o arquivo, algo quebra profundamente e você não tem cópia do estado anterior.",
+          "<strong>Solução Profissional:</strong> Usar o <strong>Git</strong> localmente (mesmo em projetos individuais!) como máquina do tempo e auditoria."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Os 4 Hábitos de Ouro com Git ao Usar IA",
+        itens: [
+          "<strong>1. Commit Antes da IA:</strong> Sempre que uma funcionalidade ficar pronta e testada, salve um ponto de restauração: <code>git add . && git commit -m \"feat: cadastro validado\"</code>.",
+          "<strong>2. Revisão Visual com Diff:</strong> Depois de colar ou aceitar uma sugestão da IA, use <code>git diff</code> (ou a aba <em>Source Control</em> do VS Code) para ver exatamente quais linhas foram adicionadas (verde) ou removidas (vermelho).",
+          "<strong>3. Branches para Experimentos:</strong> Crie uma ramificação (<code>git checkout -b novo-relatorio</code>) antes de testar mudanças estruturais.",
+          "<strong>4. Desfazer Sem Medo:</strong> Se a IA bagunçou um arquivo, basta rodar <code>git checkout -- arquivo.py</code> e ele volta instantaneamente ao estado funcional."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Checkpoint (Commit)", txt: "Salvar versão estável antes de pedir alterações grandes à IA" },
+      { no: "Auditoria (Git Diff)", txt: "Inspecionar linha a linha o que a IA modificou ou apagou" },
+      { no: "Branch de Teste", txt: "Isolar experimentos arriscados sem afetar o código principal" },
+      { no: "Rollback Instantâneo", txt: "Desfazer qualquer alteração problemática em segundos" }
+    ],
+    nota: "Você não precisa decorar dezenas de comandos complexos de Git. Apenas o ciclo 'Commit antes de pedir -> Revisar Diff depois de aplicar -> Reverter se quebrar' já protege 100% do seu trabalho contra perdas acidentais."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Depuração (Debugging), Versionamento (Git) e Testes",
+    titulo: "11. Testes Automatizados e Casos de Borda (Usando a IA como QA)",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "Pensando Além do 'Caminho Feliz' (Casos de Borda / Edge Cases)",
+        itens: [
+          "<strong>Caminho Feliz:</strong> Você testa o formulário digitando seu próprio nome, uma data válida e clicando uma vez em Salvar. Tudo funciona.",
+          "<strong>Realidade dos Usuários (Casos de Borda):</strong> Usuário deixa campo em branco, digita letras no campo de valor numérico, cola texto com aspas ou emojis, clica 3 vezes rápido no botão 'Enviar' (gerando registro duplicado) ou tenta acessar uma URL restrita sem login."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Usando a IA como Engenheira de Qualidade (QA)",
+        itens: [
+          "<strong>1. Auditoria de Casos de Borda:</strong> Cole seu formulário/rota na IA e peça: <em>'Atue como Engenheiro de QA. Liste 10 cenários de entrada inválida ou uso inesperado que poderiam quebrar este código e mostre como blindá-lo'</em>.",
+          "<strong>2. Testes Automatizados (pytest / Jest):</strong> Para regras de negócio críticas (cálculos financeiros, prazos, permissões), peça à IA gerar testes unitários que rodam em 1 segundo e garantem que futuras alterações não quebraram as regras antigas."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Caminho Feliz", txt: "Fluxo normal com dados preenchidos corretamente pelo usuário" },
+      { no: "Entradas Inválidas", txt: "Campos vazios, textos em números, datas inválidas e caracteres especiais" },
+      { no: "Duplo Clique / Estado", txt: "Desabilitar botão após envio e validar unicidade no banco" },
+      { no: "Testes Unitários", txt: "Scripts automáticos que verificam regras críticas a cada mudança" }
+    ],
+    nota: "A IA é uma parceira extraordinária para encontrar falhas que o próprio criador do código não enxerga por já estar habituado ao fluxo normal do sistema."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: true,
+    mod: "Módulo 3 • Depuração (Debugging), Versionamento (Git) e Testes",
+    titulo: "12. Refatoração Segura e Otimização de Performance de Banco",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Refatoração: Melhorando o Código Interno sem Mudar o Resultado",
+        itens: [
+          "<strong>Quando Refatorar:</strong> Quando uma função passa de 60 linhas, tem muitos <code>if/else</code> aninhados ou código repetido.",
+          "<strong>Regra de Ouro:</strong> Nunca refatore e adicione uma nova funcionalidade ao mesmo tempo! Primeiro faça um <em>commit</em> da versão que funciona, peça à IA para reorganizar o código mantendo exatamente as mesmas entradas e saídas, e teste novamente."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Performance: Preparando o Sistema para Crescer",
+        itens: [
+          "<strong>Evite Consultas Dentro de Loops (Problema N+1):</strong> Em vez de fazer um <code>SELECT</code> no banco para cada linha de uma lista de 1.000 itens, peça à IA para unir os dados em uma única consulta usando <code>JOIN</code>.",
+          "<strong>Índices e Paginação:</strong> Crie índices (<code>CREATE INDEX</code>) nas colunas usadas em filtros/buscas e adicione paginação (<code>LIMIT / OFFSET</code>) para que telas com milhares de registros abram instantaneamente."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1. Commit Estável", txt: "Garantir ponto de retorno antes de mexer na estrutura interna" },
+      { no: "2. Refatorar Isolado", txt: "Melhorar legibilidade sem misturar com novas funcionalidades" },
+      { no: "3. Consultas com JOIN", txt: "Eliminar loops fazendo centenas de consultas repetidas ao banco" },
+      { no: "4. Índices & Paginação", txt: "Manter o sistema rápido mesmo com dezenas de milhares de registros" }
+    ],
+    nota: "Um mini-sistema que substitui uma planilha costuma começar com 100 linhas de dados, mas rapidamente chega a 30.000 registros. Aplicar JOINs, índices e paginação com ajuda da IA garante que o sistema continue leve."
+  },
+  {
+    tipo: "quiz",
+    modNum: 3,
+    mod: "Módulo 3 • Depuração (Debugging), Versionamento (Git) e Testes",
+    titulo: "📝 Avaliação do Módulo 3 (Desbloqueio do Módulo 4)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre Depuração Cirúrgica, Git e Refatoração/Testes para liberar o Módulo 4.",
+    perguntas: [
+      {
+        q: "1. Ao enfrentar um bug em um código gerado por IA, qual procedimento evita o chamado 'loop infinito de erros'?",
+        opcoes: [
+          "Enviar apenas a frase 'Deu erro, corrija' repetidas vezes até a IA acertar por tentativa e erro.",
+          "Informar a ação realizada, colar o log/traceback completo, isolar o trecho de código envolvido e pedir à IA que diagnostique a causa raiz antes de gerar a correção.",
+          "Apagar todo o projeto e começar do zero sempre que aparecer uma mensagem vermelha no terminal."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Sobre o uso do Git e a prática de refatoração em sistemas desenvolvidos com IA, assinale a alternativa CORRETA:",
+        opcoes: [
+          "Deve-se fazer um commit da versão funcional antes de pedir uma refatoração grande à IA, usar git diff para revisar o que mudou e evitar misturar refatoração com novas funcionalidades ao mesmo tempo.",
+          "O Git só deve ser usado quando o sistema estiver 100% pronto e nunca durante o desenvolvimento.",
+          "Para melhorar a performance de listas grandes, deve-se executar um SELECT separado dentro de um loop for para cada item."
+        ],
+        correta: 0
+      }
+    ],
+    nota: "Ótimo! Agora que você domina depuração, Git e testes, avance para o Módulo 4 para blindar a segurança do código e acessar o Laboratório de Prompts Dev."
+  },
+
+  // =========================================================================
+  // MÓDULO 4 • SEGURANÇA DA INFORMAÇÃO E LABORATÓRIO DE PROMPTS DEV
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Segurança da Informação e Laboratório de Prompts Dev",
+    titulo: "13. Segurança de Código Gerado por IA: As 5 Falhas Que Você Deve Bloquear",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Vulnerabilidades Comuns em Códigos Rápidos de IA",
+        itens: [
+          "<strong>1. SQL Injection (Injeção de SQL):</strong> Nunca aceite consultas montadas com f-strings ou concatenação de texto (ex.: <code>f\"SELECT * FROM users WHERE id = {id}\"</code>). Exija sempre <strong>consultas parametrizadas</strong> (<code>WHERE id = ?</code>).",
+          "<strong>2. XSS (Cross-Site Scripting):</strong> Nunca injete texto digitado pelo usuário via <code>innerHTML</code> no JavaScript sem sanitização; prefira <code>textContent</code> ou templates escapados (Jinja2 padrão).",
+          "<strong>3. Segredos no Código (Hardcoded Secrets):</strong> Jamais deixe senhas de banco, chaves de API ou <code>SECRET_KEY</code> escritos direto no arquivo <code>.py</code>."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Boas Práticas Obrigatórias de Segurança (AppSec)",
+        itens: [
+          "<strong>4. Variáveis de Ambiente (.env):</strong> Guarde senhas e chaves em um arquivo <code>.env</code> carregado via biblioteca (<code>python-dotenv</code>) e inclua o <code>.env</code> no <code>.gitignore</code>.",
+          "<strong>5. Validação e Autorização no Servidor (Backend):</strong> Esconder um botão no HTML/CSS não impede ninguém de enviar uma requisição direta à rota. Sempre verifique no backend se o usuário está logado e tem permissão.",
+          "<strong>Senhas com Hash:</strong> Nunca salve senhas em texto puro; use funções criptográficas como <code>generate_password_hash</code>."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "SQL Parametrizado", txt: "Usar placeholders (?) em 100% das consultas ao banco de dados" },
+      { no: "Arquivo .env + .gitignore", txt: "Manter senhas, tokens e chaves secretos fora do código-fonte" },
+      { no: "Escape de HTML (XSS)", txt: "Usar textContent no JS e autoescape no template para dados do usuário" },
+      { no: "Auth no Backend", txt: "Validar sessão e perfil de permissão no servidor a cada requisição" }
+    ],
+    nota: "Modelos de IA aprendem com códigos públicos da internet, incluindo exemplos antigos e inseguros. Ao incluir explicitamente 'Use queries parametrizadas, variáveis de ambiente e validação no backend' no bloco [A] Ajustes, você elimina as falhas mais graves da web."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Segurança da Informação e Laboratório de Prompts Dev",
+    titulo: "14. Privacidade no Desenvolvimento (LGPD): Dados Reais vs. Dados Sintéticos",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "O Que NUNCA Enviar para a IA Durante o Desenvolvimento",
+        itens: [
+          "<strong>Zero Bases Reais no Chat:</strong> Jamais faça upload de um arquivo <code>.sqlite</code> de produção, dump SQL real ou planilha contendo CPFs, nomes completos, prontuários, salários ou dados sigilosos de clientes/cidadãos para pedir análise ou correção de bug.",
+          "<strong>Zero Logs com Dados Pessoais:</strong> Antes de colar um log de erro que contenha parâmetros de requisição com dados reais de um usuário, substitua os valores reais por dados fictícios."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "A Solução Profissional: Esquema + Dados Sintéticos (Mock Data)",
+        itens: [
+          "<strong>1. Envie Apenas a Estrutura:</strong> Compartilhe com a IA somente os nomes das tabelas e tipos das colunas (<code>CREATE TABLE</code> ou cabeçalho do CSV).",
+          "<strong>2. Peça um Gerador de Dados Fictícios:</strong> Ordene à IA criar um script <code>seed_fake.py</code> que popule seu banco local de testes com 200 registros fictícios realistas.",
+          "<strong>Benefício Duplo:</strong> Conformidade total com a LGPD (Lei nº 13.709/2018) e ambiente de testes rico para validar paginação, buscas e gráficos."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Proibido: Dump/CSV Real", txt: "Nunca subir bancos de produção com dados pessoais em IAs públicas" },
+      { no: "Permitido: Schema SQL", txt: "Compartilhar apenas estrutura de tabelas, colunas e tipos de dados" },
+      { no: "Script Seed Fictício", txt: "Gerar centenas de registros falsos para testar o sistema localmente" },
+      { no: "Conformidade LGPD", txt: "Desenvolvimento seguro sem exposição de dados sensíveis" }
+    ],
+    nota: "Trabalhar com um script gerador de dados fictícios (seed) é um hábito de equipes sênior de software: além de proteger a privacidade, permite recriar um banco limpo para testes em 1 segundo sempre que você precisar."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Segurança da Informação e Laboratório de Prompts Dev",
+    titulo: "15. Laboratório Dev 1: Prompts para Arquitetura, Banco SQL e Backend",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Prompt 1: Arquiteto de Sistema + Modelagem SQL Normalizada",
+        itens: [
+          "Use no início de qualquer novo projeto para estruturar pastas e banco de dados antes de codar:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como Arquiteto de Software Sênior especialista em sistemas web modulares, modelagem de bancos de dados relacionais (SQLite/PostgreSQL) e Python/Flask.
+
+[O - OBJETIVO] Projete a arquitetura completa e o esquema do banco de dados (schema.sql) para um sistema de [DESCREVER O SISTEMA: ex. Controle de Chamados de Manutenção e Inventário de Equipamentos].
+
+[C - CONTEXTO] O sistema substituirá planilhas manuais e será usado por múltiplos operadores simultâneos. Precisamos registrar cadastros base (Unidades/Setores, Usuários com perfis Admin e Operador, Equipamentos) e movimentações históricas (Chamados, Status, Logs de alteração).
+
+[A - AJUSTES] Entregue:
+1. Árvore de pastas modular recomendada (separando rotas, regras de negócio, banco e templates);
+2. Script SQL completo (CREATE TABLE) normalizado, com chaves primárias, chaves estrangeiras (FOREIGN KEY), valores padrão, timestamps e índices nas colunas de busca;
+3. Um script Python auxiliar (seed.py) que crie o banco e insira 15 registros fictícios realistas para testes (sem dados reais).`
+      },
+      {
+        tipo: "normal",
+        titulo: "Prompt 2: Gerador de Backend / CRUD Seguro e Parametrizado",
+        itens: [
+          "Gera rotas limpas com validação de entrada, tratamento de exceções e queries seguras:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como Engenheiro Backend Sênior especialista em Python 3.11, Flask e segurança de aplicações web.
+
+[O - OBJETIVO] Implemente o módulo completo de cadastro, listagem com busca/paginação, edição e inativação lógica (soft delete) para a entidade [NOME DA TABELA].
+
+[C - CONTEXTO] Utilize exatamente o esquema SQL abaixo como referência:
+[COLAR AQUI O CREATE TABLE DA TABELA]
+
+[A - AJUSTES]
+1. Use exclusivamente consultas SQL parametrizadas (?) para prevenir SQL Injection;
+2. Valide todos os campos obrigatórios e tipos de dados no backend antes de gravar no banco;
+3. Trate erros com try/except retornando status HTTP adequados e mensagens amigáveis;
+4. Separe as consultas SQL em um arquivo de serviço/repositório e as rotas no blueprint/controller;
+5. Entregue os arquivos completos, sem omitir nenhuma linha.`
+      }
+    ],
+    mapa: [
+      { no: "Prompt Arquitetura", txt: "Gera árvore de pastas + schema.sql normalizado + seed.py fictício" },
+      { no: "Prompt Backend CRUD", txt: "Cria rotas seguras, paginação, soft delete e validação no servidor" },
+      { no: "Soft Delete (Inativar)", txt: "Marcar ativo=0 em vez de apagar histórico importante com DELETE" },
+      { no: "Código Integral", txt: "Trava explícita impedindo que a IA corte trechos do arquivo" }
+    ],
+    nota: "Uma boa prática valiosa incluída no Prompt 2 é o 'Soft Delete' (inativação lógica usando uma coluna ativo = 1 ou 0): em sistemas corporativos, quase nunca apagamos um registro definitivamente com DELETE, preservando o histórico para auditorias e relatórios."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: true,
+    mod: "Módulo 4 • Segurança da Informação e Laboratório de Prompts Dev",
+    titulo: "16. Laboratório Dev 2: Prompts para Frontend, Code Review e Testes QA",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Prompt 3: Interface Moderna, Responsiva e Consistente (Frontend)",
+        itens: [
+          "Gera interfaces limpas com validação visual, prevenção de duplo clique e feedback ao usuário:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como Engenheiro Frontend Sênior especialista em UI/UX, acessibilidade e HTML5/CSS3/JavaScript moderno (sem dependências pesadas).
+
+[O - OBJETIVO] Crie a interface completa (HTML + CSS + JS) para a tela de [DESCREVER A TELA: ex. Listagem e Cadastro Modal de Equipamentos] integrada às rotas [LISTAR ENDPOINTS: ex. GET /api/equipamentos e POST /api/equipamentos].
+
+[C - CONTEXTO] O sistema utiliza tema escuro moderno (Adwaita Dark: fundo #242424, superfícies #303030, destaque azul #3584e4, bordas arredondadas) e precisa funcionar perfeitamente tanto em monitores desktop quanto em celulares.
+
+[A - AJUSTES]
+1. Use textContent (nunca innerHTML com dados crus do usuário) para evitar XSS;
+2. Desabilite o botão 'Salvar' durante o envio da requisição (estado 'Salvando...') para impedir cadastros duplicados por duplo clique;
+3. Exiba notificações visuais claras de sucesso ou erro;
+4. Entregue o código completo e bem estruturado.`
+      },
+      {
+        tipo: "warn",
+        titulo: "Prompt 4: Auditor de Código (Code Review de Segurança e Qualidade)",
+        itens: [
+          "Cole qualquer arquivo do seu projeto para a IA auditar vulnerabilidades e bugs ocultos:"
+        ],
+        code: `[P - PERSONIFICAÇÃO] Atue como Especialista Sênior em Segurança de Aplicações (AppSec) e Revisor de Código (Code Reviewer).
+
+[O - OBJETIVO] Audite rigorosamente o código fornecido abaixo em busca de vulnerabilidades de segurança, bugs lógicos, vazamento de recursos e problemas de performance.
+
+[C - CONTEXTO] Este código fará parte de um sistema web multiusuário em produção.
+
+[A - AJUSTES] Classifique cada problema encontrado por gravidade (CRÍTICO, MÉDIO, MELHORIA), explique o risco prático em linguagem simples e apresente a versão corrigida completa do código ao final.
+
+[CÓDIGO PARA AUDITORIA]:
+(Cole aqui o código-fonte)`
+      }
+    ],
+    mapa: [
+      { no: "Proteção Duplo Clique", txt: "Desabilitar botão de envio enquanto aguarda resposta do servidor" },
+      { no: "UI Responsiva", txt: "Layout fluido para desktop e mobile com feedback claro ao usuário" },
+      { no: "IA Auditando IA", txt: "Usar o Prompt 4 para revisar código gerado em outras conversas" },
+      { no: "Classificação de Risco", txt: "Priorizar correções críticas de segurança antes de melhorias visuais" }
+    ],
+    nota: "Adote o hábito de passar seus arquivos principais pelo Prompt 4 (Auditor de Código) antes de publicar uma versão: você aprenderá boas práticas na prática ao ler as explicações de cada ponto apontado."
+  },
+  {
+    tipo: "quiz",
+    modNum: 4,
+    mod: "Módulo 4 • Segurança da Informação e Laboratório de Prompts Dev",
+    titulo: "📝 Avaliação do Módulo 4 (Desbloqueio do Módulo 5)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre Segurança de Aplicações, LGPD no Desenvolvimento e Prompts Técnicos para liberar o Módulo 5.",
+    perguntas: [
+      {
+        q: "1. Quais medidas são obrigatórias para proteger um sistema gerado com IA contra SQL Injection e exposição de senhas/chaves no código-fonte?",
+        opcoes: [
+          "Concatenar as variáveis diretamente na string SQL e escrever as senhas do banco no topo do arquivo app.py para facilitar a leitura.",
+          "Utilizar exclusivamente consultas SQL parametrizadas (placeholders ?) e armazenar senhas/chaves em um arquivo .env listado no .gitignore.",
+          "Ocultar os campos de senha usando CSS (display: none) no navegador do usuário."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Segundo as boas práticas de LGPD e desenvolvimento seguro, como devemos proceder quando precisamos testar um novo sistema com centenas de registros?",
+        opcoes: [
+          "Fazer upload de uma planilha real com CPFs, nomes e dados sensíveis de cidadãos no chat da IA para ela importar no banco.",
+          "Enviar apenas o esquema das colunas (CREATE TABLE) para a IA e pedir um script gerador de dados fictícios/sintéticos (seed) para popular o banco de testes localmente.",
+          "Testar o sistema apenas com 1 registro escrito 'teste 123' e publicar direto em produção."
+        ],
+        correta: 1
+      }
+    ],
+    nota: "Excelente! Agora avance para o Módulo 5 (Ecossistema Moderno de Ferramentas, Governança e Conclusões) para habilitar seu Certificado."
+  },
+
+  // =========================================================================
+  // MÓDULO 5 • ECOSSISTEMA MODERNO DE FERRAMENTAS, GOVERNANÇA E CONCLUSÕES
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Ecossistema Moderno de Ferramentas, Governança e Conclusões",
+    titulo: "17. Ecossistema de Ferramentas de IA para Devs (Chat Web vs. IDEs e Agentes)",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "1. Chats Web (Gemini, ChatGPT, Claude) — Onde Usar Melhor",
+        itens: [
+          "<strong>Pontos Fortes:</strong> Excelentes para brainstorming de arquitetura, criação de PRD, modelagem de banco de dados (<code>schema.sql</code>), estudo de novas tecnologias, análise de logs isolados e geração de scripts independentes.",
+          "<strong>Limitação em Projetos Maiores:</strong> Quando o projeto passa de 5 ou 6 arquivos interligados, ficar copiando e colando trechos manualmente entre o navegador e o editor torna-se lento e propenso a erros de colagem."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "2. IDEs com IA Integrada e Agentes (VS Code + Copilot, Cursor, CLI)",
+        itens: [
+          "<strong>Visão Global do Projeto:</strong> Ferramentas integradas ao editor de código indexam todas as pastas do seu projeto local, entendendo como <code>app.py</code> conversa com <code>database/db.py</code> e <code>templates/</code>.",
+          "<strong>Edição via Diff Controlado:</strong> Em vez de você copiar e colar, a IA destaca em verde e vermelho exatamente o que propõe alterar em cada arquivo, e você clica em <em>Aceitar</em> ou <em>Rejeitar</em> bloco a bloco."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Chat Web", txt: "Ideal para planejar, modelar banco, aprender conceitos e scripts únicos" },
+      { no: "IDE com IA Integrada", txt: "Ideal para projetos multi-arquivo com contexto automático do projeto" },
+      { no: "Revisão por Diff", txt: "Aprovar alterações bloco a bloco mantendo controle total do código" },
+      { no: "Terminal Assistido", txt: "Apoio para comandos Git, ambiente virtual (venv) e instalação de pacotes" }
+    ],
+    nota: "Você pode combinar o melhor dos dois mundos: use o Chat Web para desenhar a arquitetura, o PRD e o banco de dados com calma, e use uma IDE com IA integrada para implementar, testar e manter os múltiplos arquivos do sistema."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Ecossistema Moderno de Ferramentas, Governança e Conclusões",
+    titulo: "18. Fluxo Profissional de Trabalho: Do Zero à Produção sem Surpresas",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "As 6 Etapas do Ciclo Completo de Desenvolvimento Assistido",
+        itens: [
+          "<strong>1. Definição e PRD:</strong> Escrever o problema, perfis de usuários e regras de negócio antes de abrir o editor.",
+          "<strong>2. Modelagem de Dados:</strong> Validar o <code>schema.sql</code> normalizado e criar script de dados fictícios.",
+          "<strong>3. Estrutura e Versionamento:</strong> Criar pastas modulares, <code>.env</code>, <code>.gitignore</code> e o <code>git init</code> inicial.",
+          "<strong>4. Sprints Incrementais:</strong> Implementar e testar um módulo por vez (CRUD -> Regras -> Relatórios), fazendo <em>commit</em> a cada etapa concluída.",
+          "<strong>5. Auditoria e Testes QA:</strong> Rodar revisão de segurança (SQL/XSS/Auth) e testar entradas inválidas.",
+          "<strong>6. Implantação (Deploy) e Backup:</strong> Rodar em servidor WSGI de produção (ex.: Waitress/Gunicorn, nunca com <code>debug=True</code>) e configurar backup automático."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Combatendo a 'Dívida Técnica' e o Código Caixa-Preta",
+        itens: [
+          "<strong>Regra Inegociável:</strong> Nunca coloque em produção um trecho de código que você não entende como funciona.",
+          "<strong>Use a IA como Tutora:</strong> Sempre que a IA usar uma técnica nova (ex.: <em>decorators</em>, <em>async/await</em>, <em>JOINs</em> complexos), peça: <em>'Explique em linguagem simples, linha por linha, como esse bloco funciona'</em>."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1-2. PRD & Banco", txt: "Planejamento sólido antes da primeira linha de interface" },
+      { no: "3-4. Git & Sprints", txt: "Construção modular com checkpoints frequentes" },
+      { no: "5. QA & AppSec", txt: "Auditoria de segurança e testes de casos de borda" },
+      { no: "6. Produção Real", txt: "Servidor WSGI estável (debug=False) + rotina de backup" }
+    ],
+    nota: "Um detalhe crítico na passagem para produção em Python/Flask: durante os testes usamos debug=True, mas no servidor final deve-se usar debug=False e um servidor WSGI robusto como Waitress ou Gunicorn para suportar múltiplos usuários simultâneos com segurança."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Ecossistema Moderno de Ferramentas, Governança e Conclusões",
+    titulo: "19. Checklist Final de Qualidade Antes de Publicar (Crivo do Desenvolvedor)",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Os 5 Pontos Técnicos Obrigatórios Antes do Deploy",
+        itens: [
+          "<strong>☑ 1. Zero Segredos Expostos:</strong> Nenhuma senha, token ou chave secreta está escrita no código-fonte (tudo isolado no <code>.env</code> e protegido pelo <code>.gitignore</code>)?",
+          "<strong>☑ 2. Blindagem contra Injeção e Acesso Indevido:</strong> Todas as queries SQL são parametrizadas (<code>?</code>) e todas as rotas protegidas verificam autenticação/permissão no servidor?",
+          "<strong>☑ 3. Backup Automatizado do Banco:</strong> Existe uma rotina testada de cópia de segurança do arquivo de banco de dados (ex.: backup diário do <code>.sqlite</code>)?"
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Resiliência, Experiência do Usuário e Manutenção",
+        itens: [
+          "<strong>☑ 4. Tratamento de Erros Amigável:</strong> Se o usuário enviar um formulário incompleto ou ocorrer falha de rede, o sistema exibe uma mensagem clara em vez de travar ou expor rastreamento técnico (<em>traceback</em>)?",
+          "<strong>☑ 5. Código Versionado e Documentado:</strong> Todas as alterações estão salvas no Git com <em>commits</em> organizados e o <code>README.md</code> explica como instalar e executar o sistema?"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "1º Crivo: Segredos", txt: "Arquivo .env isolado e zero senhas dentro de arquivos .py ou .js" },
+      { no: "2º Crivo: Queries & Auth", txt: "SQL parametrizado e validação de permissões no backend" },
+      { no: "3º Crivo: Backup & Erros", txt: "Rotina de backup ativo e mensagens amigáveis em falhas" },
+      { no: "4º Crivo: Git & README", txt: "Histórico salvo e documentação clara para manutenção futura" }
+    ],
+    nota: "Aplicar este checklist de 5 pontos antes de liberar qualquer sistema aos usuários eleva o padrão das suas entregas do nível de protótipo rápido para o nível de engenharia de software confiável."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: true,
+    mod: "Módulo 5 • Ecossistema Moderno de Ferramentas, Governança e Conclusões",
+    titulo: "20. Conclusões Finais: O Desenvolvedor Aumentado por Inteligência Artificial",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Do Automatizador de Tarefas ao Construtor de Sistemas Escaláveis",
+        itens: [
+          "<strong>Você no Controle da Engenharia:</strong> Criar sistemas que substituem planilhas e automatizam rotinas já provou o impacto real da IA no seu dia a dia. Agora, com arquitetura modular, Protocolo P.O.C.A. Dev, Git, testes de borda e segurança, você tem método para construir soluções muito maiores sem perder o controle do código.",
+          "<strong>Velocidade com Responsabilidade:</strong> A IA escreve centenas de linhas por minuto, mas é a sua visão de negócio, revisão crítica e cuidado com os dados que garantem um software confiável."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "A Premissa Final da Capacitação",
+        itens: [
+          "<strong>O Que a IA Nunca Substitui na Criação de Software:</strong> Entender profundamente a dor real de quem usa o sistema na ponta, simplificar processos burocráticos e tomar decisões arquiteturais equilibradas.",
+          "<strong>Síntese Final:</strong> <em>'A Inteligência Artificial não substitui o bom desenvolvedor — ela transforma quem domina arquitetura, método e senso crítico em uma equipe inteira de engenharia.'</em>"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Arquitetar Primeiro", txt: "PRD e banco de dados normalizado antes de gerar telas" },
+      { no: "Comandar com P.O.C.A.", txt: "Stack clara, tarefas atômicas, contexto real e travas de saída" },
+      { no: "Proteger com Git & QA", txt: "Commits frequentes, revisão por diff e testes de casos de borda" },
+      { no: "Blindar & Documentar", txt: "Segurança AppSec, dados sintéticos na LGPD e README completo" }
+    ],
+    nota: "Parabéns por concluir esta capacitação! Utilize o botão '🖨️ Salvar PDF Completo' no topo da tela para guardar este material completo de 20 slides como guia técnico de consulta, explore o '✨ Construtor P.O.C.A.' sempre que iniciar um novo módulo e responda à última avaliação abaixo para emitir seu Certificado em PDF!"
+  },
+  {
+    tipo: "quiz",
+    modNum: 5,
+    mod: "Módulo 5 • Ecossistema Moderno de Ferramentas, Governança e Conclusões",
+    titulo: "📝 Avaliação Final do Módulo 5 (Habilitação do Certificado)",
+    subtitulo: "Responda corretamente às 2 questões finais sobre ferramentas modernas, fluxo de produção e o Checklist de Qualidade para habilitar a emissão do seu Certificado em PDF.",
+    perguntas: [
+      {
+        q: "1. Qual é a postura recomendada diante de um trecho de código complexo gerado pela IA e na preparação de uma aplicação Flask/Python para ambiente de produção?",
+        opcoes: [
+          "Publicar o código imediatamente com debug=True sem ler, pois se compilou significa que está pronto para produção.",
+          "Nunca colocar em produção código que não se compreende (pedindo à IA explicação linha a linha quando necessário), desativar o debug (usando servidor WSGI como Waitress/Gunicorn) e validar segurança, backups e tratamento de erros.",
+          "Evitar o uso de variáveis de ambiente e deixar o servidor de desenvolvimento aberto para toda a internet."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Qual é a vantagem prática de utilizar uma IDE com IA integrada (como VS Code + Copilot ou Cursor) à medida que um sistema cresce para vários arquivos?",
+        opcoes: [
+          "Enxerga a estrutura completa de pastas do projeto automaticamente e permite revisar e aprovar alterações (diffs) bloco a bloco diretamente nos arquivos, reduzindo erros de cópia manual.",
+          "Elimina a necessidade de testar o sistema no navegador ou fazer backup do banco de dados.",
+          "Funciona exclusivamente sem internet e não precisa de instruções claras do desenvolvedor."
+        ],
+        correta: 0
+      }
+    ],
+    nota: "Ao acertar esta avaliação final, a etapa '🎓 Emissão de Certificado em PDF' será desbloqueada imediatamente para que você insira seu nome e baixe seu certificado!"
+  },
+
+  // =========================================================================
+  // CERTIFICADO FINAL
+  // =========================================================================
+  {
+    tipo: "certificado",
+    modNum: 6,
+    mod: "Certificação Final • Capacitação Dev com IA",
+    titulo: "🎓 Emissão do Certificado de Conclusão em PDF",
+    nota: "Parabéns por concluir integralmente os 5 módulos e acertar 100% das avaliações! Preencha seu Nome Completo abaixo para visualizar seu certificado em tempo real e baixá-lo ou imprimi-lo em formato PDF (A4 Paisagem)."
+  }
+];
+
+let current = 0;
+let unlockedModule = 1; // 1 a 5 = Módulos; 6 = Certificado liberado
+const completedQuizzes = { 1: false, 2: false, 3: false, 4: false, 5: false };
+const userQuizSelections = { 1: {}, 2: {}, 3: {}, 4: {}, 5: {} };
+let certUserName = "";
+let certUserRole = "";
+let certIssueDate = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+let certValidationCode = "DEV-IA-PRO-" + Math.floor(100000 + Math.random() * 900000);
+
+const STORAGE_KEY = "atb_saude_save_curso_ia_dev_softwares_v1";
+
+function saveProgress() {
+  try {
+    const state = {
+      current: current,
+      unlockedModule: unlockedModule,
+      completedQuizzes: completedQuizzes,
+      userQuizSelections: userQuizSelections,
+      certUserName: certUserName,
+      certUserRole: certUserRole,
+      certIssueDate: certIssueDate,
+      certValidationCode: certValidationCode
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {}
+}
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    if (!state || typeof state !== "object") return;
+
+    if (typeof state.unlockedModule === "number" && state.unlockedModule >= 1 && state.unlockedModule <= 6) {
+      unlockedModule = state.unlockedModule;
+    }
+    if (state.completedQuizzes && typeof state.completedQuizzes === "object") {
+      [1, 2, 3, 4, 5].forEach(m => {
+        if (typeof state.completedQuizzes[m] === "boolean") {
+          completedQuizzes[m] = state.completedQuizzes[m];
+        }
+      });
+    }
+    let maxUnlockedFromQuizzes = 1;
+    for (let m = 1; m <= 5; m++) {
+      if (completedQuizzes[m]) {
+        maxUnlockedFromQuizzes = m + 1;
+      } else {
+        break;
+      }
+    }
+    if (maxUnlockedFromQuizzes > unlockedModule) {
+      unlockedModule = maxUnlockedFromQuizzes;
+    }
+    if (state.userQuizSelections && typeof state.userQuizSelections === "object") {
+      [1, 2, 3, 4, 5].forEach(m => {
+        if (state.userQuizSelections[m] && typeof state.userQuizSelections[m] === "object") {
+          userQuizSelections[m] = state.userQuizSelections[m];
+        }
+      });
+    }
+    if (typeof state.certUserName === "string") certUserName = state.certUserName;
+    if (typeof state.certUserRole === "string") certUserRole = state.certUserRole;
+    if (typeof state.certIssueDate === "string" && state.certIssueDate.trim().length > 0) {
+      certIssueDate = state.certIssueDate;
+    }
+    if (typeof state.certValidationCode === "string" && state.certValidationCode.trim().length > 0) {
+      certValidationCode = state.certValidationCode;
+    }
+    if (typeof state.current === "number" && state.current >= 0 && state.current < slides.length && isSlideUnlocked(state.current)) {
+      current = state.current;
+    } else {
+      current = 0;
+    }
+  } catch (e) {}
+}
+function isSlideUnlocked(idx) {
+  if (idx < 0 || idx >= slides.length) return false;
+  return slides[idx].modNum <= unlockedModule;
+}
+
+function getQuizSlideForMod(modNum) {
+  return slides.find(s => s.tipo === "quiz" && s.modNum === modNum);
+}
+
+function getFirstSlideIdxOfMod(modNum) {
+  return slides.findIndex(s => s.modNum === modNum);
+}
+
+// Função segura de cópia para área de transferência (compatível com iFrames e navegadores modernos)
+function copyTextSafe(text, btnElement) {
+  const originalText = btnElement.innerText;
+  const showSuccess = () => {
+    btnElement.innerText = "✓ Copiado!";
+    btnElement.style.background = "#62a0ea";
+    setTimeout(() => {
+      btnElement.innerText = originalText;
+      btnElement.style.background = "";
+    }, 1800);
+  };
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(showSuccess).catch(() => fallbackCopy(text, showSuccess));
+  } else {
+    fallbackCopy(text, showSuccess);
+  }
+}
+
+function fallbackCopy(text, callback) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand("copy");
+    if (callback) callback();
+  } catch (err) {
+    console.error("Erro ao copiar:", err);
+  }
+  document.body.removeChild(ta);
+}
+
+function copyCardCode(btn) {
+  const pre = btn.closest('.code-wrapper').querySelector('pre');
+  if (pre) copyTextSafe(pre.innerText, btn);
+}
+
+function copyTextFromElement(elId, btn) {
+  const el = document.getElementById(elId);
+  if (el) copyTextSafe(el.innerText, btn);
+}
+
+function selectQuizOption(modNum, qIdx, optIdx) {
+  userQuizSelections[modNum][qIdx] = optIdx;
+  saveProgress();
+}
+
+function renderQuizComponentHTML(modNum) {
+  const qSlide = getQuizSlideForMod(modNum);
+  if (!qSlide) return "";
+  const isDone = completedQuizzes[modNum];
+  const nextTargetName = modNum < 5 ? `Módulo ${modNum + 1}` : "Emissão do Certificado em PDF";
+  const nextModSlideIdx = getFirstSlideIdxOfMod(modNum + 1);
+
+  const questionsHTML = qSlide.perguntas.map((p, qIdx) => {
+    const selectedVal = userQuizSelections[modNum][qIdx];
+    const letters = ["A", "B", "C"];
+    const optsHTML = p.opcoes.map((optText, oIdx) => {
+      const checkedAttr = (selectedVal === oIdx) ? "checked" : "";
+      let extraClass = "";
+      if (isDone && oIdx === p.correta) extraClass = "selected-correct";
+      return `
+        <label class="quiz-option-label ${extraClass}">
+          <input type="radio" name="quiz_m${modNum}_q${qIdx}" value="${oIdx}" ${checkedAttr} onchange="selectQuizOption(${modNum}, ${qIdx}, ${oIdx})">
+          <span><strong>${letters[oIdx]})</strong> ${optText}</span>
+        </label>
+      `;
+    }).join('');
+
+    return `
+      <div class="quiz-question-card" id="qcard_m${modNum}_q${qIdx}">
+        <div class="quiz-question-title">${p.q}</div>
+        <div class="quiz-options-list">${optsHTML}</div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="quiz-container ${isDone ? 'quiz-completed' : ''}" id="quiz-box-mod-${modNum}">
+      <div class="quiz-header-bar">
+        <div class="quiz-badge-title">
+          <span>${isDone ? '✅' : '📝'} Avaliação Obrigatória • Módulo ${modNum}</span>
+        </div>
+        <span class="quiz-status-pill ${isDone ? 'ok' : ''}">
+          ${isDone ? `✓ Aprovado (${nextTargetName} Liberado)` : `🔒 Responda para liberar: ${nextTargetName}`}
+        </span>
+      </div>
+      <div class="quiz-intro">${qSlide.subtitulo}</div>
+      ${questionsHTML}
+      <div class="quiz-actions">
+        <button class="btn-validate-quiz" onclick="validateModuleQuiz(${modNum})">
+          ${isDone ? '🔄 Revalidar Respostas' : `✅ Validar Respostas e Liberar ${nextTargetName}`}
+        </button>
+        ${isDone && nextModSlideIdx !== -1 ? `
+          <button class="btn-advance-mod" onclick="goToSlide(${nextModSlideIdx})">
+            🚀 Avançar para ${nextTargetName} ➡
+          </button>
+        ` : ''}
+      </div>
+      <div id="quiz-feedback-m${modNum}" class="quiz-feedback ${isDone ? 'show ok' : ''}">
+        ${isDone ? `🎉 Excelente! Você acertou as 2 questões do Módulo ${modNum}. O acesso para <strong>${nextTargetName}</strong> já está habilitado!` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function validateModuleQuiz(modNum) {
+  const qSlide = getQuizSlideForMod(modNum);
+  if (!qSlide) return;
+
+  const fb = document.getElementById(`quiz-feedback-m${modNum}`);
+  let answeredCount = 0;
+  let correctCount = 0;
+
+  qSlide.perguntas.forEach((p, qIdx) => {
+    const radios = document.querySelectorAll(`input[name="quiz_m${modNum}_q${qIdx}"]`);
+    let chosen = undefined;
+    radios.forEach(r => {
+      if (r.checked) chosen = parseInt(r.value, 10);
+    });
+    if (chosen !== undefined) {
+      userQuizSelections[modNum][qIdx] = chosen;
+    } else if (userQuizSelections[modNum][qIdx] !== undefined) {
+      chosen = userQuizSelections[modNum][qIdx];
+    }
+
+    const qCard = document.getElementById(`qcard_m${modNum}_q${qIdx}`);
+    if (chosen !== undefined) {
+      answeredCount++;
+      if (chosen === p.correta) {
+        correctCount++;
+        if (qCard) qCard.style.borderLeftColor = "var(--success)";
+      } else {
+        if (qCard) qCard.style.borderLeftColor = "var(--danger)";
+      }
+    } else {
+      if (qCard) qCard.style.borderLeftColor = "var(--warning)";
+    }
+  });
+
+  if (answeredCount < qSlide.perguntas.length) {
+    if (fb) {
+      fb.className = "quiz-feedback show err";
+      fb.innerHTML = "⚠️ Por favor, selecione uma alternativa em cada uma das 2 perguntas antes de validar.";
+    }
+    return;
+  }
+
+  if (correctCount === qSlide.perguntas.length) {
+    completedQuizzes[modNum] = true;
+    if (unlockedModule < modNum + 1) {
+      unlockedModule = modNum + 1;
+    }
+    saveProgress();
+    updateProgressBarUI();
+    buildNav(document.getElementById('search-input') ? document.getElementById('search-input').value : "");
+    const currentScroll = document.getElementById('slide-container').scrollTop;
+    goToSlide(current);
+    document.getElementById('slide-container').scrollTop = currentScroll;
+  } else {
+    if (fb) {
+      fb.className = "quiz-feedback show err";
+      fb.innerHTML = `❌ Você acertou <strong>${correctCount} de ${qSlide.perguntas.length}</strong> questões. Para desbloquear o próximo módulo, ambas as respostas devem estar corretas. Revise a questão destacada em vermelho e tente novamente!`;
+    }
+  }
+}
+
+function renderCertificateDiplomaInner(nameStr, roleStr) {
+  const displayName = (nameStr && nameStr.trim().length > 0) ? nameStr.trim() : "[ DIGITE SEU NOME COMPLETO ACIMA ]";
+  const displayRole = (roleStr && roleStr.trim().length > 0) ? `<div style="font-size:14px; color:#2b6cb0; font-weight:600; margin-top:-10px; margin-bottom:14px;">${roleStr.trim()}</div>` : "";
+
+  return `
+    <div class="cert-diploma-border">
+      <div class="cert-diploma-header">Programa de Capacitação Técnica • Engenharia de Software Assistida por IA</div>
+      <div class="cert-diploma-title">Certificado de Conclusão</div>
+      <div class="cert-diploma-subtitle">Desenvolvimento de Softwares, Arquitetura Modular e Boas Práticas com IA</div>
+      <div class="cert-diploma-Lead">Certificamos para os devidos fins que</div>
+      <div class="cert-diploma-name" id="preview-cert-name">${displayName}</div>
+      ${displayRole}
+      <div class="cert-diploma-body">
+        concluiu com aproveitamento de <strong>100% nas avaliações práticas e teóricas</strong> o
+        <strong>Curso Prático: Inteligência Artificial Aplicada ao Desenvolvimento de Softwares e Sistemas</strong>,
+        abrangendo Arquitetura Modular e Modelagem de Dados (PRD e SQL), Engenharia de Prompts pelo <strong>Protocolo P.O.C.A. Dev</strong>,
+        Desenvolvimento Iterativo em Sprints, Clean Code (DRY/KISS), Depuração Cirúrgica, Controle de Versão com Git,
+        Testes Automatizados e Casos de Borda (QA), Segurança de Aplicações (AppSec/LGPD) e Governança para Produção.
+      </div>
+      <div class="cert-diploma-footer">
+        <div style="text-align:left;">
+          <strong>Data de Emissão:</strong> ${certIssueDate}<br>
+          <strong>Carga Horária:</strong> 04 horas capacitacionais (5 Módulos Concluídos)<br>
+          <strong>Código de Validação:</strong> ${certValidationCode}
+        </div>
+        <div class="cert-sign-line">
+          Capacitação Técnica em Desenvolvimento com IA<br>
+          <span style="font-size:11.5px; font-weight:400; color:#4a5568;">Arquitetura, Boas Práticas e Segurança de Software</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderCertificateSlideHTML(s) {
+  const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
+  const disabledAttr = allCompleted ? "" : "disabled";
+  const hasValidName = certUserName.trim().length >= 3;
+  const btnDisabled = (allCompleted && hasValidName) ? "" : "disabled";
+
+  return `
+    <div class="slide-header">
+      <div class="slide-meta">${s.mod}</div>
+      <h2>${s.titulo}</h2>
+    </div>
+
+    <div class="cert-panel">
+      <h3 style="color: var(--success); font-size: 18px; margin-bottom: 8px;">
+        ${allCompleted ? '🎉 Parabéns! Você concluiu todos os 5 Módulos com 100% de acerto!' : '🔒 Conclua as avaliações dos 5 módulos para habilitar a emissão'}
+      </h3>
+      <p style="font-size: 14px; color: var(--text); line-height: 1.55;">
+        Insira abaixo o seu <strong>Nome Completo</strong> (e opcionalmente seu Cargo/Área de Atuação) para personalizar e emitir seu Certificado Oficial em formato <strong>PDF (A4 Paisagem)</strong>.
+      </p>
+
+      <div class="cert-form-row">
+        <div class="cert-input-group">
+          <label for="cert-input-name">Nome Completo do(a) Participante *</label>
+          <input type="text" id="cert-input-name" placeholder="Ex.: Maria Aparecida da Silva" value="${certUserName.replace(/"/g, '&quot;')}" oninput="onCertInputUpdate()" ${disabledAttr}>
+        </div>
+        <div class="cert-input-group">
+          <label for="cert-input-role">Cargo / Função ou Área de T.I. (Opcional)</label>
+          <input type="text" id="cert-input-role" placeholder="Ex.: Analista de Sistemas / Desenvolvedor" value="${certUserRole.replace(/"/g, '&quot;')}" oninput="onCertInputUpdate()" ${disabledAttr}>
+        </div>
+      </div>
+
+      <div class="cert-btn-group">
+        <button id="btn-download-pdf" class="btn-cert-download" onclick="downloadCertificatePDFDirect()" ${btnDisabled}>
+          📥 Baixar Certificado em PDF (Download Direto A4)
+        </button>
+        <button id="btn-print-pdf" class="btn-cert-print" onclick="printCertificateBrowserPDF()" ${btnDisabled}>
+          🖨️ Imprimir / Salvar PDF pelo Navegador
+        </button>
+      </div>
+      <div id="cert-name-hint" style="font-size: 12.5px; color: var(--warning); margin-top: 8px; display: ${hasValidName ? 'none' : 'block'};">
+        * Digite seu nome completo (mínimo 3 letras) no campo acima para liberar os botões de geração do PDF.
+      </div>
+    </div>
+
+    <div class="cert-preview-wrapper" id="cert-live-preview">
+      ${renderCertificateDiplomaInner(certUserName, certUserRole)}
+    </div>
+
+    <div class="notes-box">
+      <div class="notes-title">📌 Nota Explicativa e Validação</div>
+      <div class="notes-text">${s.nota}</div>
+    </div>
+  `;
+}
+
+function onCertInputUpdate() {
+  const nameEl = document.getElementById('cert-input-name');
+  const roleEl = document.getElementById('cert-input-role');
+  if (nameEl) certUserName = nameEl.value;
+  if (roleEl) certUserRole = roleEl.value;
+  saveProgress();
+
+  const previewEl = document.getElementById('cert-live-preview');
+  if (previewEl) {
+    previewEl.innerHTML = renderCertificateDiplomaInner(certUserName, certUserRole);
+  }
+
+  const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
+  const hasValidName = certUserName.trim().length >= 3;
+  const btnDl = document.getElementById('btn-download-pdf');
+  const btnPr = document.getElementById('btn-print-pdf');
+  const hint = document.getElementById('cert-name-hint');
+
+  if (btnDl) btnDl.disabled = !(allCompleted && hasValidName);
+  if (btnPr) btnPr.disabled = !(allCompleted && hasValidName);
+  if (hint) hint.style.display = hasValidName ? "none" : "block";
+}
+
+// Gerador Direto de Arquivo .PDF em JavaScript Puro (100% Offline, Alta Resolução A4 Paisagem)
+function downloadCertificatePDFDirect() {
+  if (certUserName.trim().length < 3) return;
+
+  const canvas = document.createElement('canvas');
+  const W = 2400;
+  const H = 1697; // Proporção exata A4 Paisagem (297 x 210 mm)
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Fundo branco/azul suave
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, '#ffffff');
+  grad.addColorStop(1, '#f0f6fc');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Moldura Externa Azul Institucional
+  ctx.strokeStyle = '#1e4e8c';
+  ctx.lineWidth = 18;
+  ctx.strokeRect(70, 70, W - 140, H - 140);
+
+  // Moldura Interna Dourada/Azul
+  ctx.strokeStyle = '#3584e4';
+  ctx.lineWidth = 5;
+  ctx.strokeRect(98, 98, W - 196, H - 196);
+
+  // Cantoneiras decorativas
+  ctx.fillStyle = '#1e4e8c';
+  const corners = [[70, 70], [W - 110, 70], [70, H - 110], [W - 110, H - 110]];
+  corners.forEach(([cx, cy]) => ctx.fillRect(cx, cy, 40, 40));
+
+  ctx.textAlign = 'center';
+
+  // Cabeçalho Institucional
+  ctx.fillStyle = '#1e4e8c';
+  ctx.font = 'bold 34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('PROGRAMA DE CAPACITAÇÃO TÉCNICA • ENGENHARIA DE SOFTWARE COM IA', W / 2, 220);
+
+  // Título Principal
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 86px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('CERTIFICADO DE CONCLUSÃO', W / 2, 340);
+
+  // Subtítulo
+  ctx.fillStyle = '#2b6cb0';
+  ctx.font = 'bold 34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Desenvolvimento de Softwares, Arquitetura Modular e Boas Práticas com IA', W / 2, 405);
+
+  // Texto introdutório
+  ctx.fillStyle = '#4a5568';
+  ctx.font = '34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Certificamos para os devidos fins que', W / 2, 505);
+
+  // Nome do Servidor
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 68px "Segoe UI", Arial, sans-serif';
+  const cleanName = certUserName.trim().toUpperCase();
+  ctx.fillText(cleanName, W / 2, 605);
+
+  // Linha sob o nome
+  ctx.strokeStyle = '#2b6cb0';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(450, 630);
+  ctx.lineTo(W - 450, 630);
+  ctx.stroke();
+
+  // Cargo / Unidade (se preenchido)
+  let bodyStartY = 735;
+  if (certUserRole && certUserRole.trim().length > 0) {
+    ctx.fillStyle = '#2b6cb0';
+    ctx.font = 'bold 32px "Segoe UI", Arial, sans-serif';
+    ctx.fillText(certUserRole.trim(), W / 2, 680);
+    bodyStartY = 760;
+  }
+
+  // Corpo do texto com quebra de linha automática
+  const bodyLines = [
+    'concluiu com 100% de aproveitamento nas avaliações teóricas e práticas o',
+    'CURSO PRÁTICO: INTELIGÊNCIA ARTIFICIAL APLICADA AO DESENVOLVIMENTO DE SOFTWARES,',
+    'abrangendo Arquitetura Modular e Modelagem de Dados (PRD e SQL), Protocolo P.O.C.A. Dev,',
+    'Desenvolvimento Iterativo em Sprints, Boas Práticas de Clean Code (DRY e KISS),',
+    'Depuração Cirúrgica de Erros, Controle de Versão com Git e Revisão por Diff,',
+    'Testes Automatizados e Casos de Borda (QA), Segurança de Aplicações (AppSec / LGPD)',
+    'e Governança Técnica para Implantação de Sistemas em Produção.'
+  ];
+
+  ctx.fillStyle = '#2d3748';
+  bodyLines.forEach((line, idx) => {
+    ctx.font = (idx === 1) ? 'bold 34px "Segoe UI", Arial, sans-serif' : '33px "Segoe UI", Arial, sans-serif';
+    ctx.fillText(line, W / 2, bodyStartY + idx * 54);
+  });
+
+  // Rodapé Esquerdo: Data, Carga Horária e Código
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#2d3748';
+  ctx.font = 'bold 28px "Segoe UI", Arial, sans-serif';
+  ctx.fillText(`Data de Emissão: ${certIssueDate}`, 180, 1410);
+  ctx.font = '28px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Carga Horária: 04 horas capacitacionais (5 Módulos Concluídos)', 180, 1455);
+  ctx.fillText(`Código de Autenticidade: ${certValidationCode}`, 180, 1500);
+
+  // Rodapé Direito: Linha de Assinatura
+  ctx.strokeStyle = '#0f294a';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(W - 820, 1420);
+  ctx.lineTo(W - 180, 1420);
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 30px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Capacitação Técnica • Dev com IA', W - 500, 1462);
+  ctx.fillStyle = '#4a5568';
+  ctx.font = '25px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Arquitetura, Boas Práticas e Segurança', W - 500, 1500);
+
+  // Converte o Canvas para JPEG binário e empacota em um arquivo PDF 1.4 A4 Paisagem real
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.94);
+  const base64Data = dataUrl.split(',')[1];
+  const jpegBinStr = atob(base64Data);
+  const jpegBytes = new Uint8Array(jpegBinStr.length);
+  for (let i = 0; i < jpegBinStr.length; i++) {
+    jpegBytes[i] = jpegBinStr.charCodeAt(i);
+  }
+
+  const pdfBlob = createSinglePageLandscapePDFBlob(jpegBytes, W, H);
+  const safeFileName = cleanName.replace(/[^A-Z0-9À-Ú]/gi, '_').replace(/_+/g, '_');
+  const url = URL.createObjectURL(pdfBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Certificado_IA_Desenvolvimento_Softwares_${safeFileName}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
+}
+
+function createSinglePageLandscapePDFBlob(jpegBytes, imgW, imgH) {
+  const pageW = 842;
+  const pageH = 595;
+  const enc = new TextEncoder();
+  const contentStreamStr = "q " + pageW + " 0 0 " + pageH + " 0 0 cm /Im0 Do Q\n";
+  const contentStreamBytes = enc.encode(contentStreamStr);
+
+  const obj1 = enc.encode("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+  const obj2 = enc.encode("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+  const obj3 = enc.encode("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pageW + " " + pageH + "] /Resources << /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>\nendobj\n");
+  const obj4Head = enc.encode("4 0 obj\n<< /Length " + contentStreamBytes.length + " >>\nstream\n");
+  const obj4Tail = enc.encode("endstream\nendobj\n");
+  const obj5Head = enc.encode("5 0 obj\n<< /Type /XObject /Subtype /Image /Width " + imgW + " /Height " + imgH + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + jpegBytes.length + " >>\nstream\n");
+  const obj5Tail = enc.encode("\nendstream\nendobj\n");
+
+  const header = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34, 0x0a, 0x25, 0xe2, 0xe3, 0xcf, 0xd3, 0x0a]);
+
+  const concatUint8 = (arrays) => {
+    let total = 0;
+    arrays.forEach(arr => total += arr.length);
+    const res = new Uint8Array(total);
+    let offset = 0;
+    arrays.forEach(arr => {
+      res.set(arr, offset);
+      offset += arr.length;
+    });
+    return res;
+  };
+
+  const obj4 = concatUint8([obj4Head, contentStreamBytes, obj4Tail]);
+  const obj5 = concatUint8([obj5Head, jpegBytes, obj5Tail]);
+  const objects = [obj1, obj2, obj3, obj4, obj5];
+
+  const offsets = [];
+  let currentOffset = header.length;
+  objects.forEach(o => {
+    offsets.push(currentOffset);
+    currentOffset += o.length;
+  });
+
+  const xrefOffset = currentOffset;
+  let xrefStr = "xref\n0 " + (objects.length + 1) + "\n0000000000 65535 f \n";
+  offsets.forEach(off => {
+    xrefStr += String(off).padStart(10, '0') + " 00000 n \n";
+  });
+  xrefStr += "trailer\n<< /Size " + (objects.length + 1) + " /Root 1 0 R >>\nstartxref\n" + xrefOffset + "\n%%EOF\n";
+  const xrefBytes = enc.encode(xrefStr);
+
+  const finalPDFBytes = concatUint8([header, ...objects, xrefBytes]);
+  return new Blob([finalPDFBytes], { type: "application/pdf" });
+}
+
+function printCertificateBrowserPDF() {
+  if (certUserName.trim().length < 3) return;
+  const printCertSec = document.getElementById('print-certificate-only');
+  if (printCertSec) {
+    printCertSec.innerHTML = `<div class="cert-preview-wrapper" style="box-shadow:none; width:100%;">${renderCertificateDiplomaInner(certUserName, certUserRole)}</div>`;
+  }
+  document.body.classList.add('print-cert-mode');
+  window.print();
+  setTimeout(() => {
+    document.body.classList.remove('print-cert-mode');
+  }, 800);
+}
+
+function printFullCourseApostila() {
+  document.body.classList.remove('print-cert-mode');
+  window.print();
+}
+
+function renderSlideHTML(s, isPrintMode = false) {
+  if (s.tipo === "quiz") {
+    return `
+      <div class="slide-header">
+        <div class="slide-meta">${s.mod}</div>
+        <h2>${s.titulo}</h2>
+      </div>
+      ${renderQuizComponentHTML(s.modNum)}
+      <div class="notes-box">
+        <div class="notes-title">📌 Regra de Progressão do Curso</div>
+        <div class="notes-text">${s.nota}</div>
+      </div>
+    `;
+  }
+
+  if (s.tipo === "certificado") {
+    return renderCertificateSlideHTML(s);
+  }
+
+  const cardsHTML = s.cards.map(c => `
+    <div class="card ${c.tipo}">
+      <div>
+        <h3>${c.titulo}</h3>
+        <ul>${c.itens.map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>
+      ${c.code ? `
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>Modelo Prático de Prompt (Protocolo P.O.C.A.)</span>
+            <button class="copy-btn" onclick="copyCardCode(this)">Copiar Prompt</button>
+          </div>
+          <pre>${c.code}</pre>
+        </div>
+      ` : ''}
+    </div>
+  `).join('');
+
+  const mapaHTML = `
+    <div class="mindmap">
+      <div class="mm-title">🧠 Mapa Mental e Fluxo Prático do Tópico</div>
+      <div class="mm-tree">
+        ${s.mapa.map(m => `<div class="mm-node"><strong>${m.no}</strong>${m.txt}</div>`).join('')}
+      </div>
+    </div>
+  `;
+
+  // Se for o último slide de conteúdo do módulo (Slides 4, 7, 11, 17, 20), exibe também o bloco interativo das 2 perguntas do módulo logo abaixo!
+  const inlineQuizHTML = (!isPrintMode && s.fimModulo) ? renderQuizComponentHTML(s.modNum) : '';
+
+  return `
+    <div class="slide-header">
+      <div class="slide-meta">${s.mod}</div>
+      <h2>${s.titulo}</h2>
+    </div>
+    <div class="grid">${cardsHTML}</div>
+    ${mapaHTML}
+    <div class="notes-box">
+      <div class="notes-title">📌 Nota Explicativa e Aplicação Prática (Desenvolvimento de Sistemas)</div>
+      <div class="notes-text">${s.nota}</div>
+    </div>
+    ${inlineQuizHTML}
+  `;
+}
+
+function updateProgressBarUI() {
+  const doneCount = [1, 2, 3, 4, 5].filter(m => completedQuizzes[m]).length;
+  const pct = Math.round((doneCount / 5) * 100);
+  const countEl = document.getElementById('mod-progress-count');
+  const fillEl = document.getElementById('mod-progress-fill');
+  const statusEl = document.getElementById('mod-lock-status');
+  const certBadgeEl = document.getElementById('cert-lock-badge');
+
+  if (countEl) countEl.innerText = `${doneCount} / 5 Concluídos`;
+  if (fillEl) fillEl.style.width = `${pct}%`;
+
+  if (statusEl) {
+    if (doneCount === 5) {
+      statusEl.innerText = "✅ Todos os 5 módulos liberados!";
+      statusEl.style.color = "var(--success)";
+    } else {
+      statusEl.innerText = `🔓 Liberado até Módulo ${unlockedModule}`;
+      statusEl.style.color = "var(--muted)";
+    }
+  }
+
+  if (certBadgeEl) {
+    if (doneCount === 5) {
+      certBadgeEl.innerText = "🎓 Certificado Liberado!";
+      certBadgeEl.style.color = "var(--success)";
+      certBadgeEl.style.fontWeight = "700";
+    } else {
+      certBadgeEl.innerText = "🔒 Certificado Bloqueado";
+      certBadgeEl.style.color = "var(--warning)";
+    }
+  }
+}
+
+function buildNav(filterText = "") {
+  const nav = document.getElementById('nav-list');
+  nav.innerHTML = "";
+  let lastMod = "";
+  const query = filterText.trim().toLowerCase();
+
+  slides.forEach((s, i) => {
+    const matchTitle = s.titulo.toLowerCase().includes(query);
+    const matchMod = s.mod.toLowerCase().includes(query);
+    const matchNota = (s.nota || "").toLowerCase().includes(query);
+    if (query && !matchTitle && !matchMod && !matchNota) return;
+
+    if (s.mod !== lastMod) {
+      lastMod = s.mod;
+      const mDiv = document.createElement('div');
+      mDiv.className = 'nav-mod';
+      mDiv.innerText = s.mod;
+      nav.appendChild(mDiv);
+    }
+
+    const unlocked = isSlideUnlocked(i);
+    const item = document.createElement('div');
+    let classes = 'nav-item';
+    if (i === current) classes += ' active';
+    if (!unlocked) classes += ' locked';
+    if (s.tipo === 'quiz') {
+      classes += ' quiz-item';
+      if (completedQuizzes[s.modNum]) classes += ' completed';
+    }
+    if (s.tipo === 'certificado') {
+      classes += ' cert-item';
+      if (unlocked) classes += ' unlocked';
+    }
+
+    item.className = classes;
+    item.id = 'nav-' + i;
+
+    let statusIcon = "";
+    if (!unlocked) {
+      statusIcon = '<span class="nav-lock-icon" title="Responda às perguntas do módulo anterior para desbloquear">🔒</span>';
+    } else if (s.tipo === 'quiz' && completedQuizzes[s.modNum]) {
+      statusIcon = '<span class="nav-lock-icon" title="Módulo concluído!">✅</span>';
+    } else if (s.tipo === 'certificado' && unlocked) {
+      statusIcon = '<span class="nav-lock-icon" title="Certificado Liberado!">🎓</span>';
+    }
+
+    item.innerHTML = `<span>${s.titulo}</span>${statusIcon}`;
+
+    if (unlocked) {
+      item.onclick = () => {
+        goToSlide(i);
+        if (window.innerWidth <= 900) {
+          document.getElementById('sidebar').classList.remove('open');
+        }
+      };
+    }
+    nav.appendChild(item);
+  });
+}
+
+function filterNav(val) {
+  buildNav(val);
+}
+
+function init() {
+  loadProgress();
+  updateProgressBarUI();
+  buildNav();
+
+  // Prepara versão completa para impressão em PDF (todos os 20 slides de conteúdo originais)
+  const printAll = document.getElementById('print-all');
+  const contentSlides = slides.filter(s => s.tipo === "conteudo");
+  printAll.innerHTML = contentSlides.map((s, i) => `<div class="print-slide">${renderSlideHTML(s, true)}</div>`).join('');
+
+  updatePocaPreview();
+  goToSlide(current);
+}
+
+function goToSlide(i) {
+  if (!isSlideUnlocked(i)) return;
+  current = i;
+  saveProgress();
+  const container = document.getElementById('slide-container');
+  container.innerHTML = renderSlideHTML(slides[i], false);
+  container.scrollTop = 0;
+
+  document.getElementById('progress-badge').innerText = `Etapa ${i + 1} de ${slides.length}`;
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.toggle('active', el.id === 'nav-' + i);
+  });
+
+  // Atualiza estado dos botões Anterior e Próximo (Trava "Inclicável" se o próximo slide pertencer a um módulo bloqueado)
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  if (btnPrev) {
+    btnPrev.disabled = (i === 0);
+  }
+  if (btnNext) {
+    const canGoNext = (i < slides.length - 1) && isSlideUnlocked(i + 1);
+    btnNext.disabled = !canGoNext;
+    btnNext.classList.toggle('btn-locked', !canGoNext);
+    if (!canGoNext && i < slides.length - 1) {
+      btnNext.innerText = "🔒 Próximo (Responda o Quiz)";
+    } else {
+      btnNext.innerText = "Próximo ➡";
+    }
+  }
+}
+
+function nextSlide() {
+  if (current < slides.length - 1 && isSlideUnlocked(current + 1)) {
+    goToSlide(current + 1);
+  }
+}
+
+function prevSlide() {
+  if (current > 0) goToSlide(current - 1);
+}
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+function togglePocaModal() {
+  document.getElementById('poca-modal').classList.toggle('open');
+}
+
+function updatePocaPreview() {
+  const p = document.getElementById('poca-p').value.trim();
+  const o = document.getElementById('poca-o').value.trim();
+  const c = document.getElementById('poca-c').value.trim();
+  const a = document.getElementById('poca-a').value.trim();
+
+  const output = `[P - PERSONIFICAÇÃO]\n${p}\n\n[O - OBJETIVO]\n${o}\n\n[C - CONTEXTO]\n${c}\n\n[A - AJUSTES]\n${a}`;
+  document.getElementById('poca-generated-output').innerText = output;
+}
+
+document.addEventListener('keydown', e => {
+  const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+  if (activeTag === 'input' || activeTag === 'textarea') return;
+
+  if (e.key === 'ArrowRight') nextSlide();
+  if (e.key === 'ArrowLeft') prevSlide();
+  if (e.key === 'Escape') {
+    document.getElementById('poca-modal').classList.remove('open');
+  }
+});
+
+init();
+
+</script>
+</body>
+</html>
