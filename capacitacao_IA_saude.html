@@ -971,6 +971,95 @@
     color: #0f294a;
   }
 
+
+  /* Satisfaction Survey & Feedback Card */
+  .feedback-panel {
+    background: #232830;
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .feedback-panel.feedback-done {
+    border-color: var(--success);
+  }
+  .feedback-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+  }
+  .star-rating-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .star-btn {
+    background: #181818;
+    border: 1px solid var(--border);
+    color: #cccccc;
+    padding: 8px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+  }
+  .star-btn:hover:not(:disabled) {
+    border-color: var(--warning);
+    color: #ffffff;
+  }
+  .star-btn.active {
+    background: rgba(245, 194, 17, 0.2);
+    border-color: var(--warning);
+    color: var(--warning);
+  }
+  .star-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .feedback-textarea {
+    width: 100%;
+    background: #181818;
+    border: 1px solid var(--border);
+    color: #ffffff;
+    padding: 11px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    min-height: 78px;
+    resize: vertical;
+    outline: none;
+    margin-top: 6px;
+  }
+  .feedback-textarea:focus {
+    border-color: var(--accent-light);
+  }
+  .feedback-textarea:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-send-feedback {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 12px;
+  }
+  .btn-send-feedback:hover:not(:disabled) {
+    background: var(--accent-light);
+  }
+  .btn-send-feedback:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
   /* Dedicated Print Certificate Container */
   #print-certificate-only {
     display: none;
@@ -2041,6 +2130,13 @@ let certUserRole = "";
 let certIssueDate = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 let certValidationCode = "ATB-SUS-IA-" + Math.floor(100000 + Math.random() * 900000);
 
+const FEEDBACK_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwiKzdUBxxZ2N9XY0yAmgkJeAXPoD_rQ3hI0Ts2UK88WGCkDFFGMsCRzqD4-PoGHtQ3ag/exec"; // Cole aqui a URL do Web App do Google Apps Script
+const COURSE_TITLE_FOR_FEEDBACK = "Inteligência Artificial Aplicada ao SUS";
+let feedbackRatingOverall = 0;
+let feedbackRatingUtility = 0;
+let feedbackComment = "";
+let feedbackSubmitted = false;
+
 const STORAGE_KEY = "atb_saude_save_capacitacao_IA_saude_v1";
 
 function saveProgress() {
@@ -2053,7 +2149,11 @@ function saveProgress() {
       certUserName: certUserName,
       certUserRole: certUserRole,
       certIssueDate: certIssueDate,
-      certValidationCode: certValidationCode
+      certValidationCode: certValidationCode,
+      feedbackRatingOverall: feedbackRatingOverall,
+      feedbackRatingUtility: feedbackRatingUtility,
+      feedbackComment: feedbackComment,
+      feedbackSubmitted: feedbackSubmitted
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   } catch (e) {}
@@ -2102,6 +2202,10 @@ function loadProgress() {
     if (typeof state.certValidationCode === "string" && state.certValidationCode.trim().length > 0) {
       certValidationCode = state.certValidationCode;
     }
+    if (typeof state.feedbackRatingOverall === "number") feedbackRatingOverall = state.feedbackRatingOverall;
+    if (typeof state.feedbackRatingUtility === "number") feedbackRatingUtility = state.feedbackRatingUtility;
+    if (typeof state.feedbackComment === "string") feedbackComment = state.feedbackComment;
+    if (typeof state.feedbackSubmitted === "boolean") feedbackSubmitted = state.feedbackSubmitted;
     if (typeof state.current === "number" && state.current >= 0 && state.current < slides.length && isSlideUnlocked(state.current)) {
       current = state.current;
     } else {
@@ -2328,11 +2432,98 @@ function renderCertificateDiplomaInner(nameStr, roleStr) {
   `;
 }
 
+function setFeedbackRating(type, val) {
+  if (feedbackSubmitted) return;
+  if (type === 'overall') feedbackRatingOverall = val;
+  if (type === 'utility') feedbackRatingUtility = val;
+  saveProgress();
+  const currentScroll = document.getElementById('slide-container').scrollTop;
+  goToSlide(current);
+  document.getElementById('slide-container').scrollTop = currentScroll;
+}
+
+function onFeedbackCommentInput(val) {
+  feedbackComment = val;
+  saveProgress();
+}
+
+async function submitCourseFeedback() {
+  const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
+  if (!allCompleted || feedbackSubmitted) return;
+
+  const statusEl = document.getElementById('feedback-submit-status');
+  const btnEl = document.getElementById('btn-submit-feedback');
+
+  if (feedbackRatingOverall === 0 || feedbackRatingUtility === 0) {
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      statusEl.style.color = 'var(--warning)';
+      statusEl.innerText = '⚠️ Por favor, selecione uma nota de 1 a 5 estrelas para ambas as perguntas antes de enviar.';
+    }
+    return;
+  }
+
+  if (btnEl) {
+    btnEl.disabled = true;
+    btnEl.innerText = '⏳ Registrando avaliação...';
+  }
+
+  const nameInput = document.getElementById('cert-input-name');
+  const roleInput = document.getElementById('cert-input-role');
+  if (nameInput && nameInput.value.trim()) certUserName = nameInput.value.trim();
+  if (roleInput && roleInput.value.trim()) certUserRole = roleInput.value.trim();
+
+  const payload = {
+    curso: COURSE_TITLE_FOR_FEEDBACK,
+    participante: certUserName || "Não informado no momento do envio",
+    cargo: certUserRole || "",
+    nota_geral: feedbackRatingOverall,
+    aplicabilidade: feedbackRatingUtility,
+    comentario: feedbackComment.trim(),
+    codigo_certificado: certValidationCode
+  };
+
+  if (FEEDBACK_WEBHOOK_URL && FEEDBACK_WEBHOOK_URL.trim().startsWith("http")) {
+    try {
+      await fetch(FEEDBACK_WEBHOOK_URL.trim(), {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.warn("Aviso no envio remoto do feedback:", err);
+    }
+  }
+
+  feedbackSubmitted = true;
+  saveProgress();
+  const currentScroll = document.getElementById('slide-container').scrollTop;
+  goToSlide(current);
+  document.getElementById('slide-container').scrollTop = currentScroll;
+}
+
 function renderCertificateSlideHTML(s) {
   const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
   const disabledAttr = allCompleted ? "" : "disabled";
+  const fbDisabledAttr = (!allCompleted || feedbackSubmitted) ? "disabled" : "";
   const hasValidName = certUserName.trim().length >= 3;
-  const btnDisabled = (allCompleted && hasValidName) ? "" : "disabled";
+  const canGenerateCert = allCompleted && feedbackSubmitted && hasValidName;
+  const btnDisabled = canGenerateCert ? "" : "disabled";
+
+  const makeStars = (type, currentVal) => {
+    return [1, 2, 3, 4, 5].map(n => {
+      const activeCls = currentVal === n ? "active" : "";
+      return `<button type="button" class="star-btn ${activeCls}" onclick="setFeedbackRating('${type}', ${n})" ${fbDisabledAttr}>${n} ★</button>`;
+    }).join('');
+  };
+
+  let hintMsg = "";
+  if (!feedbackSubmitted) {
+    hintMsg = "* Etapa 1 obrigatória: responda e envie a Pesquisa de Satisfação acima para liberar o download do Certificado.";
+  } else if (!hasValidName) {
+    hintMsg = "* Digite seu nome completo (mínimo 3 letras) no campo acima para liberar os botões de geração do PDF.";
+  }
 
   return `
     <div class="slide-header">
@@ -2340,9 +2531,56 @@ function renderCertificateSlideHTML(s) {
       <h2>${s.titulo}</h2>
     </div>
 
+    <div class="feedback-panel ${feedbackSubmitted ? 'feedback-done' : ''}">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+        <h3 style="color: ${feedbackSubmitted ? 'var(--success)' : 'var(--accent-light)'}; font-size: 17.5px;">
+          ${feedbackSubmitted ? '✅ Pesquisa de Satisfação Registrada! Obrigado pelo seu feedback.' : '📊 Etapa 1: Pesquisa Rápida de Satisfação & Feedback'}
+        </h3>
+        <span class="quiz-status-pill ${feedbackSubmitted ? 'ok' : ''}">
+          ${feedbackSubmitted ? '✓ Concluído' : 'Obrigatório antes do Certificado'}
+        </span>
+      </div>
+      <p style="font-size: 13.8px; color: #d8dee9; line-height: 1.5;">
+        Sua opinião ajuda a aprimorar continuamente nossas capacitações para as Secretarias Municipais de Saúde. Leva menos de 20 segundos:
+      </p>
+
+      <div class="feedback-grid">
+        <div>
+          <label style="font-size:13px; font-weight:700; color:var(--warning); display:block; margin-bottom:4px;">
+            1. Avaliação geral do conteúdo e didática (1 a 5): *
+          </label>
+          <div class="star-rating-group">${makeStars('overall', feedbackRatingOverall)}</div>
+        </div>
+        <div>
+          <label style="font-size:13px; font-weight:700; color:var(--warning); display:block; margin-bottom:4px;">
+            2. Aplicabilidade prática na sua rotina de trabalho (1 a 5): *
+          </label>
+          <div class="star-rating-group">${makeStars('utility', feedbackRatingUtility)}</div>
+        </div>
+      </div>
+
+      <div>
+        <label for="fb-comment-input" style="font-size:13px; font-weight:700; color:var(--warning);">
+          3. Sugestões, elogios ou temas para próximas capacitações (Opcional):
+        </label>
+        <textarea id="fb-comment-input" class="feedback-textarea" placeholder="Escreva aqui sua sugestão ou comentário..." oninput="onFeedbackCommentInput(this.value)" ${fbDisabledAttr}>${feedbackComment.replace(/</g, '&lt;')}</textarea>
+      </div>
+
+      ${!feedbackSubmitted ? `
+        <button type="button" id="btn-submit-feedback" class="btn-send-feedback" onclick="submitCourseFeedback()" ${disabledAttr}>
+          📨 Enviar Pesquisa de Satisfação e Liberar Certificado
+        </button>
+        <div id="feedback-submit-status" style="display:none; font-size:13px; font-weight:600; margin-top:10px;"></div>
+      ` : `
+        <div style="font-size:13px; color:#8ff0a4; margin-top:10px; font-weight:600;">
+          ✓ Avaliação registrada (Nota Geral: ${feedbackRatingOverall}/5 • Aplicabilidade: ${feedbackRatingUtility}/5). Agora preencha seu nome abaixo e baixe seu certificado!
+        </div>
+      `}
+    </div>
+
     <div class="cert-panel">
       <h3 style="color: var(--success); font-size: 18px; margin-bottom: 8px;">
-        ${allCompleted ? '🎉 Parabéns! Você concluiu todos os 5 Módulos com 100% de acerto!' : '🔒 Conclua as avaliações dos 5 módulos para habilitar a emissão'}
+        ${allCompleted ? '🎓 Etapa 2: Emissão do Certificado Oficial em PDF' : '🔒 Conclua as avaliações dos 5 módulos para habilitar a emissão'}
       </h3>
       <p style="font-size: 14px; color: var(--text); line-height: 1.55;">
         Insira abaixo o seu <strong>Nome Completo</strong> (e opcionalmente seu Cargo/Unidade na Secretaria Municipal de Saúde) para personalizar e emitir seu Certificado Oficial em formato <strong>PDF (A4 Paisagem)</strong>.
@@ -2367,8 +2605,8 @@ function renderCertificateSlideHTML(s) {
           🖨️ Imprimir / Salvar PDF pelo Navegador
         </button>
       </div>
-      <div id="cert-name-hint" style="font-size: 12.5px; color: var(--warning); margin-top: 8px; display: ${hasValidName ? 'none' : 'block'};">
-        * Digite seu nome completo (mínimo 3 letras) no campo acima para liberar os botões de geração do PDF.
+      <div id="cert-name-hint" style="font-size: 12.5px; color: var(--warning); margin-top: 8px; display: ${canGenerateCert ? 'none' : 'block'};">
+        ${hintMsg}
       </div>
     </div>
 
@@ -2397,13 +2635,23 @@ function onCertInputUpdate() {
 
   const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
   const hasValidName = certUserName.trim().length >= 3;
+  const canGenerateCert = allCompleted && feedbackSubmitted && hasValidName;
   const btnDl = document.getElementById('btn-download-pdf');
   const btnPr = document.getElementById('btn-print-pdf');
   const hint = document.getElementById('cert-name-hint');
 
-  if (btnDl) btnDl.disabled = !(allCompleted && hasValidName);
-  if (btnPr) btnPr.disabled = !(allCompleted && hasValidName);
-  if (hint) hint.style.display = hasValidName ? "none" : "block";
+  if (btnDl) btnDl.disabled = !canGenerateCert;
+  if (btnPr) btnPr.disabled = !canGenerateCert;
+  if (hint) {
+    if (canGenerateCert) {
+      hint.style.display = "none";
+    } else {
+      hint.style.display = "block";
+      hint.innerText = !feedbackSubmitted
+        ? "* Etapa 1 obrigatória: responda e envie a Pesquisa de Satisfação acima para liberar o download do Certificado."
+        : "* Digite seu nome completo (mínimo 3 letras) no campo acima para liberar os botões de geração do PDF.";
+    }
+  }
 }
 
 // Gerador Direto de Arquivo .PDF em JavaScript Puro (100% Offline, Alta Resolução A4 Paisagem)
