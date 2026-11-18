@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curso Prático: Inteligência Artificial Aplicada à Gestão e Rotina do SUS - Saúde de Atibaia/SP</title>
+<title>Curso Prático: Inteligência Artificial Aplicada à Gestão e Rotina do SUS - Secretaria Municipal de Saúde</title>
 <style>
   :root {
     --bg: #1e1e1e;
@@ -1005,9 +1005,8 @@
 
 <aside id="sidebar">
   <div class="brand">
-    <h1>Saúde de Atibaia/SP</h1>
+    <h1>Secretaria Municipal de Saúde</h1>
     <p>Capacitação em Inteligência Artificial no SUS<br>Protocolo P.O.C.A. • Segurança • Prática</p>
-	<p>Clovis Campaner Filho<br>Gestor de T.I. - Chefe de Divisão de T.I. da Saúde</p>
   </div>
   <div class="search-box">
     <input type="text" id="search-input" placeholder="🔍 Filtrar tópico ou slide..." oninput="filterNav(this.value)">
@@ -1033,7 +1032,7 @@
     <div class="top-left">
       <button id="menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
       <span id="progress-badge" class="badge">Slide 1 de 20</span>
-      <span class="badge-poca">Método P.O.C.A. • SUS Atibaia</span>
+      <span class="badge-poca">Método P.O.C.A. • Gestão SUS</span>
     </div>
     <div class="controls">
       <button class="btn-builder" onclick="togglePocaModal()">✨ Construtor P.O.C.A.</button>
@@ -1057,7 +1056,7 @@
       <button class="close-modal" onclick="togglePocaModal()">✕ Fechar</button>
     </div>
     <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
-      Preencha os 4 campos abaixo (sem inserir dados pessoais de pacientes!) para montar automaticamente um prompt de alta precisão para a Secretaria de Saúde de Atibaia:
+      Preencha os 4 campos abaixo (sem inserir dados pessoais de pacientes!) para montar automaticamente um prompt de alta precisão para a Secretaria Municipal de Saúde:
     </p>
     <div class="poca-form-grid">
       <div class="poca-field">
@@ -1069,8 +1068,8 @@
         <textarea id="poca-o" oninput="updatePocaPreview()">Elabore um plano de ação operacional e um ofício circular de orientação para as unidades de saúde.</textarea>
       </div>
       <div class="poca-field">
-        <label>3. [C] Contexto (Qual o cenário real em Atibaia?)</label>
-        <textarea id="poca-c" oninput="updatePocaPreview()">Somos da Secretaria Municipal de Saúde de Atibaia/SP. O documento será destinado aos coordenadores de UBS e equipes multiprofissionais para organizar o fluxo de acolhimento na campanha de vacinação.</textarea>
+        <label>3. [C] Contexto (Qual o cenário real da Secretaria?)</label>
+        <textarea id="poca-c" oninput="updatePocaPreview()">Somos da Secretaria Municipal de Saúde. O documento será destinado aos coordenadores de UBS e equipes multiprofissionais para organizar o fluxo de acolhimento na campanha de vacinação.</textarea>
       </div>
       <div class="poca-field">
         <label>4. [A] Ajustes (Formato, tom e restrições)</label>
@@ -1102,7 +1101,7 @@ const slides = [
         itens: [
           "<strong>1. O Servidor Receoso / Paralisado:</strong> Não utiliza a Inteligência Artificial por medo de errar, receio de violar regras administrativas ou temor de ser substituído pela tecnologia.",
           "<strong>2. O Subutilizador (Corretor de Luxo):</strong> Usa uma ferramenta com capacidade de análise estratégica apenas para corrigir vírgulas, trocar sinônimos ou 'deixar um e-mail mais bonito'.",
-          "<strong>Consequência Prática:</strong> Perda de dezenas de horas mensais em tarefas burocráticas repetitivas que poderiam ser convertidas em planejamento e melhor assistência ao cidadão de Atibaia."
+          "<strong>Consequência Prática:</strong> Perda de dezenas de horas mensais em tarefas burocráticas repetitivas que poderiam ser convertidas em planejamento e melhor assistência ao cidadão."
         ]
       },
       {
@@ -1121,7 +1120,7 @@ const slides = [
       { no: "3. Uso como Google", txt: "Substituir perguntas soltas por análise de documentos oficiais" },
       { no: "4. Meta: Servidor Copiloto", txt: "Você no comando técnico, a IA no trabalho braçal e revisão humana 100%" }
     ],
-    nota: "Na Secretaria Municipal de Saúde de Atibaia, nosso objetivo não é proibir a Inteligência Artificial nem aceitar seu uso descuidado. A meta desta capacitação é transformar cada servidor e gestor em um 'Copiloto Consciente': alguém que perde o medo da ferramenta, supera o uso raso e jamais assina ou encaminha um documento sem antes auditar sua exatidão técnica e legal."
+    nota: "Na Secretaria Municipal de Saúde, nosso objetivo não é proibir a Inteligência Artificial nem aceitar seu uso descuidado. A meta desta capacitação é transformar cada servidor e gestor em um 'Copiloto Consciente': alguém que perde o medo da ferramenta, supera o uso raso e jamais assina ou encaminha um documento sem antes auditar sua exatidão técnica e legal."
   },
   {
     tipo: "conteudo",
@@ -1136,7 +1135,7 @@ const slides = [
         itens: [
           "<strong>O que realmente é a IA?</strong> É um ramo da ciência da computação baseado em matemática avançada, estatística e aprendizado de máquina (<em>Machine Learning</em>) capaz de identificar padrões em grandes volumes de dados.",
           "<strong>A IA 'pensa' ou tem consciência?</strong> Não. Ela não possui intenção, ética própria, empatia clínica ou compreensão humana da realidade de uma UBS ou UPA.",
-          "<strong>Fator Tranquilizador:</strong> A IA é uma calculadora de padrões extremamente veloz. Quem compreende a dor do paciente e a realidade territorial de Atibaia é exclusivamente o servidor público."
+          "<strong>Fator Tranquilizador:</strong> A IA é uma calculadora de padrões extremamente veloz. Quem compreende a dor do paciente e a realidade territorial do município é exclusivamente o servidor público."
         ]
       },
       {
@@ -1177,7 +1176,7 @@ const slides = [
         tipo: "danger",
         titulo: "O Fenômeno da 'Alucinação': Quando a IA Inventa com Confiança",
         itens: [
-          "<strong>O que é Alucinação em IA?</strong> Como o objetivo matemático da IA é produzir uma resposta fluida e coerente, quando ela não sabe um fato específico (ex.: uma portaria municipal de Atibaia), ela pode <strong>inventar números de leis, datas ou dados</strong> com total aparência de verdade.",
+          "<strong>O que é Alucinação em IA?</strong> Como o objetivo matemático da IA é produzir uma resposta fluida e coerente, quando ela não sabe um fato específico (ex.: uma portaria municipal específica), ela pode <strong>inventar números de leis, datas ou dados</strong> com total aparência de verdade.",
           "<strong>Por que não é um 'novo Google'?</strong> O Google busca páginas reais existentes na internet. A IA Generativa <em>constrói</em> frases palavra por palavra por probabilidade.",
           "<strong>Regra de Ouro:</strong> Quanto mais vago for o seu pedido e menor for a base documental fornecida por você, maior será a probabilidade de a IA alucinar."
         ]
@@ -1189,7 +1188,7 @@ const slides = [
       { no: "3. Cálculo de Probabilidade", txt: "Completa o texto palavra por palavra segundo padrões estatísticos" },
       { no: "4. Risco de Alucinação", txt: "Se faltar contexto real, a IA preenche a lacuna inventando dados plausíveis" }
     ],
-    nota: "Compreender que a IA funciona por probabilidade estatística de palavras — e não por 'conhecimento da verdade' — muda completamente a forma de trabalhar na Secretaria de Saúde. Se você pedir 'Cite a portaria de Atibaia sobre horário da farmácia', ela pode inventar um número falso que soa perfeito. Mas se você colar o texto da portaria e pedir 'Resuma esta portaria em 5 tópicos', ela será brilhante e precisa."
+    nota: "Compreender que a IA funciona por probabilidade estatística de palavras — e não por 'conhecimento da verdade' — muda completamente a forma de trabalhar na Secretaria de Saúde. Se você pedir 'Cite a portaria municipal sobre horário da farmácia', ela pode inventar um número falso que soa perfeito. Mas se você colar o texto da portaria e pedir 'Resuma esta portaria em 5 tópicos', ela será brilhante e precisa."
   },
   {
     tipo: "conteudo",
@@ -1242,7 +1241,7 @@ const slides = [
         correta: 1
       },
       {
-        q: "2. Qual é o perfil ideal de servidor público na utilização da Inteligência Artificial na Secretaria Municipal de Saúde de Atibaia e o papel das travas do arquiteto (Guardrails)?",
+        q: "2. Qual é o perfil ideal de servidor público na utilização da Inteligência Artificial na Secretaria Municipal de Saúde e o papel das travas do arquiteto (Guardrails)?",
         opcoes: [
           "O 'Terceirizador Cego', que pede para a IA redigir ofícios e termos de referência e os encaminha diretamente para assinatura sem ler.",
           "O 'Subutilizador', que restringe o uso da ferramenta apenas para corrigir vírgulas por acreditar que a IA substitui o julgamento do gestor.",
@@ -1265,7 +1264,7 @@ const slides = [
         titulo: "Pecados 1 a 3: Dados Sensíveis, Busca Cega e Falta de Leitura",
         itens: [
           "<strong>1. NUNCA inserir dados identificáveis de pacientes ou servidores:</strong> Jamais cole Nome completo, CPF, Cartão Nacional de Saúde (CNS), RG, endereço, telefone ou prontuário médico real em IAs públicas.",
-          "<strong>2. NUNCA usar a IA como fonte primária de legislação sem conferência:</strong> Não peça para a IA 'buscar qual é a lei vigente' sem checar no portal oficial (Planalto, Saúde Legis ou Imprensa Oficial de Atibaia).",
+          "<strong>2. NUNCA usar a IA como fonte primária de legislação sem conferência:</strong> Não peça para a IA 'buscar qual é a lei vigente' sem checar no portal oficial (Planalto, Saúde Legis ou Imprensa Oficial do Município).",
           "<strong>3. NUNCA encaminhar ou assinar texto sem revisão integral:</strong> Textos gerados por IA costumam trazer termos genéricos ou referências inexistentes que expõem o servidor e a Secretaria ao ridículo ou a erro administrativo."
         ]
       },
@@ -1284,7 +1283,7 @@ const slides = [
       { no: "🚫 Zero Citação Não Checada", txt: "Toda lei, portaria ou número citado pela IA deve ser conferido na fonte" },
       { no: "🚫 Zero Decisão Automática", txt: "A IA apoia a redação, mas quem decide o mérito técnico é o servidor" }
     ],
-    nota: "Estes 5 limites inegociáveis formam o cinturão de segurança da Secretaria de Saúde de Atibaia. O servidor que respeita essas cinco regras elimina 99% dos riscos jurídicos, éticos e disciplinares no uso de Inteligência Artificial no setor público."
+    nota: "Estes 5 limites inegociáveis formam o cinturão de segurança da Secretaria Municipal de Saúde. O servidor que respeita essas cinco regras elimina 99% dos riscos jurídicos, éticos e disciplinares no uso de Inteligência Artificial no setor público."
   },
   {
     tipo: "conteudo",
@@ -1306,7 +1305,7 @@ const slides = [
         titulo: "A Solução Prática: Técnica de Anonimização Antes do Prompt",
         itens: [
           "<strong>Como usar a IA em casos reais sem violar a LGPD?</strong> Aplique a <strong>Anonimização / Pseudonimização</strong>: remova todos os identificadores pessoais antes de colar o texto na ferramenta.",
-          "<strong>❌ ERRADO (Viola a LGPD):</strong> <em>'Redija resposta para Maria da Silva, CPF 123.456.789-00, CNS 700000, moradora da Rua X em Atibaia, que reclamou de demora na consulta de cardiologia.'</em>",
+          "<strong>❌ ERRADO (Viola a LGPD):</strong> <em>'Redija resposta para Maria da Silva, CPF 123.456.789-00, CNS 700000, moradora da Rua X no município, que reclamou de demora na consulta de cardiologia.'</em>",
           "<strong>✅ CORRETO (100% Seguro e Anonimizado):</strong> <em>'Redija uma minuta de resposta institucional para a Ouvidoria do SUS referente a [PACIENTE IDOSA, 68 ANOS], cadastrada na [UBS X], que relata aguardar agendamento para especialidade de cardiologia há 45 dias. Após inserir no sistema oficial, eu mesmo preencherei os dados reais.'</em>"
         ]
       }
@@ -1340,7 +1339,7 @@ const slides = [
         itens: [
           "<strong>Passo 1 (Checagem Normativa):</strong> A IA citou uma Portaria GM/MS, Resolução da ANVISA ou artigo da Lei 14.133/21? Abra o Google/Planalto e confirme se o número e o texto realmente existem e estão vigentes.",
           "<strong>Passo 2 (Checagem Matemática):</strong> A IA fez somas, percentuais ou cálculos de dosagem/quantitativos? Refaça na calculadora ou no Excel (LLMs são modelos de linguagem, não calculadoras exatas).",
-          "<strong>Passo 3 (Adequação Local):</strong> O texto reflete o fluxo real da rede municipal de saúde de Atibaia?",
+          "<strong>Passo 3 (Adequação Local):</strong> O texto reflete o fluxo real da rede municipal de saúde?",
           "<strong>Passo 4 (Validação Autoral):</strong> Só assine quando você concordar com 100% do conteúdo como se tivesse digitado cada palavra."
         ]
       }
@@ -1348,7 +1347,7 @@ const slides = [
     mapa: [
       { no: "1. Auditar Normas e Leis", txt: "Conferir se portarias, artigos e resoluções citados realmente existem" },
       { no: "2. Auditar Números e Contas", txt: "Conferir quantitativos, somas de planilhas e prazos no Excel/Calculadora" },
-      { no: "3. Auditar Fluxo Municipal", txt: "Ajustar nomes de setores, fluxos de regulação e realidade de Atibaia" },
+      { no: "3. Auditar Fluxo Municipal", txt: "Ajustar nomes de setores, fluxos de regulação e realidade da Secretaria Municipal de Saúde" },
       { no: "4. Assumir a Autoria", txt: "A responsabilidade jurídica e ética é sempre do servidor que assina" }
     ],
     nota: "Pense na Inteligência Artificial como um estagiário extremamente rápido, culto e prestativo, que trabalha para você em segundos, mas que às vezes tem vergonha de dizer 'não sei' e inventa uma informação para agradar. Você jamais assinaria o trabalho de um estagiário sem ler e conferir os dados críticos: aja exatamente da mesma forma com a IA."
@@ -1379,7 +1378,7 @@ const slides = [
         correta: 1
       }
     ],
-    nota: "A aplicação rigorosa da Anonimização (LGPD) e do Protocolo de Auditoria em 4 Passos protege o cidadão de Atibaia e blinda o servidor público contra erros administrativos."
+    nota: "A aplicação rigorosa da Anonimização (LGPD) e do Protocolo de Auditoria em 4 Passos protege o cidadão e blinda o servidor público contra erros administrativos."
   },
   {
     tipo: "conteudo",
@@ -1394,7 +1393,7 @@ const slides = [
         itens: [
           "<strong>Os Primeiros 10% (Você — Direcionamento):</strong> Você define o problema, reúne os dados reais (sem nomes pessoais), escolhe a norma aplicável e estrutura o comando (Prompt).",
           "<strong>Os 80% Intermediários (A IA — Trabalho Braçal):</strong> Em poucos segundos, a IA vence a 'síndrome da folha em branco', estrutura o documento, organiza tabelas, resume anexos extensos e sugere listas de verificação.",
-          "<strong>Os 10% Finais (Você — Lapidação e Auditoria):</strong> Você revisa criticamente, ajusta às particularidades da Secretaria de Saúde de Atibaia, valida os dados e finaliza o documento oficial."
+          "<strong>Os 10% Finais (Você — Lapidação e Auditoria):</strong> Você revisa criticamente, ajusta às particularidades da Secretaria Municipal de Saúde, valida os dados e finaliza o documento oficial."
         ]
       },
       {
@@ -1410,7 +1409,7 @@ const slides = [
     mapa: [
       { no: "10% Iniciais (Servidor)", txt: "Planeja a demanda, separa a portaria/dados e monta o prompt estruturado" },
       { no: "80% Execução (IA Copiloto)", txt: "Gera a minuta, resume documentos longos, monta tabelas e checklists" },
-      { no: "10% Finais (Servidor Auditor)", txt: "Revisa fatos, adapta à realidade de Atibaia e valida tecnicamente" },
+      { no: "10% Finais (Servidor Auditor)", txt: "Revisa fatos, adapta à realidade da Secretaria Municipal de Saúde e valida tecnicamente" },
       { no: "Ancoragem Documental", txt: "Sempre anexar ou colar a portaria/norma base junto com o seu pedido" }
     ],
     nota: "Aplicar a Regra 80/20 na rotina administrativa e assistencial da Saúde permite que tarefas que antes tomavam uma tarde inteira — como estruturar o cronograma de uma campanha de saúde, resumir uma portaria de 40 páginas do Ministério da Saúde ou redigir um descritivo técnico — sejam concluídas em 15 minutos com qualidade superior."
@@ -1432,9 +1431,9 @@ const slides = [
       },
       {
         tipo: "warn",
-        titulo: "C + A: Contexto e Ajustes (Cenário de Atibaia e Regras de Saída)",
+        titulo: "C + A: Contexto e Ajustes (Cenário da Secretaria e Regras de Saída)",
         itens: [
-          "<strong>[C] CONTEXTO (O cenário real e informações de base):</strong> Explique onde o documento será usado, quem é o público-alvo e quais são as restrições.<br><em>Exemplo: '...O documento será utilizado pelas equipes de enfermagem das UBSs da Secretaria Municipal de Saúde de Atibaia/SP para controle de temperatura de imunobiológicos...'</em>",
+          "<strong>[C] CONTEXTO (O cenário real e informações de base):</strong> Explique onde o documento será usado, quem é o público-alvo e quais são as restrições.<br><em>Exemplo: '...O documento será utilizado pelas equipes de enfermagem das UBSs da Secretaria Municipal de Saúde para controle de temperatura de imunobiológicos...'</em>",
           "<strong>[A] AJUSTES (Formato, tom de voz e travas):</strong> Defina como a resposta deve ser entregue.<br><em>Exemplo: '...Entregue em formato de tabela passo a passo, linguagem técnica e objetiva, sem inventar normas. Onde precisar de dados locais, indique entre colchetes [PREENCHER].'</em>"
         ]
       }
@@ -1442,10 +1441,10 @@ const slides = [
     mapa: [
       { no: "P • Personificação", txt: "Defina a especialidade: Gestor do SUS, Engenheiro Clínico, Enfermeiro Auditor..." },
       { no: "O • Objetivo", txt: "Use verbos claros: Elabore, Resuma, Compare, Estruture, Transforme em tabela..." },
-      { no: "C • Contexto", txt: "Informe a realidade: Saúde de Atibaia, público-alvo, dados e normas-base..." },
+      { no: "C • Contexto", txt: "Informe a realidade: Secretaria Municipal de Saúde, público-alvo, dados e normas-base..." },
       { no: "A • Ajustes", txt: "Defina o formato: Tabela, tópicos, tom formal, proibição de inventar leis..." }
     ],
-    nota: "Por que a maioria das pessoas obtém respostas fracas e genéricas da Inteligência Artificial? Porque fazem pedidos de uma única linha, sem contexto. O Protocolo P.O.C.A. (Personificação, Objetivo, Contexto e Ajustes) é a fórmula padrão adotada neste curso para garantir que a IA compreenda exatamente a necessidade da Secretaria de Saúde de Atibaia logo na primeira tentativa."
+    nota: "Por que a maioria das pessoas obtém respostas fracas e genéricas da Inteligência Artificial? Porque fazem pedidos de uma única linha, sem contexto. O Protocolo P.O.C.A. (Personificação, Objetivo, Contexto e Ajustes) é a fórmula padrão adotada neste curso para garantir que a IA compreenda exatamente a necessidade da Secretaria Municipal de Saúde logo na primeira tentativa."
   },
   {
     tipo: "conteudo",
@@ -1473,7 +1472,7 @@ const slides = [
 
 [O - OBJETIVO] Elabore um Plano de Contingência Operacional de Combate às Arboviroses (Dengue) para os próximos 60 dias, integrando as ações dos Agentes Comunitários de Saúde (ACS), Agentes de Combate às Endemias (ACE) e equipes das UBSs.
 
-[C - CONTEXTO] O plano será aplicado pela Secretaria Municipal de Saúde de Atibaia/SP diante do período sazonal de chuvas e aumento de notificações. Precisamos organizar: 1) Busca ativa e vistoria territorial; 2) Fluxo de acolhimento com classificação de risco e hidratação imediata nas unidades; 3) Ações educativas na comunidade.
+[C - CONTEXTO] O plano será aplicado pela Secretaria Municipal de Saúde diante do período sazonal de chuvas e aumento de notificações. Precisamos organizar: 1) Busca ativa e vistoria territorial; 2) Fluxo de acolhimento com classificação de risco e hidratação imediata nas unidades; 3) Ações educativas na comunidade.
 
 [A - AJUSTES] Apresente o plano estruturado em uma tabela com as colunas: Eixo de Ação, Atividade Prática, Profissional Responsável, Prazo/Frequência e Indicador de Monitoramento. Utilize linguagem técnica oficial do Ministério da Saúde e sinalize entre colchetes [INSERIR DADO LOCAL] os pontos que dependem de preenchimento da equipe.`
       }
@@ -1481,7 +1480,7 @@ const slides = [
     mapa: [
       { no: "Sem P.O.C.A.", txt: "Resposta genérica, superficial e que exige horas de retrabalho" },
       { no: "Com Personificação (P)", txt: "Eleva o vocabulário ao padrão técnico do Ministério da Saúde" },
-      { no: "Com Contexto (C)", txt: "Conecta a resposta à rotina real de UBS, UPA, ACS e ACE de Atibaia" },
+      { no: "Com Contexto (C)", txt: "Conecta a resposta à rotina real de UBS, UPA, ACS e ACE da Secretaria Municipal de Saúde" },
       { no: "Com Ajustes (A)", txt: "Entrega tudo pronto em tabela, com indicadores e campos editáveis" }
     ],
     nota: "Observe a diferença brutal entre os dois comandos. No segundo caso, em menos de 1 minuto de digitação seguindo o método P.O.C.A., o servidor obtém uma matriz operacional completa, dividida por eixos, profissionais responsáveis e indicadores de monitoramento, pronta para ser revisada e validada pela equipe técnica da Vigilância e Atenção Básica."
@@ -1508,7 +1507,7 @@ const slides = [
           "<strong>Não sabe todos os detalhes que precisa colocar no prompt?</strong> Use o <strong>Prompt Reverso</strong>: peça para a IA fazer perguntas a você antes de gerar o resultado final!"
         ],
         code: `[P] Atue como consultor sênior em gestão pública de saúde do SUS.
-[O] Preciso elaborar um [NOME DO DOCUMENTO / PROJETO / FLUXO] para o meu setor na Secretaria Municipal de Saúde de Atibaia/SP.
+[O] Preciso elaborar um [NOME DO DOCUMENTO / PROJETO / FLUXO] para o meu setor na Secretaria Municipal de Saúde.
 [C] Quero que o documento fique extremamente completo, técnico e adequado à nossa realidade operacional.
 [A] ANTES de gerar o documento final, faça-me 5 perguntas estratégicas e diretas sobre a realidade do meu setor, recursos disponíveis e objetivos para que você tenha todas as informações necessárias. Aguarde minhas respostas para só então redigir o documento.`
       }
@@ -1529,10 +1528,10 @@ const slides = [
     subtitulo: "Responda corretamente às 2 questões abaixo sobre a Regra 80/20, o Protocolo P.O.C.A. e técnicas avançadas para desbloquear o Laboratório de Prompts.",
     perguntas: [
       {
-        q: "1. O que significam os 4 elementos da estrutura de comandos do Protocolo P.O.C.A. adotado na Secretaria Municipal de Saúde de Atibaia?",
+        q: "1. O que significam os 4 elementos da estrutura de comandos do Protocolo P.O.C.A. adotado na Secretaria Municipal de Saúde?",
         opcoes: [
           "Prontuário, Ouvidoria, Controle Interno e Assinatura Digital.",
-          "Personificação (especialista que a IA deve incorporar), Objetivo (tarefa clara com verbo de ação), Contexto (cenário real em Atibaia, público e dados de base) e Ajustes (formato de saída, tom e restrições).",
+          "Personificação (especialista que a IA deve incorporar), Objetivo (tarefa clara com verbo de ação), Contexto (cenário real da Secretaria, público e dados de base) e Ajustes (formato de saída, tom e restrições).",
           "Pesquisa de Preços, Orçamento Estimado, Cronograma Físico e Atesto da Nota Fiscal."
         ],
         correta: 1
@@ -1564,7 +1563,7 @@ const slides = [
         ],
         code: `[P - PERSONIFICAÇÃO] Atue como especialista em Educação Permanente em Saúde no SUS e Gestão de Eventos Institucionais na Administração Pública.
 
-[O - OBJETIVO] Elabore o projeto completo e a programação detalhada da "Semana da Enfermagem da Secretaria Municipal de Saúde de Atibaia/SP", com duração de 3 dias, voltada para Enfermeiros, Técnicos e Auxiliares de Enfermagem da rede municipal.
+[O - OBJETIVO] Elabore o projeto completo e a programação detalhada da "Semana da Enfermagem da Secretaria Municipal de Saúde", com duração de 3 dias, voltada para Enfermeiros, Técnicos e Auxiliares de Enfermagem da rede municipal.
 
 [C - CONTEXTO] Nossos profissionais atuam em UBSs, ESFs, UPA, SAMU e Vigilância. O maior desafio logístico é permitir a participação das equipes sem interromper a assistência ao cidadão. Portanto, o evento precisa prever turmas espelhadas (manhã e tarde) ou ações itinerantes, abordando: 1) Valorização, saúde mental e autocuidado do profissional; 2) Segurança do paciente e ética no exercício profissional (COFEN/COREN); 3) Atualização prática em protocolos clínicos e atendimento humanizado.
 
@@ -1580,11 +1579,11 @@ const slides = [
         itens: [
           "Gera toda a documentação formal de comunicação interna e avaliação pós-evento:"
         ],
-        code: `[P - PERSONIFICAÇÃO] Atue como assessor de comunicação institucional e cerimonialista da Secretaria Municipal de Saúde de Atibaia/SP.
+        code: `[P - PERSONIFICAÇÃO] Atue como assessor de comunicação institucional e cerimonialista da Secretaria Municipal de Saúde.
 
-[O - OBJETIVO] Com base na realização da Semana da Enfermagem da Saúde de Atibaia, elabore 3 peças documentais prontas para uso:
+[O - OBJETIVO] Com base na realização da Semana da Enfermagem da Secretaria Municipal de Saúde, elabore 3 peças documentais prontas para uso:
 1. Minuta de Ofício Circular/Comunicado Interno aos Coordenadores e Chefias de Unidades orientando sobre a liberação organizada por escala dos profissionais de enfermagem;
-2. Roteiro do Cerimonial de Abertura (fala de boas-vindas e agradecimento institucional valorizando o papel histórico da enfermagem no SUS de Atibaia);
+2. Roteiro do Cerimonial de Abertura (fala de boas-vindas e agradecimento institucional valorizando o papel histórico da enfermagem no SUS municipal);
 3. Formulário curto de Pesquisa de Satisfação e sugestões de temas futuros (5 perguntas objetivas + 1 aberta).
 
 [C - CONTEXTO] O tom deve ser respeitoso, acolhedor, motivador e alinhado às normas de redação oficial do serviço público municipal.
@@ -1615,7 +1614,7 @@ const slides = [
         ],
         code: `[P - PERSONIFICAÇÃO] Atue como engenheiro mecânico/clínico especialista em especificações de frota de urgência e emergência do SUS e consultor em licitações públicas (Lei Federal nº 14.133/2021).
 
-[O - OBJETIVO] Elabore uma minuta detalhada de Descritivo Técnico para aquisição/locação de Ambulância de Suporte Básico de Vida (Tipo B) destinada ao Atendimento Pré-Hospitalar Móvel (SAMU 192) da Secretaria Municipal de Saúde de Atibaia/SP.
+[O - OBJETIVO] Elabore uma minuta detalhada de Descritivo Técnico para aquisição/locação de Ambulância de Suporte Básico de Vida (Tipo B) destinada ao Atendimento Pré-Hospitalar Móvel (SAMU 192) da Secretaria Municipal de Saúde.
 
 [C - CONTEXTO] O descritivo deve observar os parâmetros da Portaria de Consolidação/Portaria GM/MS nº 2.048/2002, normas da ABNT aplicáveis (como ABNT NBR 14561 - Veículos para atendimento a emergências médicas e resgate) e padrões visuais do SAMU 192, garantindo ampla competitividade entre fabricantes (sem direcionamento de marca ou modelo exclusivo).
 
@@ -1639,7 +1638,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
 
 [O - OBJETIVO] Com base no descritivo técnico de uma Ambulância de Suporte Básico (Tipo B - SAMU 192), elabore um Checklist Prático de Vistoria e Recebimento Provisório para ser utilizado em prancheta/tablet no ato da entrega do veículo pela fornecedora.
 
-[C - CONTEXTO] Precisamos evitar o recebimento de veículos com adaptações fora de norma, falhas elétricas, infiltrações, ausência de cilindros ou acabamento inferior ao contratado na Secretaria Municipal de Saúde de Atibaia/SP.
+[C - CONTEXTO] Precisamos evitar o recebimento de veículos com adaptações fora de norma, falhas elétricas, infiltrações, ausência de cilindros ou acabamento inferior ao contratado na Secretaria Municipal de Saúde.
 
 [A - AJUSTES] Gere uma tabela de conferência contendo: Item de Inspeção, Como Testar na Prática (ex: ligar ar-condicionado traseiro por 15 min, testar inversor com equipamento, testar trava da maca, checar vedação e laudos), Status (Conforme / Não Conforme) e Observações, além de um modelo de Termo de Recebimento Provisório com ressalvas.`
       }
@@ -1669,12 +1668,12 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
 
 [O - OBJETIVO] Analise integralmente o texto da Portaria/Norma colada ao final deste comando e elabore um Resumo Executivo Gerencial e um Plano de Ação Imediato para o gestor municipal.
 
-[C - CONTEXTO] Sou gestor da Secretaria Municipal de Saúde de Atibaia/SP e preciso compreender rapidamente os impactos técnicos, financeiros e operacionais desta norma para orientar nossas coordenadorias (Atenção Básica, Média/Alta Complexidade, Vigilância, Regulação e Fundo Municipal de Saúde).
+[C - CONTEXTO] Sou gestor da Secretaria Municipal de Saúde e preciso compreender rapidamente os impactos técnicos, financeiros e operacionais desta norma para orientar nossas coordenadorias (Atenção Básica, Média/Alta Complexidade, Vigilância, Regulação e Fundo Municipal de Saúde).
 
 [A - AJUSTES] Utilize EXCLUSIVAMENTE as informações contidas no texto da portaria fornecida abaixo (não invente dados externos). Estruture sua resposta obrigatoriamente em:
 1. Resumo em 1 Parágrafo (Qual o propósito central da portaria?);
 2. Impacto Financeiro (Há recurso novo? É Bloco de Manutenção/Custeio ou Investimento? Qual o valor ou critério de rateio? Exige contrapartida municipal?);
-3. Requisitos e Condicionalidades (O que o município de Atibaia precisa fazer, cadastrar no CNES/e-Gestor ou aprovar no CMS/CIB para receber ou manter o recurso?);
+3. Requisitos e Condicionalidades (O que a Secretaria Municipal de Saúde precisa fazer, cadastrar no CNES/e-Gestor ou aprovar no CMS/CIB para receber ou manter o recurso?);
 4. Prazos Críticos e Vigência (Datas-limite de adesão, prestação de contas ou início de obrigatoriedade);
 5. Indicadores e Metas de Monitoramento exigidos;
 6. Checklist de Providências por Setor da Secretaria.
@@ -1692,10 +1691,10 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
 
 [O - OBJETIVO] Compare o [TEXTO 1 - NORMA ANTIGA] com o [TEXTO 2 - NORMA NOVA] fornecidos abaixo e aponte de forma direta todas as alterações práticas para a gestão municipal de saúde.
 
-[C - CONTEXTO] Precisamos atualizar nossas equipes da Secretaria de Saúde de Atibaia sobre o que deixou de valer, o que foi modificado e quais novas obrigações surgiram.
+[C - CONTEXTO] Precisamos atualizar nossas equipes da Secretaria Municipal de Saúde sobre o que deixou de valer, o que foi modificado e quais novas obrigações surgiram.
 
 [A - AJUSTES] Baseie-se estritamente nos dois textos fornecidos e apresente uma Tabela Comparativa contendo 4 colunas:
-1) Tema/Tópico; 2) Como era na Norma Antiga; 3) Como ficou na Norma Nova; 4) Impacto Prático / Ação Necessária em Atibaia.`
+1) Tema/Tópico; 2) Como era na Norma Antiga; 3) Como ficou na Norma Nova; 4) Impacto Prático / Ação Necessária na Secretaria.`
       }
     ],
     mapa: [
@@ -1723,7 +1722,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
 
 [O - OBJETIVO] Estruture uma minuta completa de Estudo Técnico Preliminar (ETP) para fundamentar a contratação/aquisição de [DESCREVER O OBJETO: ex. insumos para curativos especiais / manutenção preventiva e corretiva de equipamentos médico-hospitalares / locação de cilindros de oxigênio domiciliar].
 
-[C - CONTEXTO] A demanda é originada pela Secretaria Municipal de Saúde de Atibaia/SP visando atender [INFORMAR UNIDADES: ex. as 16 unidades de saúde, UPA e Programa Melhor em Casa], garantindo a continuidade da assistência à saúde (art. 196 da CF/88 e Lei 8.080/90) para uma demanda estimada de [INFORMAR DADOS GERAIS].
+[C - CONTEXTO] A demanda é originada pela Secretaria Municipal de Saúde visando atender [INFORMAR UNIDADES: ex. as 16 unidades de saúde, UPA e Programa Melhor em Casa], garantindo a continuidade da assistência à saúde (art. 196 da CF/88 e Lei 8.080/90) para uma demanda estimada de [INFORMAR DADOS GERAIS].
 
 [A - AJUSTES] Estruture o ETP contemplando todos os elementos do art. 18, §1º da Lei 14.133/2021:
 1. Descrição da necessidade da contratação (interesse público e impacto assistencial da falta do item/serviço);
@@ -1747,7 +1746,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
 1) Uma Tabela de Mapa de Riscos Contratuais;
 2) Uma minuta de Instrumento de Medição de Resultado (IMR) com níveis de serviço (SLA).
 
-[C - CONTEXTO] Precisamos proteger a Secretaria Municipal de Saúde de Atibaia/SP contra atrasos de entrega, fornecimento de insumos com validade curta, falhas na assistência técnica ou ausência de profissionais em postos de trabalho, permitindo pagamento proporcional à qualidade efetivamente entregue (art. 140 e 144 da Lei 14.133/21).
+[C - CONTEXTO] Precisamos proteger a Secretaria Municipal de Saúde contra atrasos de entrega, fornecimento de insumos com validade curta, falhas na assistência técnica ou ausência de profissionais em postos de trabalho, permitindo pagamento proporcional à qualidade efetivamente entregue (art. 140 e 144 da Lei 14.133/21).
 
 [A - AJUSTES] 
 - Na Tabela de Mapa de Riscos, inclua: Evento de Risco, Causa, Consequência para o SUS, Probabilidade, Impacto, Ação Preventiva, Ação de Contingência e Responsável (Fiscal Técnico, Fiscal Adm ou Gestor).
@@ -1775,7 +1774,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
         itens: [
           "Transforma apontamentos técnicos (anonimizados!) em respostas formais, empáticas e completas:"
         ],
-        code: `[P - PERSONIFICAÇÃO] Atue como Ouvidor Especialista do SUS e Redator Oficial da Secretaria Municipal de Saúde de Atibaia/SP, com domínio da Lei nº 13.460/2017 (Código de Defesa do Usuário do Serviço Público).
+        code: `[P - PERSONIFICAÇÃO] Atue como Ouvidor Especialista do SUS e Redator Oficial da Secretaria Municipal de Saúde, com domínio da Lei nº 13.460/2017 (Código de Defesa do Usuário do Serviço Público).
 
 [O - OBJETIVO] Redija uma minuta de resposta institucional clara, respeitosa, técnica e humanizada para atender a uma demanda de [ESCOLHER: Ouvidoria do SUS / Ofício do Ministério Público / Requerimento da Câmara Municipal].
 
@@ -1796,10 +1795,10 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
         code: `[P - PERSONIFICAÇÃO] Atue como especialista em Educação em Saúde, Comunicação Pública do SUS e Atenção Primária.
 
 [O - OBJETIVO] Com base na Nota Técnica / Informe Epidemiológico colado abaixo, gere 2 materiais educativos:
-1) Um comunicado curto em Linguagem Simples (perguntas e respostas diretas) para divulgação à população de Atibaia sobre prevenção, sinais de alerta e quando procurar a UBS ou a UPA;
+1) Um comunicado curto em Linguagem Simples (perguntas e respostas diretas) para divulgação à população do município sobre prevenção, sinais de alerta e quando procurar a UBS ou a UPA;
 2) Um Roteiro Prático de Bolso (5 pontos de abordagem domiciliar) para os Agentes Comunitários de Saúde (ACS) orientarem as famílias durante as visitas.
 
-[C - CONTEXTO] Precisamos combater a desinformação e orientar corretamente o fluxo da rede municipal de saúde de Atibaia, evitando sobrecarga desnecessária no pronto-socorro em casos leves e garantindo atendimento rápido aos sinais de gravidade.
+[C - CONTEXTO] Precisamos combater a desinformação e orientar corretamente o fluxo da rede municipal de saúde, evitando sobrecarga desnecessária no pronto-socorro em casos leves e garantindo atendimento rápido aos sinais de gravidade.
 
 [A - AJUSTES] Use tom acolhedor, frases curtas, destaque os Sinais de Alarme em tópicos visíveis e baseie-se exclusivamente nas diretrizes técnicas fornecidas abaixo:
 [COLAR DIRETRIZ / NOTA TÉCNICA]`
@@ -1830,7 +1829,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
 
 [O - OBJETIVO] Elabore um Procedimento Operacional Padrão (POP) completo e estruturado sobre a rotina de: [DESCREVER A ROTINA: ex. Recebimento, conferência e armazenamento de medicamentos termolábeis na Farmácia da UBS / Limpeza e desinfecção concorrente e terminal de sala de curativos / Acolhimento e fluxo de encaminhamento de pacientes na recepção].
 
-[C - CONTEXTO] O POP será utilizado para treinamento e consulta diária dos servidores da Secretaria Municipal de Saúde de Atibaia/SP, devendo ser claro, auditável e seguro.
+[C - CONTEXTO] O POP será utilizado para treinamento e consulta diária dos servidores da Secretaria Municipal de Saúde, devendo ser claro, auditável e seguro.
 
 [A - AJUSTES] Estruture o POP nos seguintes campos oficiais:
 1. Título do Procedimento e Objetivo;
@@ -1853,7 +1852,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
 1) Uma Ata de Reunião formal, clara e organizada por pautas e deliberações;
 2) Uma Tabela de Plano de Ação (modelo 5W2H) com todas as tarefas combinadas.
 
-[C - CONTEXTO] Reunião realizada na Secretaria Municipal de Saúde de Atibaia/SP entre [INFORMAR SETORES PARTICIPANTES].
+[C - CONTEXTO] Reunião realizada na Secretaria Municipal de Saúde entre [INFORMAR SETORES PARTICIPANTES].
 
 [A - AJUSTES] Não invente deliberações que não estejam nas anotações. Na tabela de Plano de Ação, crie as colunas: O que será feito (Ação), Por que (Objetivo), Onde (Setor/Unidade), Quem é o Responsável, Quando (Prazo) e Como será executado. Caso falte o responsável ou prazo de algum item nas anotações, escreva [DEFINIR RESPONSÁVEL/PRAZO].
 
@@ -1886,7 +1885,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
         correta: 0
       },
       {
-        q: "2. Sobre o uso de prompts práticos para análise de Portarias do Ministério da Saúde, respostas de Ouvidoria/MP e criação de POPs/Atas nas unidades de Atibaia, assinale a alternativa CORRETA:",
+        q: "2. Sobre o uso de prompts práticos para análise de Portarias do Ministério da Saúde, respostas de Ouvidoria/MP e criação de POPs/Atas nas unidades de saúde, assinale a alternativa CORRETA:",
         opcoes: [
           "Para analisar uma Portaria GM/MS, nunca se deve colar o texto oficial no prompt, deixando que a IA adivinhe os prazos e valores de custeio.",
           "Em Ouvidoria do SUS (cidadão) usa-se Linguagem Simples e acolhedora (com dados previamente anonimizados), enquanto para MP/Câmara adota-se formato de Ofício estritamente técnico e fundamentado nos protocolos de regulação.",
@@ -1918,7 +1917,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
         titulo: "Quando NÃO Usar IA Generativa de Texto?",
         itens: [
           "<strong>Cálculos Financeiros e Estatísticos Pesados:</strong> Para somar milhares de linhas de produção ambulatorial (SIA/SIH) ou calcular planilhas de custos trabalhistas ao centavo, use o <strong>Excel / Planilhas</strong> (você pode pedir para a IA criar a <em>fórmula do Excel</em> para você colar na sua planilha!).",
-          "<strong>Busca de Jurisprudência ou Portaria Específica sem Fonte:</strong> Prefira pesquisar primeiro no Google, no portal <em>Saúde Legis</em> ou na Imprensa Oficial de Atibaia, copiar o texto oficial encontrado e só então levá-lo para a IA analisar."
+          "<strong>Busca de Jurisprudência ou Portaria Específica sem Fonte:</strong> Prefira pesquisar primeiro no Google, no portal <em>Saúde Legis</em> ou na Imprensa Oficial do Município, copiar o texto oficial encontrado e só então levá-lo para a IA analisar."
         ]
       }
     ],
@@ -1950,7 +1949,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
         tipo: "warn",
         titulo: "Validação Territorial e Autoria Consciente",
         itens: [
-          "<strong>☑ 4. Filtro de Realidade Local (Atibaia/SP):</strong> Removi expressões genéricas ou estrangeiras da IA e adaptei o texto ao fluxo real das unidades, regulação e estrutura da Secretaria Municipal de Saúde de Atibaia?",
+          "<strong>☑ 4. Filtro de Realidade Local (Rede Municipal):</strong> Removi expressões genéricas ou estrangeiras da IA e adaptei o texto ao fluxo real das unidades, regulação e estrutura da Secretaria Municipal de Saúde?",
           "<strong>☑ 5. Filtro de Autoria e Responsabilidade:</strong> Li o documento do início ao fim e estou plenamente seguro para assumir a autoria técnica, ética e administrativa de cada frase escrita?"
         ]
       }
@@ -1958,7 +1957,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
     mapa: [
       { no: "1º Crivo: LGPD Limpa", txt: "Nenhum CPF, CNS ou nome de paciente foi exposto na ferramenta" },
       { no: "2º Crivo: Fatos e Leis", txt: "Todas as portarias e números foram conferidos na fonte oficial" },
-      { no: "3º Crivo: Realidade Local", txt: "O documento reflete exatamente a rede de Saúde de Atibaia" },
+      { no: "3º Crivo: Realidade Local", txt: "O documento reflete exatamente a rede municipal de saúde" },
       { no: "4º Crivo: Leitura Integral", txt: "Assinatura consciente após revisão humana de 100% do texto" }
     ],
     nota: "Adote este checklist de 5 pontos como um hábito mental automático em toda a Secretaria de Saúde. Ele leva menos de dois minutos para ser executado e separa o uso amador e arriscado do uso profissional, ético e de alta performance no serviço público."
@@ -1968,14 +1967,14 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
     modNum: 5,
     fimModulo: true,
     mod: "Módulo 5 • Governança, Auditoria e Conclusões Finais",
-    titulo: "20. Conclusões Finais: O Futuro da Gestão Pública na Saúde de Atibaia",
+    titulo: "20. Conclusões Finais: O Futuro da Gestão Pública na Secretaria Municipal de Saúde",
     cards: [
       {
         tipo: "ok",
         titulo: "Síntese Transformadora: Tecnologia a Serviço da Vida",
         itens: [
           "<strong>Do Medo ao Domínio Consciente:</strong> A Inteligência Artificial não é um bicho de sete cabeças nem uma ameaça ao servidor público comprometido; é uma ferramenta de apoio que exige comando técnico e supervisão humana.",
-          "<strong>Mais Tempo para o que Importa:</strong> Cada hora que economizamos na formatação de uma ata, na síntese de uma portaria ou na estruturação de um termo de referência é uma hora a mais dedicada a planejar melhor o atendimento, ouvir as equipes e acolher a população de Atibaia.",
+          "<strong>Mais Tempo para o que Importa:</strong> Cada hora que economizamos na formatação de uma ata, na síntese de uma portaria ou na estruturação de um termo de referência é uma hora a mais dedicada a planejar melhor o atendimento, ouvir as equipes e acolher a população do município.",
           "<strong>Método + Ética = Excelência:</strong> Com o <strong>Protocolo P.O.C.A.</strong>, a <strong>Anonimização (LGPD)</strong> e a <strong>Auditoria Humana</strong>, nossa Secretaria dá um salto de qualidade e governança."
         ]
       },
@@ -1984,17 +1983,17 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
         titulo: "O Que a Inteligência Artificial Jamais Substituirá no SUS",
         itens: [
           "<strong>O Fator Humano Insubstituível:</strong> A IA processa textos em milissegundos, mas jamais saberá o que é segurar a mão de um paciente ansioso na UPA, olhar nos olhos de uma mãe na sala de vacina da UBS ou tomar uma decisão corajosa de gestão para salvar vidas.",
-          "<strong>A Premissa Final do Curso:</strong> <em>'A Inteligência Artificial não substituirá o servidor público da saúde — mas o servidor que utiliza a IA com método, ética e senso crítico transformará a eficiência e a qualidade do SUS em Atibaia.'</em>"
+          "<strong>A Premissa Final do Curso:</strong> <em>'A Inteligência Artificial não substituirá o servidor público da saúde — mas o servidor que utiliza a IA com método, ética e senso crítico transformará a eficiência e a qualidade do SUS na gestão municipal.'</em>"
         ]
       }
     ],
     mapa: [
       { no: "Perder o Medo", txt: "Compreender que a IA é estatística e está sob o nosso comando" },
-      { no: "Usar com Método (P.O.C.A.)", txt: "Personificação + Objetivo + Contexto de Atibaia + Ajustes claros" },
+      { no: "Usar com Método (P.O.C.A.)", txt: "Personificação + Objetivo + Contexto da Secretaria + Ajustes claros" },
       { no: "Proteger o Cidadão (LGPD)", txt: "Anonimizar sempre e jamais expor dados sensíveis de saúde" },
       { no: "Auditar e Humanizar", txt: "Conferir tudo antes de assinar e colocar a tecnologia a serviço da vida" }
     ],
-    nota: "Parabéns por concluir esta capacitação da Secretaria Municipal de Saúde de Atibaia/SP! Utilize o botão '🖨️ Salvar PDF Completo' no topo da tela para guardar este material como guia de consulta rápida no seu setor e use o '✨ Construtor P.O.C.A.' sempre que precisar estruturar novos comandos. Que a tecnologia nos ajude na burocracia para que possamos ser cada vez mais humanos no cuidado!"
+    nota: "Parabéns por concluir esta capacitação da Secretaria Municipal de Saúde! Utilize o botão '🖨️ Salvar PDF Completo' no topo da tela para guardar este material como guia de consulta rápida no seu setor e use o '✨ Construtor P.O.C.A.' sempre que precisar estruturar novos comandos. Que a tecnologia nos ajude na burocracia para que possamos ser cada vez mais humanos no cuidado!"
   },
   {
     tipo: "quiz",
@@ -2013,9 +2012,9 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
         correta: 1
       },
       {
-        q: "2. Quais são os 5 filtros obrigatórios do 'Crivo do Gestor' (Checklist de Segurança e Validação) antes de assinar ou encaminhar qualquer documento elaborado com apoio de IA na Saúde de Atibaia?",
+        q: "2. Quais são os 5 filtros obrigatórios do 'Crivo do Gestor' (Checklist de Segurança e Validação) antes de assinar ou encaminhar qualquer documento elaborado com apoio de IA na Secretaria Municipal de Saúde?",
         opcoes: [
-          "1) Filtro LGPD (zero dados pessoais); 2) Filtro Antialucinação (conferir leis/portarias na fonte .gov.br); 3) Filtro Matemático (checar contas e prazos); 4) Filtro de Realidade Local (adaptar ao fluxo de Atibaia/SP); e 5) Filtro de Autoria e Responsabilidade (leitura integral).",
+          "1) Filtro LGPD (zero dados pessoais); 2) Filtro Antialucinação (conferir leis/portarias na fonte .gov.br); 3) Filtro Matemático (checar contas e prazos); 4) Filtro de Realidade Local (adaptar ao fluxo de Secretaria Municipal de Saúde); e 5) Filtro de Autoria e Responsabilidade (leitura integral).",
           "Apenas verificar se o texto não possui erros de digitação e encaminhar imediatamente para assinatura do Secretário.",
           "Confirmar somente se o texto ficou longo, mantendo termos genéricos e referências não verificadas."
         ],
@@ -2027,7 +2026,7 @@ Sinalize entre colchetes [VALIDAR COM FROTA/SAMU LOCAL] todas as medidas numéri
   {
     tipo: "certificado",
     modNum: 6,
-    mod: "Certificação Final • Saúde de Atibaia/SP",
+    mod: "Certificação Final • Secretaria Municipal de Saúde",
     titulo: "🎓 Emissão do Certificado de Conclusão em PDF",
     nota: "Parabéns por concluir integralmente os 5 módulos e acertar 100% das avaliações! Preencha seu Nome Completo abaixo para visualizar seu certificado em tempo real e baixá-lo ou imprimi-lo em formato PDF (A4 Paisagem)."
   }
@@ -2300,7 +2299,7 @@ function renderCertificateDiplomaInner(nameStr, roleStr) {
 
   return `
     <div class="cert-diploma-border">
-      <div class="cert-diploma-header">Prefeitura da Estância de Atibaia • Secretaria Municipal de Saúde</div>
+      <div class="cert-diploma-header">Educação Permanente em Saúde • Secretaria Municipal de Saúde</div>
       <div class="cert-diploma-title">Certificado de Conclusão</div>
       <div class="cert-diploma-subtitle">Núcleo de Educação Permanente e Divisão de Tecnologia da Informação do SUS</div>
       <div class="cert-diploma-Lead">Certificamos para os devidos fins que</div>
@@ -2316,13 +2315,13 @@ function renderCertificateDiplomaInner(nameStr, roleStr) {
       </div>
       <div class="cert-diploma-footer">
         <div style="text-align:left;">
-          <strong>Local e Data:</strong> Atibaia/SP, ${certIssueDate}<br>
-          <strong>Carga Horária:</strong> 03 horas capacitacionais<br>
+          <strong>Data de Emissão:</strong> ${certIssueDate}<br>
+          <strong>Carga Horária:</strong> 03 horas capacitacionais (5 Módulos Concluídos)<br>
           <strong>Código de Validação:</strong> ${certValidationCode}
         </div>
         <div class="cert-sign-line">
-          Secretaria Municipal de Saúde de Atibaia<br>
-          <span style="font-size:11.5px; font-weight:400; color:#4a5568;">Núcleo de Educação Permanente e Divisão de T.I. do SUS</span>
+          Clovis Campaner Filho<br>
+          <span style="font-size:11.5px; font-weight:400; color:#4a5568;">Especialista em Sistemas e Gestão de T.I. em Saúde</span>
         </div>
       </div>
     </div>
@@ -2346,7 +2345,7 @@ function renderCertificateSlideHTML(s) {
         ${allCompleted ? '🎉 Parabéns! Você concluiu todos os 5 Módulos com 100% de acerto!' : '🔒 Conclua as avaliações dos 5 módulos para habilitar a emissão'}
       </h3>
       <p style="font-size: 14px; color: var(--text); line-height: 1.55;">
-        Insira abaixo o seu <strong>Nome Completo</strong> (e opcionalmente seu Cargo/Unidade na Secretaria Municipal de Saúde de Atibaia) para personalizar e emitir seu Certificado Oficial em formato <strong>PDF (A4 Paisagem)</strong>.
+        Insira abaixo o seu <strong>Nome Completo</strong> (e opcionalmente seu Cargo/Unidade na Secretaria Municipal de Saúde) para personalizar e emitir seu Certificado Oficial em formato <strong>PDF (A4 Paisagem)</strong>.
       </p>
 
       <div class="cert-form-row">
@@ -2445,7 +2444,7 @@ function downloadCertificatePDFDirect() {
   // Cabeçalho Institucional
   ctx.fillStyle = '#1e4e8c';
   ctx.font = 'bold 34px "Segoe UI", Arial, sans-serif';
-  ctx.fillText('PREFEITURA DA ESTÂNCIA DE ATIBAIA • SECRETARIA MUNICIPAL DE SAÚDE', W / 2, 220);
+  ctx.fillText('EDUCAÇÃO PERMANENTE EM SAÚDE • SECRETARIA MUNICIPAL DE SAÚDE', W / 2, 220);
 
   // Título Principal
   ctx.fillStyle = '#0f294a';
@@ -2506,9 +2505,9 @@ function downloadCertificatePDFDirect() {
   ctx.textAlign = 'left';
   ctx.fillStyle = '#2d3748';
   ctx.font = 'bold 28px "Segoe UI", Arial, sans-serif';
-  ctx.fillText(`Local e Data: Atibaia/SP, ${certIssueDate}`, 180, 1410);
+  ctx.fillText(`Data de Emissão: ${certIssueDate}`, 180, 1410);
   ctx.font = '28px "Segoe UI", Arial, sans-serif';
-  ctx.fillText('Carga Horária: 08 horas capacitacionais (5 Módulos Concluídos)', 180, 1455);
+  ctx.fillText('Carga Horária: 03 horas capacitacionais (5 Módulos Concluídos)', 180, 1455);
   ctx.fillText(`Código de Autenticidade: ${certValidationCode}`, 180, 1500);
 
   // Rodapé Direito: Linha de Assinatura
@@ -2522,7 +2521,7 @@ function downloadCertificatePDFDirect() {
   ctx.textAlign = 'center';
   ctx.fillStyle = '#0f294a';
   ctx.font = 'bold 30px "Segoe UI", Arial, sans-serif';
-  ctx.fillText('Secretaria Municipal de Saúde de Atibaia/SP', W - 500, 1462);
+  ctx.fillText('Secretaria Municipal de Saúde', W - 500, 1462);
   ctx.fillStyle = '#4a5568';
   ctx.font = '25px "Segoe UI", Arial, sans-serif';
   ctx.fillText('Clovis Campaner Filho - Gestor de T.I.', W - 500, 1500);
@@ -2541,7 +2540,7 @@ function downloadCertificatePDFDirect() {
   const url = URL.createObjectURL(pdfBlob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `Certificado_IA_SUS_Atibaia_${safeFileName}.pdf`;
+  a.download = `Certificado_IA_SUS_${safeFileName}.pdf`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -2627,7 +2626,7 @@ function renderSlideHTML(s, isPrintMode = false) {
       </div>
       ${renderQuizComponentHTML(s.modNum)}
       <div class="notes-box">
-        <div class="notes-title">📌 Regra de Progressão do Curso (Saúde de Atibaia)</div>
+        <div class="notes-title">📌 Regra de Progressão do Curso (Secretaria Municipal de Saúde)</div>
         <div class="notes-text">${s.nota}</div>
       </div>
     `;
@@ -2675,7 +2674,7 @@ function renderSlideHTML(s, isPrintMode = false) {
     <div class="grid">${cardsHTML}</div>
     ${mapaHTML}
     <div class="notes-box">
-      <div class="notes-title">📌 Nota Explicativa e Aplicação Prática (Saúde de Atibaia)</div>
+      <div class="notes-title">📌 Nota Explicativa e Aplicação Prática (Secretaria Municipal de Saúde)</div>
       <div class="notes-text">${s.nota}</div>
     </div>
     ${inlineQuizHTML}
