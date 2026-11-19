@@ -1,0 +1,3058 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capacitação Prática: Boas Práticas, Ética e Convivência - Secretaria Municipal de Saúde</title>
+<style>
+  :root {
+    --bg: #1e1e1e;
+    --panel: #2a2a2a;
+    --card: #333333;
+    --text: #f0f0f0;
+    --muted: #aaaaaa;
+    --accent: #3584e4;
+    --accent-light: #62a0ea;
+    --success: #2ec27e;
+    --warning: #f5c211;
+    --danger: #e01b24;
+    --border: #444444;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: 310px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    z-index: 50;
+  }
+
+  .brand {
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
+    background: #242424;
+  }
+
+  .brand h1 {
+    font-size: 15px;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .brand p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  .search-box {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    background: #262626;
+  }
+
+  .search-box input {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 7px 10px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    outline: none;
+  }
+
+  .search-box input:focus {
+    border-color: var(--accent-light);
+  }
+
+  #nav-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
+
+  .nav-mod {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--warning);
+    margin: 14px 6px 5px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .nav-item {
+    padding: 9px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.8px;
+    color: var(--text);
+    margin-bottom: 3px;
+    transition: 0.2s;
+    line-height: 1.35;
+  }
+
+  .nav-item:hover {
+    background: var(--card);
+  }
+
+  .nav-item.active {
+    background: var(--accent);
+    font-weight: 600;
+    color: #fff;
+  }
+
+  /* Main Area */
+  #main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-width: 0;
+  }
+
+  #topbar {
+    min-height: 56px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 24px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #menu-toggle {
+    display: none;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .badge-poca {
+    background: #252f3f;
+    color: var(--accent-light);
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .controls button {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 7px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.5px;
+    transition: 0.2s;
+  }
+
+  .controls button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .controls button.btn-builder {
+    background: #1f3d2d;
+    border-color: var(--success);
+    color: #8ff0a4;
+    font-weight: 600;
+  }
+
+  .controls button.btn-builder:hover {
+    background: var(--success);
+    color: #000;
+  }
+
+  /* Slide Content */
+  #slide-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px 44px;
+    max-width: 1240px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .slide-header {
+    margin-bottom: 22px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 14px;
+  }
+
+  .slide-header h2 {
+    font-size: 26px;
+    color: #fff;
+    margin-top: 6px;
+    line-height: 1.25;
+  }
+
+  .slide-meta {
+    font-size: 13px;
+    color: var(--accent-light);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card.warn { border-left-color: var(--warning); }
+  .card.danger { border-left-color: var(--danger); }
+  .card.ok { border-left-color: var(--success); }
+
+  .card h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: var(--accent-light);
+    line-height: 1.35;
+  }
+
+  .card.warn h3 { color: var(--warning); }
+  .card.danger h3 { color: #ff7b7b; }
+  .card.ok h3 { color: var(--success); }
+
+  .card ul {
+    padding-left: 18px;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .card li {
+    margin-bottom: 7px;
+  }
+
+  .card li strong {
+    color: #ffffff;
+  }
+
+  /* Mind Map Visual Tree */
+  .mindmap {
+    background: #23272e;
+    border: 1px dashed var(--accent-light);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+
+  .mm-title {
+    font-size: 13.5px;
+    text-transform: uppercase;
+    color: var(--warning);
+    margin-bottom: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.4px;
+  }
+
+  .mm-tree {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .mm-node {
+    flex: 1;
+    min-width: 210px;
+    background: var(--card);
+    border-radius: 6px;
+    padding: 13px;
+    border-top: 3px solid var(--success);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .mm-node strong {
+    display: block;
+    color: #fff;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  /* Explanatory Note Box */
+  .notes-box {
+    background: #252f3f;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    margin-top: 20px;
+  }
+
+  .notes-title {
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .notes-text {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #e2e8f0;
+  }
+
+  /* Prompt Copy Box */
+  .code-wrapper {
+    margin-top: 12px;
+    position: relative;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    padding: 6px 12px;
+    border-radius: 6px 6px 0 0;
+    font-size: 11.5px;
+    color: var(--muted);
+  }
+
+  pre {
+    background: #141414;
+    padding: 14px;
+    border-radius: 0 0 6px 6px;
+    border: 1px solid var(--border);
+    color: #8ff0a4;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12.5px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
+  }
+
+  .copy-btn {
+    background: var(--success);
+    color: #000;
+    border: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 11.5px;
+    transition: 0.2s;
+  }
+
+  .copy-btn:hover {
+    filter: brightness(1.1);
+  }
+
+  /* Interactive Modal: Construtor POCA */
+  #poca-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.78);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  #poca-modal.open {
+    display: flex;
+  }
+
+  .modal-content {
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    max-width: 780px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .modal-header h3 {
+    color: var(--accent-light);
+    font-size: 18px;
+  }
+
+  .close-modal {
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 11px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .poca-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .poca-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .poca-field label {
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--warning);
+  }
+
+  .poca-field textarea {
+    background: #191919;
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 6px;
+    padding: 8px;
+    font-size: 12.5px;
+    resize: vertical;
+    min-height: 68px;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 900px) {
+    #sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      transform: translateX(-100%);
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #menu-toggle {
+      display: inline-block;
+    }
+    #slide-container {
+      padding: 20px 18px;
+    }
+    .poca-form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Print mode */
+  @media print {
+    body {
+      display: block;
+      height: auto;
+      overflow: visible;
+      background: #fff;
+      color: #000;
+    }
+    #sidebar, #topbar, #poca-modal {
+      display: none !important;
+    }
+    #slide-container {
+      display: none !important;
+    }
+    #print-all {
+      display: block !important;
+      padding: 15px;
+    }
+    .print-slide {
+      page-break-after: always;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .card, .mindmap, .notes-box, pre, .code-header {
+      background: #f9f9f9 !important;
+      color: #000 !important;
+      border: 1px solid #aaa !important;
+    }
+    h2, h3, strong, .notes-text, .slide-meta, .mm-title, .notes-title, li {
+      color: #000 !important;
+    }
+    .copy-btn {
+      display: none !important;
+    }
+  }
+
+  #print-all {
+    display: none;
+  }
+
+  /* Progress Bar in Sidebar */
+  .progress-panel {
+    padding: 12px 14px;
+    background: #20252b;
+    border-bottom: 1px solid var(--border);
+  }
+  .progress-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 6px;
+  }
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #141414;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+  .progress-status-text {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Locked Navigation Items ("Inclicável") */
+  .nav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-item.locked {
+    opacity: 0.42;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    user-select: none;
+    color: #888888;
+    background: transparent !important;
+  }
+  .nav-item.quiz-item {
+    border-left: 3px solid var(--warning);
+    background: rgba(245, 194, 17, 0.07);
+    font-weight: 600;
+  }
+  .nav-item.quiz-item.completed {
+    border-left-color: var(--success);
+    background: rgba(46, 194, 126, 0.09);
+  }
+  .nav-item.cert-item {
+    border-left: 3px solid var(--accent-light);
+    background: rgba(53, 132, 228, 0.12);
+    font-weight: 700;
+  }
+  .nav-item.cert-item.unlocked {
+    border-left-color: var(--success);
+    background: rgba(46, 194, 126, 0.15);
+    color: #8ff0a4;
+  }
+  .nav-lock-icon {
+    font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  /* Locked Next Button ("Inclicável") */
+  .controls button:disabled,
+  .controls button.btn-locked {
+    opacity: 0.42 !important;
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    background: #252525 !important;
+    border-color: #3a3a3a !important;
+    color: #777777 !important;
+  }
+
+  /* Interactive Quiz Styling */
+  .quiz-container {
+    background: #232830;
+    border: 2px solid var(--warning);
+    border-radius: 10px;
+    padding: 24px;
+    margin-top: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+  .quiz-container.quiz-completed {
+    border-color: var(--success);
+  }
+  .quiz-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .quiz-badge-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--warning);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .quiz-container.quiz-completed .quiz-badge-title {
+    color: var(--success);
+  }
+  .quiz-status-pill {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 700;
+    background: rgba(245, 194, 17, 0.15);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+  }
+  .quiz-status-pill.ok {
+    background: rgba(46, 194, 126, 0.18);
+    color: var(--success);
+    border-color: var(--success);
+  }
+  .quiz-intro {
+    font-size: 14px;
+    color: #d8dee9;
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  .quiz-question-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 16px;
+  }
+  .quiz-question-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 14px;
+    line-height: 1.45;
+  }
+  .quiz-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .quiz-option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    background: #1f1f1f;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13.8px;
+    line-height: 1.45;
+    color: var(--text);
+  }
+  .quiz-option-label:hover {
+    background: #2d333b;
+    border-color: var(--accent-light);
+  }
+  .quiz-option-label input[type="radio"] {
+    margin-top: 3px;
+    accent-color: var(--accent);
+    transform: scale(1.15);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .quiz-option-label.selected-correct {
+    background: rgba(46, 194, 126, 0.16);
+    border-color: var(--success);
+    color: #ffffff;
+  }
+  .quiz-option-label.selected-wrong {
+    background: rgba(224, 27, 36, 0.16);
+    border-color: var(--danger);
+  }
+  .quiz-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .btn-validate-quiz {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-validate-quiz:hover {
+    background: var(--accent-light);
+  }
+  .btn-advance-mod {
+    background: var(--success);
+    color: #000000;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-advance-mod:hover {
+    filter: brightness(1.1);
+  }
+  .quiz-feedback {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.5;
+    display: none;
+  }
+  .quiz-feedback.show {
+    display: block;
+  }
+  .quiz-feedback.ok {
+    background: rgba(46, 194, 126, 0.16);
+    border: 1px solid var(--success);
+    color: #8ff0a4;
+  }
+  .quiz-feedback.err {
+    background: rgba(224, 27, 36, 0.16);
+    border: 1px solid var(--danger);
+    color: #ff9b9b;
+  }
+
+  /* Certificate Generator & Preview Card */
+  .cert-panel {
+    background: var(--panel);
+    border: 2px solid var(--success);
+    border-radius: 10px;
+    padding: 26px;
+    margin-bottom: 24px;
+  }
+  .cert-form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+    margin-bottom: 18px;
+  }
+  .cert-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .cert-input-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--warning);
+  }
+  .cert-input-group input {
+    background: #181818;
+    border: 1px solid var(--border);
+    color: #ffffff;
+    padding: 11px 14px;
+    border-radius: 6px;
+    font-size: 14.5px;
+    outline: none;
+  }
+  .cert-input-group input:focus {
+    border-color: var(--accent-light);
+  }
+  .cert-input-group input:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .cert-btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .btn-cert-download {
+    background: var(--success);
+    color: #000000;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-cert-download:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+  .btn-cert-print {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 7px;
+    font-size: 14.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .btn-cert-print:hover:not(:disabled) {
+    background: var(--accent-light);
+  }
+  .btn-cert-download:disabled,
+  .btn-cert-print:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Visual Certificate Preview Box */
+  .cert-preview-wrapper {
+    background: #ffffff;
+    color: #1a202c;
+    border-radius: 10px;
+    padding: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    margin-top: 20px;
+    overflow-x: auto;
+  }
+  .cert-diploma-border {
+    border: 6px double #1e4e8c;
+    padding: 32px 36px;
+    background: linear-gradient(135deg, #ffffff 0%, #f4f8fd 100%);
+    position: relative;
+    text-align: center;
+    min-width: 680px;
+  }
+  .cert-diploma-header {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1e4e8c;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .cert-diploma-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f294a;
+    margin: 8px 0 6px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .cert-diploma-subtitle {
+    font-size: 14px;
+    color: #2b6cb0;
+    font-weight: 600;
+    margin-bottom: 22px;
+  }
+  .cert-diploma-Lead {
+    font-size: 15px;
+    color: #4a5568;
+    margin-bottom: 8px;
+  }
+  .cert-diploma-name {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f294a;
+    border-bottom: 2px solid #2b6cb0;
+    display: inline-block;
+    padding: 4px 36px 8px;
+    margin: 6px 0 16px;
+    min-width: 360px;
+  }
+  .cert-diploma-body {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #2d3748;
+    max-width: 780px;
+    margin: 0 auto 24px;
+  }
+  .cert-diploma-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: 28px;
+    padding-top: 14px;
+    font-size: 12.5px;
+    color: #4a5568;
+  }
+  .cert-sign-line {
+    border-top: 1.5px solid #1e4e8c;
+    padding-top: 6px;
+    width: 240px;
+    font-weight: 700;
+    color: #0f294a;
+  }
+
+
+  /* Satisfaction Survey & Feedback Card */
+  .feedback-panel {
+    background: #232830;
+    border: 2px solid var(--accent);
+    border-radius: 10px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .feedback-panel.feedback-done {
+    border-color: var(--success);
+  }
+  .feedback-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 14px;
+    margin-bottom: 14px;
+  }
+  .star-rating-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .star-btn {
+    background: #181818;
+    border: 1px solid var(--border);
+    color: #cccccc;
+    padding: 8px 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 700;
+    transition: all 0.2s ease;
+  }
+  .star-btn:hover:not(:disabled) {
+    border-color: var(--warning);
+    color: #ffffff;
+  }
+  .star-btn.active {
+    background: rgba(245, 194, 17, 0.2);
+    border-color: var(--warning);
+    color: var(--warning);
+  }
+  .star-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .feedback-textarea {
+    width: 100%;
+    background: #181818;
+    border: 1px solid var(--border);
+    color: #ffffff;
+    padding: 11px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    min-height: 78px;
+    resize: vertical;
+    outline: none;
+    margin-top: 6px;
+  }
+  .feedback-textarea:focus {
+    border-color: var(--accent-light);
+  }
+  .feedback-textarea:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-send-feedback {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 12px;
+  }
+  .btn-send-feedback:hover:not(:disabled) {
+    background: var(--accent-light);
+  }
+  .btn-send-feedback:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* Dedicated Print Certificate Container */
+  #print-certificate-only {
+    display: none;
+  }
+
+  @media print {
+    body.print-cert-mode {
+      background: #ffffff !important;
+      color: #000000 !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    body.print-cert-mode #sidebar,
+    body.print-cert-mode #topbar,
+    body.print-cert-mode #poca-modal,
+    body.print-cert-mode #slide-container,
+    body.print-cert-mode #print-all {
+      display: none !important;
+    }
+    body.print-cert-mode #print-certificate-only {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: 95vh;
+      padding: 15px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <div class="brand">
+    <h1>Secretaria Municipal de Saúde</h1>
+    <p>Boas Práticas, Ética e Convivência<br>Integridade • Respeito • Vestimenta</p>
+  </div>
+  <div class="search-box">
+    <input type="text" id="search-input" placeholder="🔍 Filtrar tópico ou slide..." oninput="filterNav(this.value)">
+  </div>
+  <div class="progress-panel">
+    <div class="progress-panel-header">
+      <span>PROGRESSO DOS MÓDULOS</span>
+      <span id="mod-progress-count">0 / 5 Concluídos</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="mod-progress-fill"></div>
+    </div>
+    <div class="progress-status-text">
+      <span id="mod-lock-status">🔒 Módulos 2 a 5 bloqueados</span>
+      <span id="cert-lock-badge">🎓 Bloqueado</span>
+    </div>
+  </div>
+  <div id="nav-list"></div>
+</aside>
+
+<main id="main">
+  <header id="topbar">
+    <div class="top-left">
+      <button id="menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
+      <span id="progress-badge" class="badge">Slide 1 de 20</span>
+      <span class="badge-poca">Ética &amp; Convivência • Gestão SUS</span>
+    </div>
+    <div class="controls">
+      <button class="btn-builder" onclick="togglePocaModal()">📋 Guia Rápido de Ética</button>
+      <button id="btn-prev" onclick="prevSlide()">⬅ Anterior</button>
+      <button id="btn-next" onclick="nextSlide()">Próximo ➡</button>
+      <button onclick="toggleFullScreen()">⛶ Tela Cheia</button>
+      <button onclick="printFullCourseApostila()">🖨️ Salvar PDF Completo</button>
+    </div>
+  </header>
+
+  <section id="slide-container"></section>
+  <section id="print-all"></section>
+  <section id="print-certificate-only"></section>
+</main>
+
+<!-- Modal Interativo Guia Rápido de Bolso Lei 8.080/90 -->
+<div id="poca-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>📋 Guia Rápido de Bolso — Boas Práticas, Ética e Convivência</h3>
+      <button class="close-modal" onclick="togglePocaModal()">✕ Fechar</button>
+    </div>
+    <p style="font-size: 13px; color: var(--muted); margin-bottom: 14px;">
+      Selecione abaixo o tema de consulta rápida para visualizar e copiar as boas práticas recomendadas para Secretarias Municipais de Saúde:
+    </p>
+    <div class="poca-form-grid">
+      <div class="poca-field">
+        <label>1. Perfil de Consulta Rápida</label>
+        <select id="poca-p" onchange="updatePocaPreview()" style="background:#191919; border:1px solid var(--border); color:var(--text); border-radius:6px; padding:10px; font-size:13px;">
+          <option value="assedio">🤝 Convivência, Respeito, Assédio e Conflitos de Interesse</option>
+          <option value="recursos">💻 Recursos Físicos, TI, Imprensa e Redes Sociais</option>
+          <option value="vestimenta">👔 Código de Vestimentas, NR-32 e Exceções</option>
+          <option value="disciplinar">⚖️ Deveres, Vedações e Apuração Disciplinar</option>
+        </select>
+      </div>
+      <div class="poca-field">
+        <label>2. Setor / Unidade (Opcional para cabeçalho)</label>
+        <textarea id="poca-o" oninput="updatePocaPreview()" style="min-height:44px;">Secretaria Municipal de Saúde</textarea>
+      </div>
+    </div>
+    <input type="hidden" id="poca-c" value="">
+    <input type="hidden" id="poca-a" value="">
+    <div class="code-wrapper">
+      <div class="code-header">
+        <span>Resumo de Boas Práticas &amp; Ética (Pronto para Copiar)</span>
+        <button class="copy-btn" onclick="copyTextFromElement('poca-generated-output', this)">Copiar Checklist</button>
+      </div>
+      <pre id="poca-generated-output"></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+const slides = [
+  // =========================================================================
+  // MÓDULO 1 • FUNDAMENTOS DA ÉTICA PÚBLICA, PRINCÍPIOS E TRABALHO EM EQUIPE
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • Fundamentos da Ética Pública, Princípios e Trabalho em Equipe",
+    titulo: "1. Por Que Ética e Boa Convivência Importam nas Secretarias de Saúde?",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "O Trabalho em Equipe como Pilar da Gestão no SUS",
+        itens: [
+          "<strong>Ambiente Seguro e Saudável:</strong> O trabalho em equipe é essencial para a gestão do trabalho no SUS, sendo compromisso das Secretarias Municipais de Saúde promover um ambiente ético, seguro, harmonioso e acolhedor para todos.",
+          "<strong>Diversidade como Força:</strong> As equipes de saúde são diversas em suas formações, culturas, crenças, orientações e visões. Divergências de ideias são naturais — e representam uma oportunidade para estimular o <strong>respeito mútuo</strong> e a cooperação.",
+          "<strong>Impacto Direto no Cidadão:</strong> Quando o clima interno da UBS, UPA, CAPS ou setor administrativo é pautado por educação, ética e colaboração, o atendimento ao usuário torna-se mais ágil, seguro e humanizado."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "O Que Alguns Municípios Adotam em Seus Códigos de Ética",
+        itens: [
+          "<strong>Regras Claras de Conduta:</strong> Para garantir transparência e segurança nas relações de trabalho, alguns municípios adotam códigos de ética e resoluções internas com objetivos claros:",
+          "• Estabelecer padrões de integridade e lisura nas decisões administrativas;",
+          "• Esclarecer direitos, deveres e limites nas relações entre colegas, chefias e cidadãos;",
+          "• Preservar a imagem institucional, o patrimônio público e a reputação do servidor ético;",
+          "• Prevenir conflitos entre interesses particulares e o dever funcional."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Ética no Cotidiano", txt: "Respeito, educação, transparência e cooperação entre equipes" },
+      { no: "Respeito à Diversidade", txt: "Convivência harmoniosa entre diferentes culturas, crenças e perfis" },
+      { no: "Proteção ao Servidor", txt: "Normas claras protegem o profissional que atua com integridade" },
+      { no: "Qualidade no SUS", txt: "Clima interno saudável reflete diretamente no acolhimento ao usuário" }
+    ],
+    nota: "Boas práticas de convivência não existem para engessar a rotina das unidades de saúde, mas para construir um ambiente de trabalho psicologicamente seguro, respeitoso e confiável — tanto para quem cuida quanto para quem é cuidado."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • Fundamentos da Ética Pública, Princípios e Trabalho em Equipe",
+    titulo: "2. Quem é o Agente Público e Quais São os Princípios Fundamentais?",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "Abrangência: Quem Deve Seguir as Normas de Ética na Saúde?",
+        itens: [
+          "<strong>Conceito Amplo de Agente Público:</strong> Muitos municípios adotam a prática de aplicar o código de ética a <strong>todo aquele que exerce função na Administração Pública</strong> — seja servidor efetivo, comissionado, temporário, contratado, designado ou mesmo em atuação transitória ou sem remuneração (como estagiários e residentes).",
+          "<strong>Prestadores e Parceiros:</strong> As diretrizes de respeito mútuo, sigilo e convivência também se estendem à relação com empresas terceirizadas, fornecedores e usuários nas dependências das unidades de saúde."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Os 10 Princípios e Valores Fundamentais da Conduta Pública",
+        itens: [
+          "<strong>1. Legalidade e Moralidade:</strong> Agir dentro da lei e com retidão ética, não bastando o legal — é preciso ser honesto e justo.",
+          "<strong>2. Impessoalidade e Interesse Público:</strong> Tratar todos sem privilégios ou perseguições, colocando o bem comum acima de interesses pessoais.",
+          "<strong>3. Transparência, Dignidade e Decoro:</strong> Clareza e postura respeitosa nas ações e decisões.",
+          "<strong>4. Eficiência, Presteza e Iniciativa:</strong> Atender com agilidade, zelo e busca ativa por soluções.",
+          "<strong>5. Respeito à Vida, Responsabilidade Social, Assiduidade e Pontualidade:</strong> Compromisso integral com o horário, a equipe e a dignidade humana."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Todos os Vínculos", txt: "Efetivos, comissionados, temporários, contratados e estagiários" },
+      { no: "Pilares Constitucionais", txt: "Legalidade, Impessoalidade, Moralidade, Publicidade e Eficiência" },
+      { no: "Valores Humanos", txt: "Respeito à vida, dignidade, integridade e responsabilidade social" },
+      { no: "Compromisso Diário", txt: "Assiduidade, pontualidade, iniciativa e foco no interesse público" }
+    ],
+    nota: "Independentemente do cargo ou tipo de vínculo, para o cidadão que entra em uma unidade de saúde, cada profissional representa o rosto inteiro da Secretaria Municipal de Saúde."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: false,
+    mod: "Módulo 1 • Fundamentos da Ética Pública, Princípios e Trabalho em Equipe",
+    titulo: "3. Padrões de Conduta e Principais Deveres no Dia a Dia da Saúde",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Deveres Essenciais com o Cidadão e com a Equipe",
+        itens: [
+          "<strong>Cortesia e Prontidão:</strong> Tratar usuários, colegas e terceiros com educação e agilidade, prestando informações corretas (ressalvadas as protegidas por sigilo).",
+          "<strong>Hierarquia Responsável:</strong> Respeitar a hierarquia e cumprir ordens superiores — <strong>exceto quando forem manifestamente ilegais</strong>.",
+          "<strong>Sigilo e Confidencialidade:</strong> Guardar sigilo sobre prontuários, dados clínicos e informações internas ainda não tornadas públicas.",
+          "<strong>Integração e Aperfeiçoamento:</strong> Buscar evolução técnica constante e compartilhar conhecimentos adquiridos em cursos e capacitações com os colegas de setor."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Deveres com a Gestão, Prazos e Integridade Institucional",
+        itens: [
+          "<strong>Zelo pelo Patrimônio e Prazos:</strong> Cuidar da economia de insumos e da conservação de equipamentos, bem como observar rigorosamente prazos legais, administrativos e judiciais (como demandas de regulação e ofícios).",
+          "<strong>Comunicar Irregularidades:</strong> Levar ao conhecimento da autoridade superior irregularidades, omissões ou abusos de poder de que tiver ciência em razão do cargo.",
+          "<strong>Resistir a Pressões:</strong> Manter relacionamento estritamente profissional com o munícipe e resistir a pressões ou intimidações que busquem vantagens indevidas."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Acolhimento", txt: "Cortesia, presteza, isenção e postura profissional com o usuário" },
+      { no: "Hierarquia Ética", txt: "Cumprir ordens legais e reportar irregularidades pelos canais corretos" },
+      { no: "Sigilo & Prazos", txt: "Proteger a privacidade e respeitar prazos técnicos e judiciais" },
+      { no: "Zelo & Conhecimento", txt: "Economizar recursos públicos e multiplicar aprendizados na equipe" }
+    ],
+    nota: "Note um ponto fundamental presente na maioria dos códigos de ética municipais: o dever de obediência hierárquica nunca obriga o servidor a cumprir uma ordem manifestamente ilegal — nesses casos, existe o dever de representação à autoridade superior."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 1,
+    fimModulo: true,
+    mod: "Módulo 1 • Fundamentos da Ética Pública, Princípios e Trabalho em Equipe",
+    titulo: "4. Tolerância Zero: Combate ao Assédio, Preconceito e Discriminação",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Condutas Inadmissíveis nas Unidades e Departamentos de Saúde",
+        itens: [
+          "<strong>Assédio Moral e Tratamento Vexatório:</strong> Intimidações, humilhações, ameaças, gritos, exposição constrangedora ou atitudes abusivas (por gestos, palavras ou comportamentos) contra a integridade moral ou física de qualquer pessoa.",
+          "<strong>Assédio Sexual:</strong> Qualquer atitude, comentário, insinuação ou abordagem de conotação sexual indesejada no ambiente de trabalho.",
+          "<strong>Discriminação e Preconceito:</strong> Qualquer distinção por raça, cor, etnia, sexo, idade, estado civil, religião, orientação sexual, deficiência/necessidades especiais, aparência, origem ou convicção política.",
+          "<strong>Favorecimentos Pessoais:</strong> Conceder privilégios ou preferências por afinidade pessoal, posição hierárquica ou tempo de casa."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Estudo de Caso Prático: 'Era Só uma Piada!'",
+        itens: [
+          "<strong>Situação Real:</strong> <em>'Uma piada inapropriada está circulando no meu setor e faz referência negativa à minha raça/origem. Os colegas dizem que foi só brincadeira. Isso pode ser considerado discriminação?'</em>",
+          "<strong>Resposta Orientativa:</strong> <strong>SIM!</strong> Como diversos municípios destacam em suas diretrizes de convivência, essa conduta é considerada discriminatória e cria um <strong>ambiente de trabalho hostil</strong>, <strong>ainda que os colegas não tenham tido a intenção deliberada de ofender</strong>.",
+          "<strong>Boa Prática:</strong> Respeito não depende da intenção de quem fala, mas do impacto na dignidade de quem recebe."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Zero Assédio Moral", txt: "Sem humilhações, intimidações, gritos ou exposição vexatória" },
+      { no: "Zero Assédio Sexual", txt: "Postura estritamente profissional e respeitosa em todos os espaços" },
+      { no: "Zero Discriminação", txt: "Combate ativo a preconceitos e 'piadas' ofensivas no setor" },
+      { no: "Ambiente Seguro", txt: "Tratamento equânime sem favoritismos pessoais ou hierárquicos" }
+    ],
+    nota: "Muitos conflitos graves em unidades de saúde começam disfarçados de 'brincadeiras de corredor' ou apelidos pejorativos. Cortar esse tipo de prática com educação e firmeza protege a saúde mental de toda a equipe."
+  },
+  {
+    tipo: "quiz",
+    modNum: 1,
+    mod: "Módulo 1 • Fundamentos da Ética Pública, Princípios e Trabalho em Equipe",
+    titulo: "📝 Avaliação do Módulo 1 (Desbloqueio do Módulo 2)",
+    subtitulo: "Responda corretamente às 2 questões abaixo (apenas 1 alternativa correta por questão) para habilitar a visualização do Módulo 2.",
+    perguntas: [
+      {
+        q: "1. Sobre os padrões de conduta ética e o dever de hierarquia adotados por diversos municípios para seus agentes públicos, assinale a alternativa CORRETA:",
+        opcoes: [
+          "O código de ética aplica-se apenas a servidores efetivos concursados, não valendo para temporários, comissionados ou estagiários.",
+          "O agente público deve respeitar a hierarquia e cumprir ordens superiores, exceto quando forem manifestamente ilegais, além de atuar com legalidade, impessoalidade, sigilo e cortesia.",
+          "O servidor é obrigado a cumprir qualquer ordem da chefia, mesmo que viole expressamente a lei ou prejudique o interesse público."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Caso uma piada inapropriada com referência negativa à raça, religião, aparência ou orientação sexual circule em um setor da Secretaria de Saúde, como essa conduta deve ser avaliada?",
+        opcoes: [
+          "Como conduta discriminatória que cria um ambiente de trabalho hostil, ainda que os colegas afirmem não ter tido a intenção de ofender.",
+          "Como uma brincadeira normal de trabalho, desde que quem contou diga que não teve má intenção.",
+          "Como um problema apenas se algum paciente da sala de espera tiver ouvido."
+        ],
+        correta: 0
+      }
+    ],
+    nota: "Acerte as 2 questões acima e clique em 'Validar Respostas' para liberar imediatamente o Módulo 2 (Integridade, Conflitos de Interesse e Vedações no Serviço Público)."
+  },
+
+  // =========================================================================
+  // MÓDULO 2 • INTEGRIDADE, CONFLITOS DE INTERESSE E VEDAÇÕES NO SERVIÇO PÚBLICO
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Integridade, Conflitos de Interesse e Vedações no Serviço Público",
+    titulo: "5. Conflitos de Interesse e Imparcialidade no Atendimento do SUS",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "O Que Configura Conflito de Interesse na Saúde Pública?",
+        itens: [
+          "<strong>Uso da Posição para Fins Particulares:</strong> Utilizar o cargo ou a influência para promover interesses privados pode gerar conflito com a Administração Pública e até configurar ilícitos graves (como <strong>prevaricação</strong>).",
+          "<strong>Exemplos Que Não Podem Acontecer (práticas vedadas em diversos municípios):</strong><br>• <strong>Furar Fila no SUS:</strong> Favorecer injustificadamente um paciente específico (parente, amigo ou conhecido) em agendamentos, exames ou medicamentos, prejudicando os demais usuários na fila;<br>• <strong>Vantagens de Fornecedores:</strong> Receber benefícios materiais ou financeiros de clínicas, laboratórios ou fornecedores de insumos;<br>• <strong>Parentesco com Prestador:</strong> Atuar em processos de contratação/fiscalização onde haja parentesco que comprometa a imparcialidade;<br>• <strong>Informação Privilegiada:</strong> Usar dados internos obtidos na Secretaria em benefício próprio ou de terceiros."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Como Agir com Integridade Diante de Possível Conflito",
+        itens: [
+          "<strong>1. Declare-se Impedido:</strong> Se um processo administrativo, compra ou atendimento envolver familiar próximo ou interesse particular, comunique formalmente sua chefia e peça substituição naquela tarefa.",
+          "<strong>2. Siga Sempre o Fluxo Oficial:</strong> Em agendamentos, regulação e dispensação de medicamentos, aplique os mesmos protocolos clínicos e critérios de prioridade para qualquer cidadão.",
+          "<strong>3. Separe Atividades Externas:</strong> Não exerça atividades paralelas durante o expediente, nem utilize recursos da Secretaria ou atividades externas que interfiram nas ações do SUS."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Zero 'Jeitinho' na Fila", txt: "Imparcialidade total nos agendamentos, exames e farmácia do SUS" },
+      { no: "Fornecedores", txt: "Zero vantagens financeiras e declaração de impedimento por parentesco" },
+      { no: "Sigilo Estratégico", txt: "Nunca vazar informações privilegiadas de licitações ou da gestão" },
+      { no: "Transparência", txt: "Na dúvida sobre conflito de interesse, comunique a chefia imediatamente" }
+    ],
+    nota: "No SUS, a equidade e a impessoalidade são sagradas: cada vez que alguém passa um conhecido na frente da fila de regulação sem critério clínico, outro cidadão que aguardava corretamente tem seu direito à saúde atrasado."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Integridade, Conflitos de Interesse e Vedações no Serviço Público",
+    titulo: "6. Presentes vs. Brindes Institucionais e Proibição de Comércio Interno",
+    cards: [
+      {
+        tipo: "warn",
+        titulo: "Presentes ou Vantagens vs. Brindes de Cortesia",
+        itens: [
+          "<strong>Regra Geral de Integridade:</strong> Códigos de ética municipais costumam vedar que o agente público utilize o cargo para obter favores ou aceite <strong>presentes, benefícios ou vantagens</strong> de fornecedores, prestadores ou interessados.",
+          "<strong>O Que Pode Ser Aceito (Brindes Sem Valor Comercial):</strong> Alguns municípios adotam o critério objetivo de não considerar 'presente proibido' apenas os <strong>brindes</strong> que reúnam duas características:<br>a) <strong>Não tenham valor comercial relevante</strong> (ex.: caneta simples, bloco de notas, calendário institucional); e<br>b) Sejam distribuídos de forma genérica a título de <strong>cortesia, propaganda habitual ou em eventos/datas comemorativas</strong>."
+        ]
+      },
+      {
+        tipo: "danger",
+        titulo: "Atividades Comerciais nas Dependências da Secretaria",
+        itens: [
+          "<strong>Prática Comum em Resoluções de Convivência:</strong> Para preservar o foco no atendimento ao cidadão e evitar constrangimentos entre colegas, muitos municípios <strong>não permitem o comércio de produtos ou serviços nas dependências das unidades de saúde</strong> — seja por servidores, prestadores ou fornecedores.",
+          "<strong>Exemplos Vedados no Expediente:</strong> Venda de cosméticos, catálogos, roupas, alimentos, consultorias particulares (como declaração de imposto de renda ou serviços financeiros), bem como usar computadores, impressoras ou o horário de trabalho para negócios próprios."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Presentes (Proibido)", txt: "Itens com valor comercial ou vantagens ofertadas por fornecedores" },
+      { no: "Brindes (Permitido)", txt: "Apenas itens sem valor comercial distribuídos como cortesia/evento" },
+      { no: "Comércio Interno", txt: "Evitar venda de produtos, catálogos ou serviços particulares no setor" },
+      { no: "Foco no Serviço", txt: "Recursos públicos e horário de expediente são exclusivos do SUS" }
+    ],
+    nota: "Evitar vendas particulares e catálogos no balcão ou consultórios também evita situações delicadas entre chefias e subordinados (que podem se sentir constrangidos a comprar) e mantém o foco total no atendimento aos pacientes."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: false,
+    mod: "Módulo 2 • Integridade, Conflitos de Interesse e Vedações no Serviço Público",
+    titulo: "7. Vedações Funcionais Críticas no Dia a Dia da Administração",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Condutas Severamente Vedadas em Códigos de Ética Municipais",
+        itens: [
+          "<strong>1. Fraude de Frequência (Ponto):</strong> Registrar entrada ou saída (ponto) para outro servidor público é falta gravíssima.",
+          "<strong>2. Uso de Senha Alheia:</strong> Utilizar login, senha ou chave de acesso de outro colega em sistemas (como prontuário eletrônico, regulação ou RH).",
+          "<strong>3. Ausência e Desídia:</strong> Ausentar-se do serviço durante o expediente sem prévia autorização da chefia imediata ou proceder de forma desidiosa (negligente).",
+          "<strong>4. Adulteração ou Retirada de Documentos:</strong> Retirar documentos/objetos da unidade sem anuência e registro, ou alterar/deturpar o teor de documentos oficiais."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Outras Vedações Importantes para a Lisura do Setor",
+        itens: [
+          "<strong>5. Nepotismo Direto:</strong> Manter sob chefia imediata, em cargo ou função de confiança, cônjuge, companheiro ou parentes próximos.",
+          "<strong>6. Atestados e Notas Irregulares:</strong> Apresentar recibos/notas fiscais falsos ou deixar de submeter atestados médicos à avaliação do serviço de Medicina do Trabalho, quando exigido pelas normas locais.",
+          "<strong>7. Acusações Infundadas e Coação:</strong> Apresentar acusação sabidamente falsa contra colega, prejudicar deliberadamente a reputação de alguém ou coagir subordinados a filiação política/sindical.",
+          "<strong>8. Intermediação Indevida:</strong> Atuar como procurador ou intermediário de interesses privados perante repartições públicas (salvo exceções legais de benefícios previdenciários/assistenciais de familiares próximos)."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Ponto & Senha", txt: "Individuais e intransferíveis: nunca bater ponto ou logar por colegas" },
+      { no: "Documentos", txt: "Zero adulteração, zero retirada sem registro e respeito aos prazos" },
+      { no: "Boa-Fé", txt: "Não formular denúncias falsas nem compactuar com irregularidades" },
+      { no: "Isenção", txt: "Proibição de nepotismo na chefia e de coação político-partidária" }
+    ],
+    nota: "Muitos servidores cometem falhas sérias por 'coleguismo mal compreendido' — como emprestar a senha do prontuário eletrônico ou registrar o ponto de um colega atrasado. Conhecer essas vedações protege a carreira de todos."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 2,
+    fimModulo: true,
+    mod: "Módulo 2 • Integridade, Conflitos de Interesse e Vedações no Serviço Público",
+    titulo: "8. Acumulação de Cargos na Saúde e Compatibilidade de Horários",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "Regra Constitucional e Prática Adotada pelos Municípios",
+        itens: [
+          "<strong>Regra Geral (Vedação):</strong> Pela Constituição Federal (Art. 37, XVI), é vedada a acumulação remunerada de cargos, empregos e funções públicas (inclusive em autarquias, fundações e empresas públicas).",
+          "<strong>Exceção Muito Comum na Saúde:</strong> A Constituição autoriza a acumulação de até <strong>dois cargos ou empregos privativos de profissionais de saúde, com profissões regulamentadas</strong> (ex.: dois cargos de médico, enfermeiro, técnico de enfermagem, dentista, farmacêutico, fisioterapeuta, etc.)."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Condição Indispensável: Compatibilidade Real de Horários",
+        itens: [
+          "<strong>Comprovação Obrigatória:</strong> Mesmo quando a acumulação é constitucionalmente permitida, os municípios exigem a <strong>comprovação efetiva de compatibilidade de horários</strong> — não pode haver sobreposição de jornadas nem prejuízo à pontualidade e ao descanso mínimo necessário para a segurança do paciente.",
+          "<strong>Proventos de Aposentadoria:</strong> Também é vedada a acumulação de vencimento de cargo efetivo com proventos de inatividade, salvo quando os cargos forem acumuláveis na atividade."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Regra Geral", txt: "Acumulação remunerada de cargos públicos é proibida por padrão" },
+      { no: "Exceção na Saúde", txt: "Permitidos até 2 cargos privativos de profissões regulamentadas da saúde" },
+      { no: "Requisito Crítico", txt: "Compatibilidade real de horários, sem choque de plantões ou atrasos" },
+      { no: "Transparência no RH", txt: "Declarar sempre vínculos públicos adicionais ao ingressar ou mudar escala" }
+    ],
+    nota: "Na área da saúde é muito frequente que profissionais atuem em dois municípios ou em Estado e Município. Manter a declaração de acúmulo atualizada no RH e respeitar rigorosamente os horários de cada escala evita problemas graves com os Tribunais de Contas."
+  },
+  {
+    tipo: "quiz",
+    modNum: 2,
+    mod: "Módulo 2 • Integridade, Conflitos de Interesse e Vedações no Serviço Público",
+    titulo: "📝 Avaliação do Módulo 2 (Desbloqueio do Módulo 3)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre Conflitos de Interesse, Brindes, Vedações e Acumulação de Cargos para liberar o Módulo 3.",
+    perguntas: [
+      {
+        q: "1. Sobre conflitos de interesse, recebimento de presentes e vendas particulares nas dependências da Secretaria de Saúde, assinale a alternativa CORRETA:",
+        opcoes: [
+          "O servidor pode passar familiares ou amigos na frente na fila de exames do SUS, desde que avise a recepção.",
+          "É vedado usar o cargo para favorecer conhecidos no SUS, comercializar produtos particulares nas dependências da unidade ou aceitar presentes com valor comercial de fornecedores (admitindo-se apenas brindes sem valor comercial distribuídos como cortesia/evento).",
+          "Fornecedores podem oferecer vantagens financeiras a servidores para acelerar o pagamento de notas fiscais."
+        ],
+        correta: 1
+      },
+      {
+        q: "2. Quanto às vedações funcionais e à acumulação de cargos na área da Saúde, assinale a alternativa CORRETA:",
+        opcoes: [
+          "É permitido emprestar sua senha do prontuário eletrônico ou registrar o ponto de um colega que está preso no trânsito.",
+          "Profissionais de saúde com profissões regulamentadas podem acumular até 3 cargos públicos simultâneos, mesmo com horários sobrepostos.",
+          "Registrar frequência para outro colega e usar senha alheia são condutas vedadas; quanto à acumulação remunerada, ela é permitida na Saúde para até dois cargos privativos de profissões regulamentadas, desde que comprovada a compatibilidade de horários."
+        ],
+        correta: 2
+      }
+    ],
+    nota: "Excelente! Agora avance para o Módulo 3 para conhecer as práticas de Ambiente Seguro, Uso Consciente de Recursos, Relação com a Imprensa e Redes Sociais."
+  },
+
+  // =========================================================================
+  // MÓDULO 3 • AMBIENTE SEGURO, RECURSOS FÍSICOS, IMPRENSA E REDES SOCIAIS
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Ambiente Seguro, Recursos Físicos, Imprensa e Redes Sociais",
+    titulo: "9. Álcool, Substâncias Ilícitas e Porte de Armas nas Unidades de Saúde",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Tolerância Zero: Álcool e Substâncias Ilícitas no Expediente",
+        itens: [
+          "<strong>Segurança Assistencial em Primeiro Lugar:</strong> Nas diretrizes adotadas por Secretarias Municipais de Saúde, são terminantemente proibidos a <strong>posse, a oferta ou o consumo de drogas ilícitas e bebidas alcoólicas</strong> no ambiente de trabalho.",
+          "<strong>Vedação de Atuar Sob Efeito:</strong> Também não é aceitável apresentar-se ou permanecer em expediente sob efeito dessas substâncias — na saúde, a atenção plena é indispensável para evitar erros de medicação, falhas em procedimentos e riscos a pacientes e colegas."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Porte de Armas de Fogo e Armas Brancas",
+        itens: [
+          "<strong>Ambiente de Cuidado e Paz:</strong> Não é permitido, em nenhuma hipótese, o porte de armas de fogo ou armas brancas nas dependências das unidades e departamentos da Secretaria de Saúde.",
+          "<strong>Única Exceção Prevista:</strong> Profissionais no exercício estrito da função de <strong>vigilância e segurança</strong> (como Guarda Civil Municipal, forças policiais ou vigilância patrimonial autorizada), portando a devida documentação legal e autorização."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Zero Álcool/Drogas", txt: "Proibido portar, oferecer, consumir ou trabalhar sob efeito" },
+      { no: "Segurança Clínica", txt: "Lucidez integral é requisito para proteger vidas no SUS" },
+      { no: "Zero Armas", txt: "Vedado porte de armas de fogo ou brancas nas unidades de saúde" },
+      { no: "Exceção Legal", txt: "Apenas forças policiais, GCM ou vigilância patrimonial autorizada" }
+    ],
+    nota: "Caso algum colega enfrente dificuldades relacionadas à dependência química ou sofrimento psíquico, a postura ética e humanizada envolve acionar os canais de acolhimento e saúde ocupacional do município — sem jamais permitir atuação em risco durante o expediente."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Ambiente Seguro, Recursos Físicos, Imprensa e Redes Sociais",
+    titulo: "10. Uso Consciente de Recursos Físicos, TI, Telefonia e Veículos Públicos",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Patrimônio Público, Tecnologia da Informação (TI) e Telefonia",
+        itens: [
+          "<strong>Zelo pelo Patrimônio:</strong> Utilizar móveis, equipamentos clínicos, computadores e insumos com cuidado, sem fins particulares e sem intenção de danificá-los.",
+          "<strong>Recursos de TI e LGPD:</strong> Seguir a Política de Segurança da Informação e a LGPD — são vedadas <strong>cópias ilegais de software (pirataria)</strong>, uso de equipamentos para jogos, lazer improdutivo ou conteúdos ofensivos/impróprios.",
+          "<strong>Senhas Intransferíveis:</strong> Cada servidor é o único responsável por suas senhas de sistemas, e-mail e telefonia.",
+          "<strong>Uso Ponderado do Telefone:</strong> Restrito aos assuntos de trabalho; ligações pessoais somente em casos de <strong>urgência e emergência</strong>, de forma rápida e ocasional."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Veículos Públicos e Responsabilidade no Trânsito",
+        itens: [
+          "<strong>Frota da Saúde:</strong> Ambulâncias, vans de transporte sanitário e veículos administrativos são essenciais para o cuidado da população.",
+          "<strong>Conduta Zelosa:</strong> Conduzir e utilizar os veículos públicos com zelo, conservando a limpeza, reportando falhas mecânicas imediatamente e obedecendo rigorosamente às <strong>leis de trânsito</strong>."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Patrimônio Público", txt: "Usar com zelo, economia e exclusivamente para finalidades do SUS" },
+      { no: "TI & Segurança", txt: "Sem pirataria, sem sites impróprios e senhas sempre individuais" },
+      { no: "Telefonia", txt: "Foco no trabalho; uso pessoal apenas em urgências rápidas" },
+      { no: "Veículos Oficiais", txt: "Direção defensiva, zelo mecânico e respeito às leis de trânsito" }
+    ],
+    nota: "Cada equipamento quebrado por mau uso ou insumo desperdiçado significa menos recurso disponível para medicamentos, exames e melhorias nas próprias unidades de saúde."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: false,
+    mod: "Módulo 3 • Ambiente Seguro, Recursos Físicos, Imprensa e Redes Sociais",
+    titulo: "11. Relacionamento com a Imprensa e Comunicação Oficial na Saúde",
+    cards: [
+      {
+        tipo: "warn",
+        titulo: "Por Que Existe Fluxo Oficial para Falar com a Mídia?",
+        itens: [
+          "<strong>Precisão e Responsabilidade Institucional:</strong> Informações de saúde pública (como surtos epidemiológicos, campanhas de vacinação, obras ou intercorrências em unidades) precisam ser divulgadas com dados técnicos conferidos, evitando pânico ou desinformação.",
+          "<strong>Prática Adotada pelos Municípios:</strong> A divulgação oficial ao público externo é atribuição da <strong>Assessoria de Imprensa / Secretaria de Comunicação (SECOM)</strong>, atuando em conjunto com o Gabinete da Secretaria Municipal de Saúde."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Como Agir Se Um Repórter ou Equipe de TV Chegar à Unidade?",
+        itens: [
+          "<strong>1. Acolha com Cordialidade:</strong> Receba o profissional de imprensa com educação e respeito.",
+          "<strong>2. Direcione ao Canal Oficial:</strong> Informe gentilmente que entrevistas, gravações e dados oficiais precisam ser previamente alinhados com o <strong>Gabinete da Secretaria de Saúde e a Assessoria de Imprensa</strong>.",
+          "<strong>3. Proteja os Pacientes:</strong> Nunca permita filmagens dentro de consultórios, salas de espera ou prontos-socorros que exponham o rosto ou a situação clínica de pacientes sem autorização expressa."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Porta-Voz Oficial", txt: "Somente o Gabinete da Saúde ou pessoa designada fala pela instituição" },
+      { no: "Assessoria de Imprensa", txt: "Entrevistas e gravações passam pela avaliação da Gestão e Comunicação" },
+      { no: "Postura Cortês", txt: "Tratar repórteres com respeito e direcionar ao canal competente" },
+      { no: "Sigilo na Unidade", txt: "Proteger a privacidade dos usuários diante de câmeras e gravações" }
+    ],
+    nota: "Essa regra não existe para esconder informações da sociedade — que tem direito constitucional à transparência —, mas para garantir que os dados repassados à imprensa sejam oficiais, completos, atualizados e respeitem a LGPD."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 3,
+    fimModulo: true,
+    mod: "Módulo 3 • Ambiente Seguro, Recursos Físicos, Imprensa e Redes Sociais",
+    titulo: "12. Redes Sociais, Bom Senso e Proteção à Imagem de Pacientes",
+    cards: [
+      {
+        tipo: "warn",
+        titulo: "A Internet é Pública e Tem Repercussão Imediata",
+        itens: [
+          "<strong>Moderação e Bom Senso:</strong> As redes sociais fazem parte da nossa rotina, mas qualquer postagem sobre o trabalho pode gerar grande impacto — positivo ou negativo — tanto para a imagem do SUS quanto para a reputação pessoal do servidor.",
+          "<strong>Cuidado com o 'Fundo da Foto':</strong> Uma selfie inocente na recepção ou sala de enfermagem pode capturar ao fundo a tela de um computador com prontuário aberto, um mural com nomes de pacientes ou um cidadão aguardando atendimento."
+        ]
+      },
+      {
+        tipo: "danger",
+        titulo: "Proibição de Fotos e Vídeos de Pacientes e Ambientes Sem Anuência",
+        itens: [
+          "<strong>Regra de Ouro nas Secretarias de Saúde:</strong> É proibida, em qualquer rede social, a divulgação de <strong>fotos ou vídeos que contenham o ambiente de trabalho ou qualquer identificação de usuários</strong> sem a prévia anuência da Secretaria de Saúde e o <strong>consentimento expresso de uso de imagem</strong> dos pacientes envolvidos.",
+          "<strong>O Que Pode Compartilhar Livremente?</strong> Publicações oficiais já veiculadas nos canais institucionais da Prefeitura ou da Secretaria de Comunicação (campanhas de vacinação, orientações educativas, eventos oficiais)."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Zero Foto de Paciente", txt: "Jamais fotografar ou filmar usuários sem consentimento formal e anuência" },
+      { no: "Atenção ao Fundo", txt: "Evitar fotos que exponham telas, prontuários, agendas ou salas clínicas" },
+      { no: "Bom Senso Digital", txt: "Evitar desabafos ofensivos sobre colegas, pacientes ou a unidade na web" },
+      { no: "Compartilhar o Oficial", txt: "Repostar campanhas e conteúdos dos canais oficiais é super bem-vindo" }
+    ],
+    nota: "Um vídeo gravado em tom de brincadeira dentro de uma unidade de saúde pode viralizar em minutos, violar a LGPD, expor pacientes vulneráveis e gerar responsabilização civil, ética (Conselhos de Classe) e disciplinar."
+  },
+  {
+    tipo: "quiz",
+    modNum: 3,
+    mod: "Módulo 3 • Ambiente Seguro, Recursos Físicos, Imprensa e Redes Sociais",
+    titulo: "📝 Avaliação do Módulo 3 (Desbloqueio do Módulo 4)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre Ambiente Seguro, Recursos Públicos, Imprensa e Redes Sociais para liberar o Módulo 4.",
+    perguntas: [
+      {
+        q: "1. Sobre o uso de álcool/drogas, porte de armas e utilização de recursos de TI nas unidades de saúde, assinale a alternativa CORRETA:",
+        opcoes: [
+          "O porte de armas e o consumo de álcool são proibidos nas dependências da saúde (com exceção do porte de armas apenas por forças de segurança/vigilância autorizadas), e os recursos de TI devem respeitar a LGPD, sem softwares piratas ou uso impróprio.",
+          "É permitido instalar programas piratas e acessar jogos nos computadores da recepção durante intervalos calmos.",
+          "O telefone institucional pode ser usado livremente para conversas pessoais longas sempre que não houver fila."
+        ],
+        correta: 0
+      },
+      {
+        q: "2. Qual é a conduta correta quanto ao relacionamento com a imprensa e à publicação de fotos ou vídeos do ambiente de trabalho nas redes sociais?",
+        opcoes: [
+          "Qualquer servidor pode gravar vídeos mostrando pacientes na sala de espera e postar no Instagram pessoal para mostrar o movimento da unidade.",
+          "Entrevistas e informações à imprensa devem ser alinhadas com o Gabinete da Saúde e a Assessoria de Imprensa, sendo proibida a divulgação em redes sociais de fotos/vídeos do ambiente de trabalho ou de usuários sem anuência da Secretaria e consentimento de uso de imagem (exceto repostagens oficiais).",
+          "É proibido compartilhar até mesmo as campanhas oficiais de vacinação já publicadas pela Prefeitura."
+        ],
+        correta: 1
+      }
+    ],
+    nota: "Muito bem! Agora avance para o Módulo 4 para conhecer as diretrizes de Código de Vestimentas, Biossegurança (NR-32), Exceções Previstas e Convivência nos Espaços Compartilhados."
+  },
+
+  // =========================================================================
+  // MÓDULO 4 • CÓDIGO DE VESTIMENTAS, BIOSSEGURANÇA (NR-32) E EXCEÇÕES
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Código de Vestimentas, Biossegurança (NR-32) e Exceções",
+    titulo: "13. Apresentação Pessoal, Biossegurança (NR-32) e Imagem Institucional",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Por Que Secretarias de Saúde Adotam Código de Vestimentas?",
+        itens: [
+          "<strong>1. Segurança e Saúde do Trabalhador (NR-32):</strong> A Norma Regulamentadora nº 32 (NR-32) estabelece diretrizes básicas para proteger a segurança e a saúde dos trabalhadores dos serviços de saúde — e a vestimenta adequada (especialmente calçados fechados e roupas que protegem a pele) é uma barreira física real contra respingos, materiais perfurocortantes e quedas.",
+          "<strong>2. Funcionalidade das Tarefas:</strong> Roupas confortáveis, discretas e funcionais facilitam a movimentação segura no atendimento e na rotina administrativa.",
+          "<strong>3. Credibilidade e Decoro:</strong> Apresentar-se vestido de forma compatível com o ambiente profissional transmite respeito, confiança e seriedade ao munícipe."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Boas Práticas Adicionais da NR-32 nas Áreas Assistenciais",
+        itens: [
+          "<strong>Calçados Fechados:</strong> Essenciais em consultórios, salas de vacina, curativos, farmácias, laboratórios e urgência/emergência.",
+          "<strong>Uso Consciente do Jaleco / Uniforme:</strong> O jaleco é um Equipamento de Proteção Individual (EPI) — evite circular com ele em locais externos (como supermercados, padarias ou transporte público) para não levar contaminação da unidade para a rua ou vice-versa.",
+          "<strong>Adornos em Áreas Clínicas:</strong> Em áreas assistenciais com risco biológico, a NR-32 veda o uso de adornos (anéis, pulseiras, relógios) que prejudicam a higienização adequada das mãos."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Proteção (NR-32)", txt: "Vestuário e calçado fechado protegem contra acidentes e risco biológico" },
+      { no: "Funcionalidade", txt: "Roupas práticas que permitem agilidade e conforto seguro no turno" },
+      { no: "Imagem Pública", txt: "Postura e apresentação compatíveis com a moralidade administrativa" },
+      { no: "Uso do Jaleco", txt: "Usar exclusivamente nas áreas de trabalho, nunca em passeios externos" }
+    ],
+    nota: "Falar de código de vestimentas na Saúde não é questão de vaidade ou rigidez estética — é, acima de tudo, uma medida combinada de biossegurança (NR-32), ergonomia e respeito profissional ao cidadão."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Código de Vestimentas, Biossegurança (NR-32) e Exceções",
+    titulo: "14. Itens Geralmente Não Tolerados no Vestuário das Unidades de Saúde",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Recomendações de Vestimenta Adotadas por Secretarias de Saúde",
+        itens: [
+          "Para preservar a segurança do trabalhador e a postura institucional nas unidades e departamentos, alguns municípios adotam orientações indicando como <strong>itens não tolerados</strong> no expediente regular:",
+          "• <strong>Transparências</strong> que demonstrem peças íntimas (homens e mulheres);",
+          "• <strong>Calças 'rasgadas' ou 'desfiadas'</strong> em grandes áreas que exponham a pele excessivamente ou peças íntimas (homens e mulheres);",
+          "• <strong>Chinelos de borracha e plástico</strong> (homens e mulheres — alto risco de queda e acidente perfurocortante);",
+          "• <strong>Roupas de ginástica</strong> (ex.: legging esportiva curta, roupas de academia — homens e mulheres)."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Comprimento e Modelagem Adequados ao Ambiente Profissional",
+        itens: [
+          "Também costumam constar como itens inadequados ao ambiente de trabalho nas Secretarias de Saúde:",
+          "• <strong>Bermudas acima do joelho</strong> (homens e mulheres);",
+          "• <strong>Minissaias, saias e vestidos curtos</strong> (acima do joelho);",
+          "• <strong>Tops, bustiês, blusas muito decotadas, tomara que caia ou frente única.</strong>",
+          "<strong>Dica Simples:</strong> Antes de sair de casa, pergunte-se: <em>'Esta roupa me protege com segurança e transmite profissionalismo caso eu precise atender uma urgência ou receber um cidadão hoje?'</em>"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Calçados", txt: "Evitar chinelos de borracha/plástico; priorizar calçados fechados e firmes" },
+      { no: "Calças & Bermudas", txt: "Sem calças rasgadas em grandes áreas e sem bermudas acima do joelho" },
+      { no: "Blusas & Saias", txt: "Sem transparências, tops, decotes excessivos ou saias acima do joelho" },
+      { no: "Esporte vs. Trabalho", txt: "Não utilizar roupas de ginástica no expediente regular da unidade" }
+    ],
+    nota: "Quando as orientações sobre vestimenta são claras e aplicadas de maneira igualitária para homens e mulheres, evitam-se julgamentos subjetivos e constrangimentos nas equipes."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: false,
+    mod: "Módulo 4 • Código de Vestimentas, Biossegurança (NR-32) e Exceções",
+    titulo: "15. Exceções Justificadas: Saúde, Gestantes, Religião, Campanhas e Campo",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Acolhimento às Condições Médicas, Gestação e Liberdade Religiosa",
+        itens: [
+          "Regras inteligentes sempre preveem humanidade e bom senso! Alguns municípios adotam expressamente as seguintes <strong>exceções</strong>:",
+          "<strong>1. Ferimentos nos Pés (Avaliação Médica / SESMT):</strong> Permitido o uso de chinelos de borracha/plástico se o servidor possuir ferimento que impeça calçado fechado, mediante avaliação prévia da Medicina do Trabalho (SESMT).",
+          "<strong>2. Tratamento Médico (SESMT):</strong> Permitido uso de lenços ou adornos que cubram a cabeça durante tratamentos de saúde, com avaliação do SESMT.",
+          "<strong>3. Adornos Religiosos:</strong> Permitidos adornos religiosos que cubram a cabeça, alinhados e autorizados junto à Diretoria/Coordenação (respeitando a biossegurança em áreas estéreis).",
+          "<strong>4. Gestantes:</strong> Gestantes podem utilizar calças de malha ou algodão mais confortáveis e adequadas à sua condição física e ao bebê, combinadas com blusa comprida."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Atividades de Campo, Campanhas Temáticas e Emergências",
+        itens: [
+          "<strong>5. Campanhas Específicas e Trabalho de Campo (ACS/ACE):</strong> Em dias de campanhas (ex.: Outubro Rosa, Dia D de Vacinação, combate à Dengue) ou em atividades externas de Agentes Comunitários (ACS), Agentes de Endemias (ACE) e visitadores, é permitido vestuário adequado à ação (camisetas temáticas, bonés, chapéus de proteção solar), restrito à campanha ou à função.",
+          "<strong>6. Crises, Contingências e Emergências:</strong> Em situações emergenciais onde equipes de apoio precisem entrar imediatamente em ação, eventuais flexibilizações são avaliadas pela Coordenação/Diretoria."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Saúde (SESMT)", txt: "Ferimentos nos pés ou tratamentos médicos avaliados pela Medicina do Trabalho" },
+      { no: "Gestantes", txt: "Calça de malha/algodão confortável com blusa comprida" },
+      { no: "Religião", txt: "Respeito a adornos religiosos alinhados com a coordenação e biossegurança" },
+      { no: "Campo & Campanhas", txt: "Bonés, chapéus e camisetas temáticas para ACS/ACE e ações específicas" }
+    ],
+    nota: "Prever exceções claras mostra o equilíbrio entre disciplina e empatia: protege a gestante, respeita a fé de cada trabalhador, garante proteção solar aos agentes de campo e atende restrições médicas reais."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 4,
+    fimModulo: true,
+    mod: "Módulo 4 • Código de Vestimentas, Biossegurança (NR-32) e Exceções",
+    titulo: "16. Convivência em Espaços Compartilhados: Copa, Tabagismo e Sustentabilidade",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Copas e Cozinhas Compartilhadas: A Regra de Ouro da Gentileza",
+        itens: [
+          "<strong>Espaço de Todos, Dever de Todos:</strong> Copas e cozinhas nas unidades de saúde são espaços compartilhados para alimentação e descanso dos servidores.",
+          "<strong>Organização e Higiene:</strong> Quem manipula alimentos, esquenta marmitas ou usa a pia e a geladeira é responsável por <strong>lavar sua louça, limpar respingos no micro-ondas/bancada e retirar alimentos vencidos</strong> — nunca sobrecarregando a equipe de limpeza com louças pessoais."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Sustentabilidade, Economia de Água e Lei Antifumo",
+        itens: [
+          "<strong>Respeito ao Meio Ambiente:</strong> Evitar desperdício de água, energia elétrica e papel, além de fazer a destinação adequada dos resíduos comuns e infectantes (conforme o PGRSS da unidade).",
+          "<strong>Leis sobre o Tabaco:</strong> Respeitar integralmente as leis que proíbem fumar em ambientes coletivos fechados ou nas áreas proibidas das unidades de saúde, e dar <strong>destinação adequada às bitucas</strong> (nunca jogá-las no chão, jardins ou bueiros)."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Copa Limpa", txt: "Lavar a própria louça, limpar micro-ondas e cuidar da geladeira" },
+      { no: "Economia", txt: "Apagar luzes, fechar torneiras e evitar impressões desnecessárias" },
+      { no: "Resíduos (PGRSS)", txt: "Separar corretamente lixo comum, reciclável e resíduo de saúde" },
+      { no: "Ambiente Livre de Fumo", txt: "Respeitar a legislação antifumo e descartar bitucas corretamente" }
+    ],
+    nota: "Pequenos gestos de convivência na copa — como deixar a pia limpa para o próximo colega do plantão — reduzem atritos diários e fortalecem o espírito de equipe."
+  },
+  {
+    tipo: "quiz",
+    modNum: 4,
+    mod: "Módulo 4 • Código de Vestimentas, Biossegurança (NR-32) e Exceções",
+    titulo: "📝 Avaliação do Módulo 4 (Desbloqueio do Módulo 5)",
+    subtitulo: "Responda corretamente às 2 questões abaixo sobre Código de Vestimentas, NR-32, Exceções e Espaços Compartilhados para liberar o Módulo 5.",
+    perguntas: [
+      {
+        q: "1. Sobre as recomendações de vestimenta e exceções adotadas por diversas Secretarias Municipais de Saúde com base na biossegurança (NR-32) e no decoro, assinale a alternativa CORRETA:",
+        opcoes: [
+          "Chinelos de borracha, roupas de ginástica e transparências são recomendados em todas as unidades de saúde.",
+          "Não existe nenhuma exceção para gestantes, trabalhadores de campo (ACS/ACE) ou servidores com ferimentos avaliados pela Medicina do Trabalho.",
+          "Em geral não são tolerados chinelos de borracha, roupas de ginástica, peças transparentes ou curtas acima do joelho; porém há exceções previstas para gestantes (calça de malha com blusa comprida), casos médicos avaliados pelo SESMT, adornos religiosos autorizados e itens de campo/campanha para ACS/ACE."
+        ],
+        correta: 2
+      },
+      {
+        q: "2. Quanto à organização das copas/cozinhas compartilhadas e às normas de sustentabilidade e tabagismo nas unidades de saúde, assinale a alternativa CORRETA:",
+        opcoes: [
+          "A organização e limpeza dos utensílios após o preparo de alimentos na copa compartilhada é responsabilidade dos próprios servidores que utilizam o espaço, além do dever de economizar água, descartar resíduos corretamente e respeitar as leis sobre o tabaco.",
+          "Os servidores podem deixar louças pessoais sujas na pia da copa para a equipe de limpeza hospitalar lavar ao final do dia.",
+          "É permitido fumar dentro dos corredores da unidade de saúde desde que as janelas estejam abertas."
+        ],
+        correta: 0
+      }
+    ],
+    nota: "Excelente! Agora avance para o Módulo 5 (Responsabilidade Funcional, Apuração Disciplinar e Cultura Ética) para finalizar o conteúdo e liberar sua Pesquisa de Satisfação e Certificado."
+  },
+
+  // =========================================================================
+  // MÓDULO 5 • RESPONSABILIDADE FUNCIONAL, APURAÇÃO DISCIPLINAR E CULTURA ÉTICA
+  // =========================================================================
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Responsabilidade Funcional, Apuração Disciplinar e Cultura Ética",
+    titulo: "17. Como os Municípios Apuram Irregularidades: Sindicância vs. PAD",
+    cards: [
+      {
+        tipo: "normal",
+        titulo: "O Dever de Apuração e o Papel das Comissões Permanentes",
+        itens: [
+          "<strong>Dever da Chefia:</strong> Em geral, os estatutos e códigos de ética municipais determinam que o superior hierárquico que tomar ciência de irregularidade praticada por subordinado tem o <strong>dever legal de relatar o fato</strong> à autoridade competente para apuração (omitir-se também gera responsabilidade).",
+          "<strong>Comissões Independentes:</strong> Muitos municípios mantêm comissões permanentes formadas por servidores estáveis (atuando com independência, imparcialidade e impedimento em caso de parentesco ou lotação no mesmo setor) para conduzir os trabalhos."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Qual a Diferença Entre Sindicância Administrativa e PAD?",
+        itens: [
+          "<strong>1. Sindicância Administrativa (Investigativa):</strong> Instrumento inicial voltado a <strong>apurar a autoria e a materialidade</strong> de uma possível infração (muitos municípios preveem prazo de até 90 dias, prorrogável). Ouve os envolvidos e conclui pelo <em>arquivamento</em> ou pela <em>abertura de PAD</em>.",
+          "<strong>2. Processo Administrativo Disciplinar — PAD (Acusatório):</strong> Quando já há indícios claros de autoria e materialidade, o PAD apura efetivamente a responsabilidade funcional <strong>assegurando integralmente o contraditório e a ampla defesa</strong>, desenvolvendo-se em 3 fases: <strong>Instauração, Instrução (provas/defesa/relatório) e Julgamento</strong>."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Relato Obrigatório", txt: "Chefia que identifica irregularidade deve comunicar à autoridade" },
+      { no: "Sindicância", txt: "Fase investigativa para esclarecer o que houve e quem participou" },
+      { no: "PAD (3 Fases)", txt: "Instauração -> Instrução (provas e defesa) -> Julgamento fundamentado" },
+      { no: "Ilícito Penal", txt: "Se a conduta também for crime, envia-se cópia à Polícia Judiciária" }
+    ],
+    nota: "Conhecer como funciona uma Sindicância e um PAD desmistifica o tema: o processo disciplinar não existe para perseguir servidores, mas para apurar fatos com imparcialidade, proteger quem é inocente e responsabilizar condutas graves comprovadas."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Responsabilidade Funcional, Apuração Disciplinar e Cultura Ética",
+    titulo: "18. Garantias de Defesa, Afastamento Preventivo, Estágio Probatório e Revisão",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Direitos e Garantias do Servidor Durante a Apuração",
+        itens: [
+          "<strong>Preservação da Imagem:</strong> Na publicação da portaria de instauração, muitos municípios adotam a prática de <strong>não expor o nome completo do servidor</strong> (usando apenas o número de matrícula/código funcional), resguardando sua honra e vida privada até a decisão final.",
+          "<strong>Ampla Defesa e Contraditório:</strong> Direito de apresentar defesa escrita, acompanhar o processo (pessoalmente ou por advogado/procurador), arrolar testemunhas, produzir provas e apresentar alegações finais.",
+          "<strong>Revisão por Fatos Novos:</strong> Mesmo após encerrado, o processo disciplinar pode ser revisto a qualquer tempo se surgirem <strong>fatos novos</strong> que comprovem inocência ou inadequação da pena — e <strong>a revisão nunca pode agravar a penalidade</strong>."
+        ]
+      },
+      {
+        tipo: "warn",
+        titulo: "Afastamento Preventivo, Prescrição e Estágio Probatório",
+        itens: [
+          "<strong>Afastamento Preventivo (Medida Cautelar):</strong> Para evitar que o investigado interfira na coleta de provas, a autoridade pode determinar afastamento temporário ou remanejamento para outra área, <strong>sem prejuízo da remuneração</strong>.",
+          "<strong>Prescrição:</strong> A ação disciplinar possui prazo legal de prescrição (muitos municípios adotam prazos como 2 anos a partir do conhecimento formal pela autoridade, ou o prazo da lei penal se for crime).",
+          "<strong>Vale no Estágio Probatório?</strong> <strong>SIM!</strong> As normas de ética e conduta devem ser observadas desde o primeiro dia de exercício, inclusive durante todo o estágio probatório."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Honra Preservada", txt: "Extrato de instauração sem expor nome do servidor (apenas matrícula)" },
+      { no: "Ampla Defesa", txt: "Defesa escrita, testemunhas, provas e acompanhamento por advogado" },
+      { no: "Medida Cautelar", txt: "Afastamento preventivo preserva o salário enquanto duram as apurações" },
+      { no: "Revisão & Probatório", txt: "Revisão por fatos novos sem agravar pena; ética vale no probatório" }
+    ],
+    nota: "A transparência sobre essas garantias mostra que o devido processo legal protege o servidor público contra acusações injustas ou decisões arbitrárias."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: false,
+    mod: "Módulo 5 • Responsabilidade Funcional, Apuração Disciplinar e Cultura Ética",
+    titulo: "19. Dilemas Reais no Dia a Dia da Saúde: Como Agir Corretamente?",
+    cards: [
+      {
+        tipo: "danger",
+        titulo: "Situações Comuns de Conflito (O Que Evitar)",
+        itens: [
+          "<strong>Dilema 1 — 'Me empresta sua senha rapidinho só para imprimir esta receita?'</strong><br><strong>Atitude Ética:</strong> Recuse com educação. Senhas são individuais e intransferíveis; se o colega está sem acesso, oriente-o a abrir chamado com a T.I.",
+          "<strong>Dilema 2 — 'Meu vizinho precisa de um ultrassom urgente, vou encaixar fora do protocolo.'</strong><br><strong>Atitude Ética:</strong> Não faça encaixes por amizade. Oriente o vizinho sobre o fluxo oficial de avaliação clínica e classificação de risco na UBS/Regulação.",
+          "<strong>Dilema 3 — 'Vou postar nos Stories um vídeo engraçado da nossa sala de vacina com o paciente atrás.'</strong><br><strong>Atitude Ética:</strong> Não poste! Proteja a privacidade dos usuários e a imagem da unidade."
+        ]
+      },
+      {
+        tipo: "ok",
+        titulo: "Situações de Convivência e Mediação (Como Resolver Bem)",
+        itens: [
+          "<strong>Dilema 4 — Divergência de opinião técnica ou de escala com um colega:</strong><br><strong>Atitude Ética:</strong> Converse em particular, com tom respeitoso, focando na solução para o paciente e não em ataques pessoais; se necessário, envolva a coordenação para mediação imparcial.",
+          "<strong>Dilema 5 — Pressão verbal de um usuário exaltado na recepção:</strong><br><strong>Atitude Ética:</strong> Mantenha a calma, não revide ofensas, escute com postura profissional e acione a chefia da unidade para apoiar o acolhimento seguro."
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Senhas & Ponto", txt: "Dizer 'não' com educação protege você e o próprio colega" },
+      { no: "Fluxo do SUS", txt: "Imparcialidade garante justiça para todos os cidadãos na fila" },
+      { no: "Conflitos Internos", txt: "Diálogo reservado, foco na solução e mediação pela chefia" },
+      { no: "Acolhimento Calmo", txt: "Postura profissional firme e respeitosa em momentos de tensão" }
+    ],
+    nota: "A ética profissional é testada justamente nas situações rápidas da rotina em que o caminho mais fácil seria ignorar uma regra. Manter a firmeza com cordialidade constrói respeito duradouro."
+  },
+  {
+    tipo: "conteudo",
+    modNum: 5,
+    fimModulo: true,
+    mod: "Módulo 5 • Responsabilidade Funcional, Apuração Disciplinar e Cultura Ética",
+    titulo: "20. Conclusões Finais: Construindo um Ambiente Ético, Seguro e Humanizado",
+    cards: [
+      {
+        tipo: "ok",
+        titulo: "Ética Como Cultura Viva nas Secretarias Municipais de Saúde",
+        itens: [
+          "<strong>Mais que Regras no Papel:</strong> Códigos de ética, resoluções de convivência e normas de vestimenta só transformam a realidade quando viram hábitos cotidianos de respeito, empatia e responsabilidade.",
+          "<strong>Cada Servidor Faz a Diferença:</strong> Do porteiro ao gestor, da recepção ao consultório, cada atitude ética fortalece a confiança da população no SUS e torna o dia de trabalho mais leve para toda a equipe.",
+          "<strong>Guia Sempre Disponível:</strong> Utilize o botão <strong>📋 Guia Rápido de Ética</strong> no topo da tela e o botão <strong>🖨️ Salvar PDF Completo</strong> sempre que quiser consultar ou compartilhar estas orientações com sua equipe."
+        ]
+      },
+      {
+        tipo: "normal",
+        titulo: "Síntese Final da Capacitação",
+        itens: [
+          "<strong>Compromisso da Saúde Pública:</strong> <em>'Um ambiente de trabalho ético, respeitoso, diverso e seguro é o primeiro passo para oferecer um SUS verdadeiramente humanizado e eficiente à população.'</em>"
+        ]
+      }
+    ],
+    mapa: [
+      { no: "Respeito Mútuo", txt: "Combate ao assédio, à discriminação e convivência harmoniosa" },
+      { no: "Integridade", txt: "Imparcialidade, zero conflito de interesse e zelo pelo patrimônio" },
+      { no: "Segurança & Imagem", txt: "NR-32, vestimenta adequada, proteção digital e bom senso nas redes" },
+      { no: "Responsabilidade", txt: "Compromisso ético diário com a equipe e com o cidadão do SUS" }
+    ],
+    nota: "Parabéns por concluir o conteúdo técnico da Capacitação em Boas Práticas, Ética e Convivência! Responda às 2 últimas questões abaixo para liberar a Pesquisa de Satisfação e emitir seu Certificado em PDF."
+  },
+  {
+    tipo: "quiz",
+    modNum: 5,
+    mod: "Módulo 5 • Responsabilidade Funcional, Apuração Disciplinar e Cultura Ética",
+    titulo: "📝 Avaliação Final do Módulo 5 (Habilitação do Certificado)",
+    subtitulo: "Responda corretamente às 2 questões finais sobre Apuração Disciplinar, Garantias de Defesa e Conduta Ética para liberar a Pesquisa de Satisfação e seu Certificado em PDF.",
+    perguntas: [
+      {
+        q: "1. Sobre os procedimentos de Sindicância Administrativa e Processo Administrativo Disciplinar (PAD) adotados por muitos municípios, assinale a alternativa CORRETA:",
+        opcoes: [
+          "A Sindicância apura autoria e materialidade de forma investigativa, enquanto o PAD assegura integralmente o contraditório e a ampla defesa (com instauração preservando a imagem do servidor, instrução de provas e julgamento fundamentado).",
+          "No PAD, o servidor não tem direito de apresentar defesa escrita nem de indicar testemunhas.",
+          "As regras de ética profissional só passam a valer depois que o servidor termina o estágio probatório."
+        ],
+        correta: 0
+      },
+      {
+        q: "2. Sobre o afastamento preventivo e a revisão de processo disciplinar por fatos novos, assinale a alternativa CORRETA:",
+        opcoes: [
+          "O afastamento preventivo corta imediatamente o salário do servidor antes mesmo do julgamento.",
+          "O afastamento preventivo é medida cautelar sem prejuízo da remuneração para resguardar a apuração, e a revisão do processo por fatos novos nunca pode resultar no agravamento da penalidade.",
+          "Uma vez encerrado o processo disciplinar, ele jamais pode ser revisto mesmo que surjam provas novas de inocência."
+        ],
+        correta: 1
+      }
+    ],
+    nota: "Ao acertar esta avaliação final, a etapa '🎓 Emissão de Certificado em PDF' (com Pesquisa Rápida de Satisfação) será desbloqueada imediatamente!"
+  },
+
+  // =========================================================================
+  // CERTIFICADO FINAL
+  // =========================================================================
+  {
+    tipo: "certificado",
+    modNum: 6,
+    mod: "Certificação Final • Secretaria Municipal de Saúde",
+    titulo: "🎓 Pesquisa de Satisfação e Emissão do Certificado em PDF",
+    nota: "Parabéns por concluir integralmente os 5 módulos e acertar 100% das avaliações! Responda à pesquisa rápida acima e preencha seu Nome Completo para baixar ou imprimir seu certificado oficial em formato PDF (A4 Paisagem)."
+  }
+
+];
+
+let current = 0;
+let unlockedModule = 1; // 1 a 5 = Módulos; 6 = Certificado liberado
+const completedQuizzes = { 1: false, 2: false, 3: false, 4: false, 5: false };
+const userQuizSelections = { 1: {}, 2: {}, 3: {}, 4: {}, 5: {} };
+let certUserName = "";
+let certUserRole = "";
+let certIssueDate = new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+let certValidationCode = "SMS-ETICA-" + Math.floor(100000 + Math.random() * 900000);
+
+const FEEDBACK_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwiKzdUBxxZ2N9XY0yAmgkJeAXPoD_rQ3hI0Ts2UK88WGCkDFFGMsCRzqD4-PoGHtQ3ag/exec"; // Cole aqui a URL do Web App do Google Apps Script
+const COURSE_TITLE_FOR_FEEDBACK = "Boas Práticas, Ética e Convivência na Saúde";
+let feedbackRatingOverall = 0;
+let feedbackRatingUtility = 0;
+let feedbackComment = "";
+let feedbackSubmitted = false;
+
+const STORAGE_KEY = "atb_saude_save_capacitacao_etica_convivencia_v1";
+
+function saveProgress() {
+  try {
+    const state = {
+      current: current,
+      unlockedModule: unlockedModule,
+      completedQuizzes: completedQuizzes,
+      userQuizSelections: userQuizSelections,
+      certUserName: certUserName,
+      certUserRole: certUserRole,
+      certIssueDate: certIssueDate,
+      certValidationCode: certValidationCode,
+      feedbackRatingOverall: feedbackRatingOverall,
+      feedbackRatingUtility: feedbackRatingUtility,
+      feedbackComment: feedbackComment,
+      feedbackSubmitted: feedbackSubmitted
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {}
+}
+
+function loadProgress() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+    if (!state || typeof state !== "object") return;
+
+    if (typeof state.unlockedModule === "number" && state.unlockedModule >= 1 && state.unlockedModule <= 6) {
+      unlockedModule = state.unlockedModule;
+    }
+    if (state.completedQuizzes && typeof state.completedQuizzes === "object") {
+      [1, 2, 3, 4, 5].forEach(m => {
+        if (typeof state.completedQuizzes[m] === "boolean") {
+          completedQuizzes[m] = state.completedQuizzes[m];
+        }
+      });
+    }
+    let maxUnlockedFromQuizzes = 1;
+    for (let m = 1; m <= 5; m++) {
+      if (completedQuizzes[m]) {
+        maxUnlockedFromQuizzes = m + 1;
+      } else {
+        break;
+      }
+    }
+    if (maxUnlockedFromQuizzes > unlockedModule) {
+      unlockedModule = maxUnlockedFromQuizzes;
+    }
+    if (state.userQuizSelections && typeof state.userQuizSelections === "object") {
+      [1, 2, 3, 4, 5].forEach(m => {
+        if (state.userQuizSelections[m] && typeof state.userQuizSelections[m] === "object") {
+          userQuizSelections[m] = state.userQuizSelections[m];
+        }
+      });
+    }
+    if (typeof state.certUserName === "string") certUserName = state.certUserName;
+    if (typeof state.certUserRole === "string") certUserRole = state.certUserRole;
+    if (typeof state.certIssueDate === "string" && state.certIssueDate.trim().length > 0) {
+      certIssueDate = state.certIssueDate;
+    }
+    if (typeof state.certValidationCode === "string" && state.certValidationCode.trim().length > 0) {
+      certValidationCode = state.certValidationCode;
+    }
+    if (typeof state.feedbackRatingOverall === "number") feedbackRatingOverall = state.feedbackRatingOverall;
+    if (typeof state.feedbackRatingUtility === "number") feedbackRatingUtility = state.feedbackRatingUtility;
+    if (typeof state.feedbackComment === "string") feedbackComment = state.feedbackComment;
+    if (typeof state.feedbackSubmitted === "boolean") feedbackSubmitted = state.feedbackSubmitted;
+    if (typeof state.current === "number" && state.current >= 0 && state.current < slides.length && isSlideUnlocked(state.current)) {
+      current = state.current;
+    } else {
+      current = 0;
+    }
+  } catch (e) {}
+}
+function isSlideUnlocked(idx) {
+  if (idx < 0 || idx >= slides.length) return false;
+  return slides[idx].modNum <= unlockedModule;
+}
+
+function getQuizSlideForMod(modNum) {
+  return slides.find(s => s.tipo === "quiz" && s.modNum === modNum);
+}
+
+function getFirstSlideIdxOfMod(modNum) {
+  return slides.findIndex(s => s.modNum === modNum);
+}
+
+// Função segura de cópia para área de transferência (compatível com iFrames e navegadores modernos)
+function copyTextSafe(text, btnElement) {
+  const originalText = btnElement.innerText;
+  const showSuccess = () => {
+    btnElement.innerText = "✓ Copiado!";
+    btnElement.style.background = "#62a0ea";
+    setTimeout(() => {
+      btnElement.innerText = originalText;
+      btnElement.style.background = "";
+    }, 1800);
+  };
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(showSuccess).catch(() => fallbackCopy(text, showSuccess));
+  } else {
+    fallbackCopy(text, showSuccess);
+  }
+}
+
+function fallbackCopy(text, callback) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try {
+    document.execCommand("copy");
+    if (callback) callback();
+  } catch (err) {
+    console.error("Erro ao copiar:", err);
+  }
+  document.body.removeChild(ta);
+}
+
+function copyCardCode(btn) {
+  const pre = btn.closest('.code-wrapper').querySelector('pre');
+  if (pre) copyTextSafe(pre.innerText, btn);
+}
+
+function copyTextFromElement(elId, btn) {
+  const el = document.getElementById(elId);
+  if (el) copyTextSafe(el.innerText, btn);
+}
+
+function selectQuizOption(modNum, qIdx, optIdx) {
+  userQuizSelections[modNum][qIdx] = optIdx;
+  saveProgress();
+}
+
+function renderQuizComponentHTML(modNum) {
+  const qSlide = getQuizSlideForMod(modNum);
+  if (!qSlide) return "";
+  const isDone = completedQuizzes[modNum];
+  const nextTargetName = modNum < 5 ? `Módulo ${modNum + 1}` : "Emissão do Certificado em PDF";
+  const nextModSlideIdx = getFirstSlideIdxOfMod(modNum + 1);
+
+  const questionsHTML = qSlide.perguntas.map((p, qIdx) => {
+    const selectedVal = userQuizSelections[modNum][qIdx];
+    const letters = ["A", "B", "C"];
+    const optsHTML = p.opcoes.map((optText, oIdx) => {
+      const checkedAttr = (selectedVal === oIdx) ? "checked" : "";
+      let extraClass = "";
+      if (isDone && oIdx === p.correta) extraClass = "selected-correct";
+      return `
+        <label class="quiz-option-label ${extraClass}">
+          <input type="radio" name="quiz_m${modNum}_q${qIdx}" value="${oIdx}" ${checkedAttr} onchange="selectQuizOption(${modNum}, ${qIdx}, ${oIdx})">
+          <span><strong>${letters[oIdx]})</strong> ${optText}</span>
+        </label>
+      `;
+    }).join('');
+
+    return `
+      <div class="quiz-question-card" id="qcard_m${modNum}_q${qIdx}">
+        <div class="quiz-question-title">${p.q}</div>
+        <div class="quiz-options-list">${optsHTML}</div>
+      </div>
+    `;
+  }).join('');
+
+  return `
+    <div class="quiz-container ${isDone ? 'quiz-completed' : ''}" id="quiz-box-mod-${modNum}">
+      <div class="quiz-header-bar">
+        <div class="quiz-badge-title">
+          <span>${isDone ? '✅' : '📝'} Avaliação Obrigatória • Módulo ${modNum}</span>
+        </div>
+        <span class="quiz-status-pill ${isDone ? 'ok' : ''}">
+          ${isDone ? `✓ Aprovado (${nextTargetName} Liberado)` : `🔒 Responda para liberar: ${nextTargetName}`}
+        </span>
+      </div>
+      <div class="quiz-intro">${qSlide.subtitulo}</div>
+      ${questionsHTML}
+      <div class="quiz-actions">
+        <button class="btn-validate-quiz" onclick="validateModuleQuiz(${modNum})">
+          ${isDone ? '🔄 Revalidar Respostas' : `✅ Validar Respostas e Liberar ${nextTargetName}`}
+        </button>
+        ${isDone && nextModSlideIdx !== -1 ? `
+          <button class="btn-advance-mod" onclick="goToSlide(${nextModSlideIdx})">
+            🚀 Avançar para ${nextTargetName} ➡
+          </button>
+        ` : ''}
+      </div>
+      <div id="quiz-feedback-m${modNum}" class="quiz-feedback ${isDone ? 'show ok' : ''}">
+        ${isDone ? `🎉 Excelente! Você acertou as 2 questões do Módulo ${modNum}. O acesso para <strong>${nextTargetName}</strong> já está habilitado!` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function validateModuleQuiz(modNum) {
+  const qSlide = getQuizSlideForMod(modNum);
+  if (!qSlide) return;
+
+  const fb = document.getElementById(`quiz-feedback-m${modNum}`);
+  let answeredCount = 0;
+  let correctCount = 0;
+
+  qSlide.perguntas.forEach((p, qIdx) => {
+    const radios = document.querySelectorAll(`input[name="quiz_m${modNum}_q${qIdx}"]`);
+    let chosen = undefined;
+    radios.forEach(r => {
+      if (r.checked) chosen = parseInt(r.value, 10);
+    });
+    if (chosen !== undefined) {
+      userQuizSelections[modNum][qIdx] = chosen;
+    } else if (userQuizSelections[modNum][qIdx] !== undefined) {
+      chosen = userQuizSelections[modNum][qIdx];
+    }
+
+    const qCard = document.getElementById(`qcard_m${modNum}_q${qIdx}`);
+    if (chosen !== undefined) {
+      answeredCount++;
+      if (chosen === p.correta) {
+        correctCount++;
+        if (qCard) qCard.style.borderLeftColor = "var(--success)";
+      } else {
+        if (qCard) qCard.style.borderLeftColor = "var(--danger)";
+      }
+    } else {
+      if (qCard) qCard.style.borderLeftColor = "var(--warning)";
+    }
+  });
+
+  if (answeredCount < qSlide.perguntas.length) {
+    if (fb) {
+      fb.className = "quiz-feedback show err";
+      fb.innerHTML = "⚠️ Por favor, selecione uma alternativa em cada uma das 2 perguntas antes de validar.";
+    }
+    return;
+  }
+
+  if (correctCount === qSlide.perguntas.length) {
+    completedQuizzes[modNum] = true;
+    if (unlockedModule < modNum + 1) {
+      unlockedModule = modNum + 1;
+    }
+    saveProgress();
+    updateProgressBarUI();
+    buildNav(document.getElementById('search-input') ? document.getElementById('search-input').value : "");
+    const currentScroll = document.getElementById('slide-container').scrollTop;
+    goToSlide(current);
+    document.getElementById('slide-container').scrollTop = currentScroll;
+  } else {
+    if (fb) {
+      fb.className = "quiz-feedback show err";
+      fb.innerHTML = `❌ Você acertou <strong>${correctCount} de ${qSlide.perguntas.length}</strong> questões. Para desbloquear o próximo módulo, ambas as respostas devem estar corretas. Revise a questão destacada em vermelho e tente novamente!`;
+    }
+  }
+}
+
+function renderCertificateDiplomaInner(nameStr, roleStr) {
+  const displayName = (nameStr && nameStr.trim().length > 0) ? nameStr.trim() : "[ DIGITE SEU NOME COMPLETO ACIMA ]";
+  const displayRole = (roleStr && roleStr.trim().length > 0) ? `<div style="font-size:14px; color:#2b6cb0; font-weight:600; margin-top:-10px; margin-bottom:14px;">${roleStr.trim()}</div>` : "";
+
+  return `
+    <div class="cert-diploma-border">
+      <div class="cert-diploma-header">Educação Permanente em Saúde • Secretaria Municipal de Saúde</div>
+      <div class="cert-diploma-title">Certificado de Conclusão</div>
+      <div class="cert-diploma-subtitle">Núcleo de Educação Permanente e Divisão de Tecnologia da Informação do SUS</div>
+      <div class="cert-diploma-Lead">Certificamos para os devidos fins que</div>
+      <div class="cert-diploma-name" id="preview-cert-name">${displayName}</div>
+      ${displayRole}
+      <div class="cert-diploma-body">
+        concluiu com aproveitamento de <strong>100% nas avaliações práticas e teóricas</strong> o
+        <strong>Curso Prático: Boas Práticas, Ética, Convivência e Código de Vestimentas na Saúde Pública</strong>,
+        abrangendo Fundamentos e Princípios da Ética Pública, Diversidade e Combate ao Assédio e à Discriminação,
+        Integridade, Conflitos de Interesse, Brindes e Vedações Funcionais, Ambiente Seguro, Uso Consciente de Recursos Físicos e TI,
+        Relacionamento com a Imprensa e Redes Sociais, Código de Vestimentas com Biossegurança (NR-32) e Exceções,
+        e Noções de Responsabilidade Funcional e Apuração Disciplinar.
+      </div>
+      <div class="cert-diploma-footer">
+        <div style="text-align:left;">
+          <strong>Data de Emissão:</strong> ${certIssueDate}<br>
+          <strong>Carga Horária:</strong> 03 horas capacitacionais (5 Módulos Concluídos)<br>
+          <strong>Código de Validação:</strong> ${certValidationCode}
+        </div>
+        <div class="cert-sign-line">
+          Clovis Campaner Filho<br>
+          <span style="font-size:11.5px; font-weight:400; color:#4a5568;">Especialista em Sistemas e Gestão de T.I. em Saúde</span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function setFeedbackRating(type, val) {
+  if (feedbackSubmitted) return;
+  if (type === 'overall') feedbackRatingOverall = val;
+  if (type === 'utility') feedbackRatingUtility = val;
+  saveProgress();
+  const currentScroll = document.getElementById('slide-container').scrollTop;
+  goToSlide(current);
+  document.getElementById('slide-container').scrollTop = currentScroll;
+}
+
+function onFeedbackCommentInput(val) {
+  feedbackComment = val;
+  saveProgress();
+}
+
+async function submitCourseFeedback() {
+  const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
+  if (!allCompleted || feedbackSubmitted) return;
+
+  const statusEl = document.getElementById('feedback-submit-status');
+  const btnEl = document.getElementById('btn-submit-feedback');
+
+  if (feedbackRatingOverall === 0 || feedbackRatingUtility === 0) {
+    if (statusEl) {
+      statusEl.style.display = 'block';
+      statusEl.style.color = 'var(--warning)';
+      statusEl.innerText = '⚠️ Por favor, selecione uma nota de 1 a 5 estrelas para ambas as perguntas antes de enviar.';
+    }
+    return;
+  }
+
+  if (btnEl) {
+    btnEl.disabled = true;
+    btnEl.innerText = '⏳ Registrando avaliação...';
+  }
+
+  const nameInput = document.getElementById('cert-input-name');
+  const roleInput = document.getElementById('cert-input-role');
+  if (nameInput && nameInput.value.trim()) certUserName = nameInput.value.trim();
+  if (roleInput && roleInput.value.trim()) certUserRole = roleInput.value.trim();
+
+  const payload = {
+    curso: COURSE_TITLE_FOR_FEEDBACK,
+    participante: certUserName || "Não informado no momento do envio",
+    cargo: certUserRole || "",
+    nota_geral: feedbackRatingOverall,
+    aplicabilidade: feedbackRatingUtility,
+    comentario: feedbackComment.trim(),
+    codigo_certificado: certValidationCode
+  };
+
+  if (FEEDBACK_WEBHOOK_URL && FEEDBACK_WEBHOOK_URL.trim().startsWith("http")) {
+    try {
+      await fetch(FEEDBACK_WEBHOOK_URL.trim(), {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+    } catch (err) {
+      console.warn("Aviso no envio remoto do feedback:", err);
+    }
+  }
+
+  feedbackSubmitted = true;
+  saveProgress();
+  const currentScroll = document.getElementById('slide-container').scrollTop;
+  goToSlide(current);
+  document.getElementById('slide-container').scrollTop = currentScroll;
+}
+
+function renderCertificateSlideHTML(s) {
+  const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
+  const disabledAttr = allCompleted ? "" : "disabled";
+  const fbDisabledAttr = (!allCompleted || feedbackSubmitted) ? "disabled" : "";
+  const hasValidName = certUserName.trim().length >= 3;
+  const canGenerateCert = allCompleted && feedbackSubmitted && hasValidName;
+  const btnDisabled = canGenerateCert ? "" : "disabled";
+
+  const makeStars = (type, currentVal) => {
+    return [1, 2, 3, 4, 5].map(n => {
+      const activeCls = currentVal === n ? "active" : "";
+      return `<button type="button" class="star-btn ${activeCls}" onclick="setFeedbackRating('${type}', ${n})" ${fbDisabledAttr}>${n} ★</button>`;
+    }).join('');
+  };
+
+  let hintMsg = "";
+  if (!feedbackSubmitted) {
+    hintMsg = "* Etapa 1 obrigatória: responda e envie a Pesquisa de Satisfação acima para liberar o download do Certificado.";
+  } else if (!hasValidName) {
+    hintMsg = "* Digite seu nome completo (mínimo 3 letras) no campo acima para liberar os botões de geração do PDF.";
+  }
+
+  return `
+    <div class="slide-header">
+      <div class="slide-meta">${s.mod}</div>
+      <h2>${s.titulo}</h2>
+    </div>
+
+    <div class="feedback-panel ${feedbackSubmitted ? 'feedback-done' : ''}">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+        <h3 style="color: ${feedbackSubmitted ? 'var(--success)' : 'var(--accent-light)'}; font-size: 17.5px;">
+          ${feedbackSubmitted ? '✅ Pesquisa de Satisfação Registrada! Obrigado pelo seu feedback.' : '📊 Etapa 1: Pesquisa Rápida de Satisfação & Feedback'}
+        </h3>
+        <span class="quiz-status-pill ${feedbackSubmitted ? 'ok' : ''}">
+          ${feedbackSubmitted ? '✓ Concluído' : 'Obrigatório antes do Certificado'}
+        </span>
+      </div>
+      <p style="font-size: 13.8px; color: #d8dee9; line-height: 1.5;">
+        Sua opinião ajuda a aprimorar continuamente nossas capacitações para as Secretarias Municipais de Saúde. Leva menos de 20 segundos:
+      </p>
+
+      <div class="feedback-grid">
+        <div>
+          <label style="font-size:13px; font-weight:700; color:var(--warning); display:block; margin-bottom:4px;">
+            1. Avaliação geral do conteúdo e didática (1 a 5): *
+          </label>
+          <div class="star-rating-group">${makeStars('overall', feedbackRatingOverall)}</div>
+        </div>
+        <div>
+          <label style="font-size:13px; font-weight:700; color:var(--warning); display:block; margin-bottom:4px;">
+            2. Aplicabilidade prática na sua rotina de trabalho (1 a 5): *
+          </label>
+          <div class="star-rating-group">${makeStars('utility', feedbackRatingUtility)}</div>
+        </div>
+      </div>
+
+      <div>
+        <label for="fb-comment-input" style="font-size:13px; font-weight:700; color:var(--warning);">
+          3. Sugestões, elogios ou temas para próximas capacitações (Opcional):
+        </label>
+        <textarea id="fb-comment-input" class="feedback-textarea" placeholder="Escreva aqui sua sugestão ou comentário..." oninput="onFeedbackCommentInput(this.value)" ${fbDisabledAttr}>${feedbackComment.replace(/</g, '&lt;')}</textarea>
+      </div>
+
+      ${!feedbackSubmitted ? `
+        <button type="button" id="btn-submit-feedback" class="btn-send-feedback" onclick="submitCourseFeedback()" ${disabledAttr}>
+          📨 Enviar Pesquisa de Satisfação e Liberar Certificado
+        </button>
+        <div id="feedback-submit-status" style="display:none; font-size:13px; font-weight:600; margin-top:10px;"></div>
+      ` : `
+        <div style="font-size:13px; color:#8ff0a4; margin-top:10px; font-weight:600;">
+          ✓ Avaliação registrada (Nota Geral: ${feedbackRatingOverall}/5 • Aplicabilidade: ${feedbackRatingUtility}/5). Agora preencha seu nome abaixo e baixe seu certificado!
+        </div>
+      `}
+    </div>
+
+    <div class="cert-panel">
+      <h3 style="color: var(--success); font-size: 18px; margin-bottom: 8px;">
+        ${allCompleted ? '🎓 Etapa 2: Emissão do Certificado Oficial em PDF' : '🔒 Conclua as avaliações dos 5 módulos para habilitar a emissão'}
+      </h3>
+      <p style="font-size: 14px; color: var(--text); line-height: 1.55;">
+        Insira abaixo o seu <strong>Nome Completo</strong> (e opcionalmente seu Cargo/Unidade na Secretaria Municipal de Saúde) para personalizar e emitir seu Certificado Oficial em formato <strong>PDF (A4 Paisagem)</strong>.
+      </p>
+
+      <div class="cert-form-row">
+        <div class="cert-input-group">
+          <label for="cert-input-name">Nome Completo do(a) Servidor(a) *</label>
+          <input type="text" id="cert-input-name" placeholder="Ex.: Maria Aparecida da Silva" value="${certUserName.replace(/"/g, '&quot;')}" oninput="onCertInputUpdate()" ${disabledAttr}>
+        </div>
+        <div class="cert-input-group">
+          <label for="cert-input-role">Cargo / Função ou Unidade de Saúde (Opcional)</label>
+          <input type="text" id="cert-input-role" placeholder="Ex.: Enfermeira - UBS Centro / Gestor SUS" value="${certUserRole.replace(/"/g, '&quot;')}" oninput="onCertInputUpdate()" ${disabledAttr}>
+        </div>
+      </div>
+
+      <div class="cert-btn-group">
+        <button id="btn-download-pdf" class="btn-cert-download" onclick="downloadCertificatePDFDirect()" ${btnDisabled}>
+          📥 Baixar Certificado em PDF (Download Direto A4)
+        </button>
+        <button id="btn-print-pdf" class="btn-cert-print" onclick="printCertificateBrowserPDF()" ${btnDisabled}>
+          🖨️ Imprimir / Salvar PDF pelo Navegador
+        </button>
+      </div>
+      <div id="cert-name-hint" style="font-size: 12.5px; color: var(--warning); margin-top: 8px; display: ${canGenerateCert ? 'none' : 'block'};">
+        ${hintMsg}
+      </div>
+    </div>
+
+    <div class="cert-preview-wrapper" id="cert-live-preview">
+      ${renderCertificateDiplomaInner(certUserName, certUserRole)}
+    </div>
+
+    <div class="notes-box">
+      <div class="notes-title">📌 Nota Explicativa e Validação</div>
+      <div class="notes-text">${s.nota}</div>
+    </div>
+  `;
+}
+
+function onCertInputUpdate() {
+  const nameEl = document.getElementById('cert-input-name');
+  const roleEl = document.getElementById('cert-input-role');
+  if (nameEl) certUserName = nameEl.value;
+  if (roleEl) certUserRole = roleEl.value;
+  saveProgress();
+
+  const previewEl = document.getElementById('cert-live-preview');
+  if (previewEl) {
+    previewEl.innerHTML = renderCertificateDiplomaInner(certUserName, certUserRole);
+  }
+
+  const allCompleted = completedQuizzes[1] && completedQuizzes[2] && completedQuizzes[3] && completedQuizzes[4] && completedQuizzes[5];
+  const hasValidName = certUserName.trim().length >= 3;
+  const canGenerateCert = allCompleted && feedbackSubmitted && hasValidName;
+  const btnDl = document.getElementById('btn-download-pdf');
+  const btnPr = document.getElementById('btn-print-pdf');
+  const hint = document.getElementById('cert-name-hint');
+
+  if (btnDl) btnDl.disabled = !canGenerateCert;
+  if (btnPr) btnPr.disabled = !canGenerateCert;
+  if (hint) {
+    if (canGenerateCert) {
+      hint.style.display = "none";
+    } else {
+      hint.style.display = "block";
+      hint.innerText = !feedbackSubmitted
+        ? "* Etapa 1 obrigatória: responda e envie a Pesquisa de Satisfação acima para liberar o download do Certificado."
+        : "* Digite seu nome completo (mínimo 3 letras) no campo acima para liberar os botões de geração do PDF.";
+    }
+  }
+}
+
+// Gerador Direto de Arquivo .PDF em JavaScript Puro (100% Offline, Alta Resolução A4 Paisagem)
+function downloadCertificatePDFDirect() {
+  if (certUserName.trim().length < 3) return;
+
+  const canvas = document.createElement('canvas');
+  const W = 2400;
+  const H = 1697; // Proporção exata A4 Paisagem (297 x 210 mm)
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // Fundo branco/azul suave
+  const grad = ctx.createLinearGradient(0, 0, W, H);
+  grad.addColorStop(0, '#ffffff');
+  grad.addColorStop(1, '#f0f6fc');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Moldura Externa Azul Institucional
+  ctx.strokeStyle = '#1e4e8c';
+  ctx.lineWidth = 18;
+  ctx.strokeRect(70, 70, W - 140, H - 140);
+
+  // Moldura Interna Dourada/Azul
+  ctx.strokeStyle = '#3584e4';
+  ctx.lineWidth = 5;
+  ctx.strokeRect(98, 98, W - 196, H - 196);
+
+  // Cantoneiras decorativas
+  ctx.fillStyle = '#1e4e8c';
+  const corners = [[70, 70], [W - 110, 70], [70, H - 110], [W - 110, H - 110]];
+  corners.forEach(([cx, cy]) => ctx.fillRect(cx, cy, 40, 40));
+
+  ctx.textAlign = 'center';
+
+  // Cabeçalho Institucional
+  ctx.fillStyle = '#1e4e8c';
+  ctx.font = 'bold 34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('EDUCAÇÃO PERMANENTE EM SAÚDE • SECRETARIA MUNICIPAL DE SAÚDE', W / 2, 220);
+
+  // Título Principal
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 86px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('CERTIFICADO DE CONCLUSÃO', W / 2, 340);
+
+  // Subtítulo
+  ctx.fillStyle = '#2b6cb0';
+  ctx.font = 'bold 34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Programa de Educação Permanente e Inovação na Gestão do SUS', W / 2, 405);
+
+  // Texto introdutório
+  ctx.fillStyle = '#4a5568';
+  ctx.font = '34px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Certificamos para os devidos fins que', W / 2, 505);
+
+  // Nome do Servidor
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 68px "Segoe UI", Arial, sans-serif';
+  const cleanName = certUserName.trim().toUpperCase();
+  ctx.fillText(cleanName, W / 2, 605);
+
+  // Linha sob o nome
+  ctx.strokeStyle = '#2b6cb0';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(450, 630);
+  ctx.lineTo(W - 450, 630);
+  ctx.stroke();
+
+  // Cargo / Unidade (se preenchido)
+  let bodyStartY = 735;
+  if (certUserRole && certUserRole.trim().length > 0) {
+    ctx.fillStyle = '#2b6cb0';
+    ctx.font = 'bold 32px "Segoe UI", Arial, sans-serif';
+    ctx.fillText(certUserRole.trim(), W / 2, 680);
+    bodyStartY = 760;
+  }
+
+  // Corpo do texto com quebra de linha automática
+  const bodyLines = [
+    'concluiu com 100% de aproveitamento nas avaliações teóricas e práticas o',
+    'CURSO PRÁTICO: BOAS PRÁTICAS, ÉTICA E CONVIVÊNCIA NA SAÚDE PÚBLICA,',
+    'abrangendo Princípios e Deveres do Agente Público, Respeito à Diversidade,',
+    'Prevenção ao Assédio e Discriminação, Integridade, Conflitos de Interesse e Vedações,',
+    'Uso Consciente de Recursos, TI, Imprensa e Redes Sociais (Proteção de Imagem),',
+    'Código de Vestimentas, Biossegurança (NR-32), Exceções e Convivência em Equipe,',
+    'além de Noções de Responsabilidade Funcional nas Secretarias Municipais de Saúde.'
+  ];
+
+  ctx.fillStyle = '#2d3748';
+  bodyLines.forEach((line, idx) => {
+    ctx.font = (idx === 1) ? 'bold 34px "Segoe UI", Arial, sans-serif' : '33px "Segoe UI", Arial, sans-serif';
+    ctx.fillText(line, W / 2, bodyStartY + idx * 54);
+  });
+
+  // Rodapé Esquerdo: Data, Carga Horária e Código
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#2d3748';
+  ctx.font = 'bold 28px "Segoe UI", Arial, sans-serif';
+  ctx.fillText(`Data de Emissão: ${certIssueDate}`, 180, 1410);
+  ctx.font = '28px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Carga Horária: 03 horas capacitacionais (5 Módulos Concluídos)', 180, 1455);
+  ctx.fillText(`Código de Autenticidade: ${certValidationCode}`, 180, 1500);
+
+  // Rodapé Direito: Linha de Assinatura
+  ctx.strokeStyle = '#0f294a';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(W - 820, 1420);
+  ctx.lineTo(W - 180, 1420);
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#0f294a';
+  ctx.font = 'bold 30px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Secretaria Municipal de Saúde', W - 500, 1462);
+  ctx.fillStyle = '#4a5568';
+  ctx.font = '25px "Segoe UI", Arial, sans-serif';
+  ctx.fillText('Clovis Campaner Filho - Gestor de T.I.', W - 500, 1500);
+
+  // Converte o Canvas para JPEG binário e empacota em um arquivo PDF 1.4 A4 Paisagem real
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.94);
+  const base64Data = dataUrl.split(',')[1];
+  const jpegBinStr = atob(base64Data);
+  const jpegBytes = new Uint8Array(jpegBinStr.length);
+  for (let i = 0; i < jpegBinStr.length; i++) {
+    jpegBytes[i] = jpegBinStr.charCodeAt(i);
+  }
+
+  const pdfBlob = createSinglePageLandscapePDFBlob(jpegBytes, W, H);
+  const safeFileName = cleanName.replace(/[^A-Z0-9À-Ú]/gi, '_').replace(/_+/g, '_');
+  const url = URL.createObjectURL(pdfBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `Certificado_Etica_Convivencia_SUS_${safeFileName}.pdf`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 3000);
+}
+
+function createSinglePageLandscapePDFBlob(jpegBytes, imgW, imgH) {
+  const pageW = 842;
+  const pageH = 595;
+  const enc = new TextEncoder();
+  const contentStreamStr = "q " + pageW + " 0 0 " + pageH + " 0 0 cm /Im0 Do Q\n";
+  const contentStreamBytes = enc.encode(contentStreamStr);
+
+  const obj1 = enc.encode("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+  const obj2 = enc.encode("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n");
+  const obj3 = enc.encode("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + pageW + " " + pageH + "] /Resources << /XObject << /Im0 5 0 R >> >> /Contents 4 0 R >>\nendobj\n");
+  const obj4Head = enc.encode("4 0 obj\n<< /Length " + contentStreamBytes.length + " >>\nstream\n");
+  const obj4Tail = enc.encode("endstream\nendobj\n");
+  const obj5Head = enc.encode("5 0 obj\n<< /Type /XObject /Subtype /Image /Width " + imgW + " /Height " + imgH + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + jpegBytes.length + " >>\nstream\n");
+  const obj5Tail = enc.encode("\nendstream\nendobj\n");
+
+  const header = new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x34, 0x0a, 0x25, 0xe2, 0xe3, 0xcf, 0xd3, 0x0a]);
+
+  const concatUint8 = (arrays) => {
+    let total = 0;
+    arrays.forEach(arr => total += arr.length);
+    const res = new Uint8Array(total);
+    let offset = 0;
+    arrays.forEach(arr => {
+      res.set(arr, offset);
+      offset += arr.length;
+    });
+    return res;
+  };
+
+  const obj4 = concatUint8([obj4Head, contentStreamBytes, obj4Tail]);
+  const obj5 = concatUint8([obj5Head, jpegBytes, obj5Tail]);
+  const objects = [obj1, obj2, obj3, obj4, obj5];
+
+  const offsets = [];
+  let currentOffset = header.length;
+  objects.forEach(o => {
+    offsets.push(currentOffset);
+    currentOffset += o.length;
+  });
+
+  const xrefOffset = currentOffset;
+  let xrefStr = "xref\n0 " + (objects.length + 1) + "\n0000000000 65535 f \n";
+  offsets.forEach(off => {
+    xrefStr += String(off).padStart(10, '0') + " 00000 n \n";
+  });
+  xrefStr += "trailer\n<< /Size " + (objects.length + 1) + " /Root 1 0 R >>\nstartxref\n" + xrefOffset + "\n%%EOF\n";
+  const xrefBytes = enc.encode(xrefStr);
+
+  const finalPDFBytes = concatUint8([header, ...objects, xrefBytes]);
+  return new Blob([finalPDFBytes], { type: "application/pdf" });
+}
+
+function printCertificateBrowserPDF() {
+  if (certUserName.trim().length < 3) return;
+  const printCertSec = document.getElementById('print-certificate-only');
+  if (printCertSec) {
+    printCertSec.innerHTML = `<div class="cert-preview-wrapper" style="box-shadow:none; width:100%;">${renderCertificateDiplomaInner(certUserName, certUserRole)}</div>`;
+  }
+  document.body.classList.add('print-cert-mode');
+  window.print();
+  setTimeout(() => {
+    document.body.classList.remove('print-cert-mode');
+  }, 800);
+}
+
+function printFullCourseApostila() {
+  document.body.classList.remove('print-cert-mode');
+  window.print();
+}
+
+function renderSlideHTML(s, isPrintMode = false) {
+  if (s.tipo === "quiz") {
+    return `
+      <div class="slide-header">
+        <div class="slide-meta">${s.mod}</div>
+        <h2>${s.titulo}</h2>
+      </div>
+      ${renderQuizComponentHTML(s.modNum)}
+      <div class="notes-box">
+        <div class="notes-title">📌 Regra de Progressão do Curso (Secretaria Municipal de Saúde)</div>
+        <div class="notes-text">${s.nota}</div>
+      </div>
+    `;
+  }
+
+  if (s.tipo === "certificado") {
+    return renderCertificateSlideHTML(s);
+  }
+
+  const cardsHTML = s.cards.map(c => `
+    <div class="card ${c.tipo}">
+      <div>
+        <h3>${c.titulo}</h3>
+        <ul>${c.itens.map(i => `<li>${i}</li>`).join('')}</ul>
+      </div>
+      ${c.code ? `
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>Modelo Prático LGPD (Copiar e Usar)</span>
+            <button class="copy-btn" onclick="copyCardCode(this)">Copiar Modelo</button>
+          </div>
+          <pre>${c.code}</pre>
+        </div>
+      ` : ''}
+    </div>
+  `).join('');
+
+  const mapaHTML = `
+    <div class="mindmap">
+      <div class="mm-title">🧠 Mapa Mental e Fluxo Prático do Tópico</div>
+      <div class="mm-tree">
+        ${s.mapa.map(m => `<div class="mm-node"><strong>${m.no}</strong>${m.txt}</div>`).join('')}
+      </div>
+    </div>
+  `;
+
+  // Se for o último slide de conteúdo do módulo (Slides 4, 7, 11, 17, 20), exibe também o bloco interativo das 2 perguntas do módulo logo abaixo!
+  const inlineQuizHTML = (!isPrintMode && s.fimModulo) ? renderQuizComponentHTML(s.modNum) : '';
+
+  return `
+    <div class="slide-header">
+      <div class="slide-meta">${s.mod}</div>
+      <h2>${s.titulo}</h2>
+    </div>
+    <div class="grid">${cardsHTML}</div>
+    ${mapaHTML}
+    <div class="notes-box">
+      <div class="notes-title">📌 Nota Explicativa e Aplicação Prática (Secretaria Municipal de Saúde)</div>
+      <div class="notes-text">${s.nota}</div>
+    </div>
+    ${inlineQuizHTML}
+  `;
+}
+
+function updateProgressBarUI() {
+  const doneCount = [1, 2, 3, 4, 5].filter(m => completedQuizzes[m]).length;
+  const pct = Math.round((doneCount / 5) * 100);
+  const countEl = document.getElementById('mod-progress-count');
+  const fillEl = document.getElementById('mod-progress-fill');
+  const statusEl = document.getElementById('mod-lock-status');
+  const certBadgeEl = document.getElementById('cert-lock-badge');
+
+  if (countEl) countEl.innerText = `${doneCount} / 5 Concluídos`;
+  if (fillEl) fillEl.style.width = `${pct}%`;
+
+  if (statusEl) {
+    if (doneCount === 5) {
+      statusEl.innerText = "✅ Todos os 5 módulos liberados!";
+      statusEl.style.color = "var(--success)";
+    } else {
+      statusEl.innerText = `🔓 Liberado até Módulo ${unlockedModule}`;
+      statusEl.style.color = "var(--muted)";
+    }
+  }
+
+  if (certBadgeEl) {
+    if (doneCount === 5) {
+      certBadgeEl.innerText = "🎓 Certificado Liberado!";
+      certBadgeEl.style.color = "var(--success)";
+      certBadgeEl.style.fontWeight = "700";
+    } else {
+      certBadgeEl.innerText = "🔒 Certificado Bloqueado";
+      certBadgeEl.style.color = "var(--warning)";
+    }
+  }
+}
+
+function buildNav(filterText = "") {
+  const nav = document.getElementById('nav-list');
+  nav.innerHTML = "";
+  let lastMod = "";
+  const query = filterText.trim().toLowerCase();
+
+  slides.forEach((s, i) => {
+    const matchTitle = s.titulo.toLowerCase().includes(query);
+    const matchMod = s.mod.toLowerCase().includes(query);
+    const matchNota = (s.nota || "").toLowerCase().includes(query);
+    if (query && !matchTitle && !matchMod && !matchNota) return;
+
+    if (s.mod !== lastMod) {
+      lastMod = s.mod;
+      const mDiv = document.createElement('div');
+      mDiv.className = 'nav-mod';
+      mDiv.innerText = s.mod;
+      nav.appendChild(mDiv);
+    }
+
+    const unlocked = isSlideUnlocked(i);
+    const item = document.createElement('div');
+    let classes = 'nav-item';
+    if (i === current) classes += ' active';
+    if (!unlocked) classes += ' locked';
+    if (s.tipo === 'quiz') {
+      classes += ' quiz-item';
+      if (completedQuizzes[s.modNum]) classes += ' completed';
+    }
+    if (s.tipo === 'certificado') {
+      classes += ' cert-item';
+      if (unlocked) classes += ' unlocked';
+    }
+
+    item.className = classes;
+    item.id = 'nav-' + i;
+
+    let statusIcon = "";
+    if (!unlocked) {
+      statusIcon = '<span class="nav-lock-icon" title="Responda às perguntas do módulo anterior para desbloquear">🔒</span>';
+    } else if (s.tipo === 'quiz' && completedQuizzes[s.modNum]) {
+      statusIcon = '<span class="nav-lock-icon" title="Módulo concluído!">✅</span>';
+    } else if (s.tipo === 'certificado' && unlocked) {
+      statusIcon = '<span class="nav-lock-icon" title="Certificado Liberado!">🎓</span>';
+    }
+
+    item.innerHTML = `<span>${s.titulo}</span>${statusIcon}`;
+
+    if (unlocked) {
+      item.onclick = () => {
+        goToSlide(i);
+        if (window.innerWidth <= 900) {
+          document.getElementById('sidebar').classList.remove('open');
+        }
+      };
+    }
+    nav.appendChild(item);
+  });
+}
+
+function filterNav(val) {
+  buildNav(val);
+}
+
+function init() {
+  loadProgress();
+  updateProgressBarUI();
+  buildNav();
+
+  // Prepara versão completa para impressão em PDF (todos os 20 slides de conteúdo originais)
+  const printAll = document.getElementById('print-all');
+  const contentSlides = slides.filter(s => s.tipo === "conteudo");
+  printAll.innerHTML = contentSlides.map((s, i) => `<div class="print-slide">${renderSlideHTML(s, true)}</div>`).join('');
+
+  updatePocaPreview();
+  goToSlide(current);
+}
+
+function goToSlide(i) {
+  if (!isSlideUnlocked(i)) return;
+  current = i;
+  saveProgress();
+  const container = document.getElementById('slide-container');
+  container.innerHTML = renderSlideHTML(slides[i], false);
+  container.scrollTop = 0;
+
+  document.getElementById('progress-badge').innerText = `Etapa ${i + 1} de ${slides.length}`;
+  document.querySelectorAll('.nav-item').forEach(el => {
+    el.classList.toggle('active', el.id === 'nav-' + i);
+  });
+
+  // Atualiza estado dos botões Anterior e Próximo (Trava "Inclicável" se o próximo slide pertencer a um módulo bloqueado)
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  if (btnPrev) {
+    btnPrev.disabled = (i === 0);
+  }
+  if (btnNext) {
+    const canGoNext = (i < slides.length - 1) && isSlideUnlocked(i + 1);
+    btnNext.disabled = !canGoNext;
+    btnNext.classList.toggle('btn-locked', !canGoNext);
+    if (!canGoNext && i < slides.length - 1) {
+      btnNext.innerText = "🔒 Próximo (Responda o Quiz)";
+    } else {
+      btnNext.innerText = "Próximo ➡";
+    }
+  }
+}
+
+function nextSlide() {
+  if (current < slides.length - 1 && isSlideUnlocked(current + 1)) {
+    goToSlide(current + 1);
+  }
+}
+
+function prevSlide() {
+  if (current > 0) goToSlide(current - 1);
+}
+
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  } else {
+    document.exitFullscreen().catch(() => {});
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+function togglePocaModal() {
+  document.getElementById('poca-modal').classList.toggle('open');
+}
+
+function updatePocaPreview() {
+  const perfil = document.getElementById('poca-p').value;
+  const setor = document.getElementById('poca-o').value.trim() || "Secretaria Municipal de Saúde";
+
+  const guias = {
+    assedio: `BOAS PRÁTICAS DE CONVIVÊNCIA, RESPEITO E INTEGRIDADE (${setor}):
+1. TOLERÂNCIA ZERO AO ASSÉDIO: Proibidas intimidações, humilhações, ameaças, assédio moral ou sexual e tratamento vexatório.
+2. COMBATE À DISCRIMINAÇÃO: Zero preconceito por raça, cor, etnia, sexo, idade, religião, orientação sexual, deficiência, aparência ou opinião política — inclusive em forma de "piadas".
+3. IMPARCIALIDADE NO SUS: Proibido favorecer conhecidos em filas, exames ou medicamentos, ou aceitar presentes com valor comercial de fornecedores.
+4. BRINDES vs. PRESENTES: Admitem-se apenas brindes sem valor comercial distribuídos como cortesia/propaganda em eventos.
+5. COMÉRCIO INTERNO: Proibida a venda de produtos, catálogos ou serviços particulares nas dependências da unidade.`,
+
+    recursos: `USO DE RECURSOS, TI, IMPRENSA E REDES SOCIAIS (${setor}):
+1. AMBIENTE SEGURO: Proibidos posse, oferta, consumo ou trabalho sob efeito de álcool/drogas, bem como porte de armas (salvo forças policiais/vigilância autorizada).
+2. TI E SENHAS: Senhas são pessoais e intransferíveis. Zero software pirata ou acesso a sites impróprios; seguir a LGPD.
+3. TELEFONIA E VEÍCULOS: Telefone restrito ao trabalho (urgências pessoais rápidas); veículos oficiais conduzidos com zelo e respeito às leis de trânsito.
+4. IMPRENSA: Entrevistas e dados oficiais devem ser direcionados ao Gabinete da Saúde e à Assessoria de Imprensa.
+5. REDES SOCIAIS: Proibido divulgar fotos/vídeos do ambiente de trabalho ou de usuários sem anuência da Secretaria e consentimento de uso de imagem.`,
+
+    vestimenta: `CÓDIGO DE VESTIMENTAS, NR-32 E EXCEÇÕES (${setor}):
+1. BIOSSEGURANÇA (NR-32): Priorizar calçados fechados e vestuário funcional que proteja o trabalhador da saúde.
+2. ITENS GERALMENTE NÃO TOLERADOS: Transparências, calças rasgadas em grandes áreas, chinelos de borracha/plástico, bermudas/saias/vestidos acima do joelho, tops/bustiês, decotes excessivos e roupas de ginástica.
+3. EXCEÇÕES PREVISTAS:
+   - Ferimentos nos pés ou tratamento médico: avaliados previamente pela Medicina do Trabalho (SESMT);
+   - Gestantes: calça de malha/algodão confortável com blusa comprida;
+   - Adornos religiosos na cabeça: alinhados e autorizados pela Coordenação;
+   - Campanhas e trabalho de campo (ACS/ACE): camisetas temáticas, bonés e chapéus restritos à atividade;
+   - Emergências e contingências: avaliadas pela Diretoria/Coordenação.`,
+
+    disciplinar: `DEVERES, VEDAÇÕES E APURAÇÃO DISCIPLINAR (${setor}):
+1. PRINCÍPIOS: Legalidade, impessoalidade, moralidade, eficiência, transparência, sigilo, pontualidade e interesse público.
+2. VEDAÇÕES CRÍTICAS: Nunca registrar ponto para colega, nunca usar senha alheia, não retirar/adulterar documentos, não se ausentar sem autorização e evitar nepotismo direto.
+3. ACUMULAÇÃO NA SAÚDE: Permitida para até 2 cargos privativos de profissões regulamentadas da saúde, com comprovação de compatibilidade de horários.
+4. SINDICÂNCIA vs. PAD: Sindicância apura autoria e materialidade; PAD garante contraditório e ampla defesa em 3 fases (Instauração sem expor nomes, Instrução e Julgamento).
+5. GARANTIAS: Afastamento preventivo mantém a remuneração; revisão por fatos novos nunca agrava a penalidade; normas valem também no estágio probatório.`
+  };
+
+  document.getElementById('poca-generated-output').innerText = guias[perfil] || guias.assedio;
+}
+
+document.addEventListener('keydown', e => {
+  const activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+  if (activeTag === 'input' || activeTag === 'textarea') return;
+
+  if (e.key === 'ArrowRight') nextSlide();
+  if (e.key === 'ArrowLeft') prevSlide();
+  if (e.key === 'Escape') {
+    document.getElementById('poca-modal').classList.remove('open');
+  }
+});
+
+init();
+
+</script>
+</body>
+</html>
