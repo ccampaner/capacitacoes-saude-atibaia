@@ -102,7 +102,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 24px;
             width: 100%;
             max-width: 1080px;
@@ -271,7 +271,10 @@
             color: #aaaaaa;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 720px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
             .header h1 {
                 font-size: 1.75em;
             }
@@ -287,7 +290,7 @@
     </header>
 
     <div class="summary-bar">
-        <div class="summary-chip">📚 <strong>3 Capacitações</strong> Disponíveis</div>
+        <div class="summary-chip">📚 <strong>4 Capacitações</strong> Disponíveis</div>
         <div class="summary-chip">💾 <strong>Salvamento Automático</strong> no Navegador</div>
         <div class="summary-chip">🎓 <strong>Certificado em PDF</strong> ao Concluir os 5 Módulos</div>
     </div>
@@ -382,6 +385,36 @@
                 <span class="card-cta" id="cta-lgpd">Acessar Capacitação ➡</span>
             </div>
         </a>
+
+        <!-- CURSO 4: BOAS PRÁTICAS, ÉTICA E CONVIVÊNCIA -->
+        <a href="capacitacao_etica_convivencia_saude.html" class="card" id="card-etica" data-storage="atb_saude_save_capacitacao_etica_convivencia_v1">
+            <div>
+                <div class="card-top">
+                    <div class="card-icon">🤝</div>
+                    <span class="status-badge" id="badge-etica">Não iniciado</span>
+                </div>
+                <div class="card-category">Ética &amp; Convivência</div>
+                <h3>Boas Práticas, Ética e Convivência na Saúde</h3>
+                <p>Princípios do agente público, respeito à diversidade, combate ao assédio, conflitos de interesse, redes sociais, código de vestimentas (NR-32) e apuração disciplinar.</p>
+            </div>
+            <div>
+                <div class="card-meta">
+                    <span class="meta-tag">5 Módulos</span>
+                    <span class="meta-tag">20 Slides + Quiz</span>
+                    <span class="meta-tag">Certificado PDF</span>
+                </div>
+                <div class="card-progress-wrap">
+                    <div class="card-progress-info">
+                        <span>Progresso</span>
+                        <span id="pct-etica">0 / 5 módulos</span>
+                    </div>
+                    <div class="card-progress-bar">
+                        <div class="card-progress-fill" id="bar-etica"></div>
+                    </div>
+                </div>
+                <span class="card-cta" id="cta-etica">Acessar Capacitação ➡</span>
+            </div>
+        </a>
     </main>
 
     <footer class="footer">
@@ -394,7 +427,8 @@
             const items = [
                 { key: "atb_saude_save_capacitacao_IA_saude_v1", card: "card-ia-saude", badge: "badge-ia-saude", pct: "pct-ia-saude", bar: "bar-ia-saude", cta: "cta-ia-saude" },
                 { key: "atb_saude_save_capacitacao_lei_8080_sus_v1", card: "card-lei-8080", badge: "badge-lei-8080", pct: "pct-lei-8080", bar: "bar-lei-8080", cta: "cta-lei-8080" },
-                { key: "atb_saude_save_capacitacao_LGPD_saude_v1", card: "card-lgpd", badge: "badge-lgpd", pct: "pct-lgpd", bar: "bar-lgpd", cta: "cta-lgpd" }
+                { key: "atb_saude_save_capacitacao_LGPD_saude_v1", card: "card-lgpd", badge: "badge-lgpd", pct: "pct-lgpd", bar: "bar-lgpd", cta: "cta-lgpd" },
+                { key: "atb_saude_save_capacitacao_etica_convivencia_v1", card: "card-etica", badge: "badge-etica", pct: "pct-etica", bar: "bar-etica", cta: "cta-etica" }
             ];
 
             items.forEach(item => {
@@ -444,4 +478,3 @@
     </script>
 </body>
 </html>
-
