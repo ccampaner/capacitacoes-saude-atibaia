@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Capacitações • Secretaria Municipal de Saúde</title>
+    <title>Portal de Capacitações e Ferramentas • Secretaria Municipal de Saúde</title>
     <style>
         :root {
             --bg-color: #242424;
@@ -39,8 +39,8 @@
 
         .header {
             text-align: center;
-            max-width: 820px;
-            margin-bottom: 36px;
+            max-width: 860px;
+            margin-bottom: 30px;
         }
 
         .header-pill {
@@ -78,7 +78,7 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 14px;
+            gap: 12px;
             margin-bottom: 32px;
             width: 100%;
             max-width: 1080px;
@@ -100,10 +100,40 @@
             color: var(--primary-light);
         }
 
+        .section-heading {
+            width: 100%;
+            max-width: 1080px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 8px 0 18px;
+        }
+
+        .section-heading h2 {
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--primary-light);
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .section-heading .line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 24px;
+            width: 100%;
+            max-width: 1080px;
+            margin-bottom: 36px;
+        }
+
+        .tools-wrap {
             width: 100%;
             max-width: 1080px;
         }
@@ -131,6 +161,31 @@
 
         .card.completed {
             border-color: var(--success-color);
+        }
+
+        .card.tool-featured {
+            flex-direction: row;
+            align-items: center;
+            gap: 26px;
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, #2d333c 0%, #303030 100%);
+        }
+
+        .card.tool-featured:hover {
+            border-color: var(--primary-light);
+            background: linear-gradient(135deg, #343d4a 0%, #383838 100%);
+        }
+
+        .tool-left {
+            flex: 1;
+        }
+
+        .tool-right {
+            width: 260px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .card-top {
@@ -169,6 +224,12 @@
             border-color: var(--success-color);
         }
 
+        .status-badge.tool-ready {
+            background: rgba(53, 132, 228, 0.18);
+            color: var(--primary-light);
+            border-color: var(--primary-color);
+        }
+
         .card-category {
             font-size: 11.5px;
             font-weight: 700;
@@ -192,6 +253,10 @@
             margin-bottom: 18px;
         }
 
+        .card.tool-featured p {
+            margin-bottom: 14px;
+        }
+
         .card-meta {
             display: flex;
             flex-wrap: wrap;
@@ -199,6 +264,10 @@
             margin-bottom: 16px;
             font-size: 11.5px;
             color: #cccccc;
+        }
+
+        .card.tool-featured .card-meta {
+            margin-bottom: 0;
         }
 
         .meta-tag {
@@ -271,9 +340,17 @@
             color: #aaaaaa;
         }
 
-        @media (max-width: 720px) {
+        @media (max-width: 780px) {
             .grid {
                 grid-template-columns: 1fr;
+            }
+            .card.tool-featured {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 18px;
+            }
+            .tool-right {
+                width: 100%;
             }
             .header h1 {
                 font-size: 1.75em;
@@ -285,14 +362,20 @@
 
     <header class="header">
         <div class="header-pill">Desenvolvido para Secretarias Municipais de Saúde</div>
-        <h1>Portal de <span>Capacitações Interativas</span></h1>
-        <p>Selecione uma das trilhas abaixo para iniciar ou continuar seus estudos. Seu progresso e suas respostas ficam salvos automaticamente neste navegador.</p>
+        <h1>Portal de <span>Capacitações &amp; Ferramentas</span></h1>
+        <p>Selecione uma das trilhas de capacitação ou acesse as ferramentas práticas de gestão. Seu progresso e seus rascunhos ficam salvos automaticamente neste navegador.</p>
     </header>
 
     <div class="summary-bar">
-        <div class="summary-chip">📚 <strong>4 Capacitações</strong> Disponíveis</div>
+        <div class="summary-chip">📚 <strong>4 Capacitações</strong> Interativas</div>
+        <div class="summary-chip">🛠️ <strong>1 Ferramenta</strong> de Gestão (ETP &amp; TR)</div>
         <div class="summary-chip">💾 <strong>Salvamento Automático</strong> no Navegador</div>
-        <div class="summary-chip">🎓 <strong>Certificado em PDF</strong> ao Concluir os 5 Módulos</div>
+        <div class="summary-chip">🎓 <strong>Certificado em PDF</strong> ao Concluir os Módulos</div>
+    </div>
+
+    <div class="section-heading">
+        <h2>📚 Capacitações Interativas</h2>
+        <div class="line"></div>
     </div>
 
     <main class="grid">
@@ -417,6 +500,39 @@
         </a>
     </main>
 
+    <div class="section-heading">
+        <h2>🛠️ Ferramentas Práticas de Gestão (SUS)</h2>
+        <div class="line"></div>
+    </div>
+
+    <section class="tools-wrap">
+        <!-- FERRAMENTA: CRIADOR DE ETP E TERMO DE REFERÊNCIA -->
+        <a href="criador_etp_tr.html" class="card tool-featured" id="card-etp-tr">
+            <div class="tool-left">
+                <div class="card-top" style="margin-bottom: 10px;">
+                    <div class="card-icon">📄</div>
+                    <span class="status-badge tool-ready" id="badge-etp-tr">Pronto para uso</span>
+                </div>
+                <div class="card-category">Planejamento &amp; Licitações • Lei nº 14.133/2021 • IN 58/2022</div>
+                <h3>Criador de ETP e Termo de Referência (TR)</h3>
+                <p>Elaboração guiada de Estudo Técnico Preliminar (15 itens) e Termo de Referência (14 itens) para Secretarias de Saúde, com migração automática ETP ➔ TR, Copiloto P.O.C.A., modelos-base da saúde, cláusulas clicáveis, tabelas com cálculo automático, brasão institucional, importação/exportação JSON e geração limpa em PDF A4 e Word (.doc).</p>
+                <div class="card-meta">
+                    <span class="meta-tag">ETP + TR Integrados</span>
+                    <span class="meta-tag">Copiloto P.O.C.A.</span>
+                    <span class="meta-tag">Importar/Exportar JSON</span>
+                    <span class="meta-tag">PDF A4 &amp; Word (.doc)</span>
+                </div>
+            </div>
+            <div class="tool-right">
+                <div style="font-size: 12px; color: #d0d0d0; background: #222222; border: 1px solid #3f3f3f; border-radius: 8px; padding: 12px; line-height: 1.5;" id="etp-tr-status-box">
+                    <strong style="color: var(--primary-light); display: block; margin-bottom: 4px;">Status do Rascunho</strong>
+                    Nenhum rascunho ativo neste navegador. Clique abaixo para iniciar ou importar um arquivo .json.
+                </div>
+                <span class="card-cta" id="cta-etp-tr">Abrir Criador ETP &amp; TR ➡</span>
+            </div>
+        </a>
+    </section>
+
     <footer class="footer">
         Desenvolvido para Secretarias Municipais de Saúde<br>
         Contato: <a href="mailto:clovis_campaner@yahoo.com.br" style="color: var(--primary-light); text-decoration: none;">clovis_campaner@yahoo.com.br</a>
@@ -471,6 +587,32 @@
                     }
                 } catch (e) {}
             });
+
+            // Verifica se existe rascunho ativo no Criador de ETP & TR
+            try {
+                const rawTool = localStorage.getItem("sms_criador_etp_tr_2026_v2") || localStorage.getItem("sms_criador_etp_tr_2026_v1");
+                if (rawTool) {
+                    const toolState = JSON.parse(rawTool);
+                    const obj = toolState && toolState.fields && toolState.fields["cfg-objeto-resumo"]
+                        ? toolState.fields["cfg-objeto-resumo"].trim()
+                        : "";
+                    const badgeTool = document.getElementById("badge-etp-tr");
+                    const boxTool = document.getElementById("etp-tr-status-box");
+                    const ctaTool = document.getElementById("cta-etp-tr");
+
+                    if (badgeTool) {
+                        badgeTool.className = "status-badge in-progress";
+                        badgeTool.innerText = "📝 Rascunho salvo";
+                    }
+                    if (boxTool) {
+                        const preview = obj ? (obj.length > 90 ? obj.slice(0, 90) + "..." : obj) : "Rascunho em andamento salvo automaticamente.";
+                        boxTool.innerHTML = `<strong style="color: var(--warning-color); display: block; margin-bottom: 4px;">Rascunho Ativo no Navegador</strong>${preview.replace(/</g, "&lt;")}`;
+                    }
+                    if (ctaTool) {
+                        ctaTool.innerText = "Continuar Rascunho ETP & TR ➡";
+                    }
+                }
+            } catch (e) {}
         }
 
         window.addEventListener("DOMContentLoaded", updateCardsProgress);
