@@ -1,0 +1,2231 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Criador de ETP e Termo de Referência • Secretarias Municipais de Saúde</title>
+<style>
+  :root {
+    --bg: #1e1e1e;
+    --panel: #2a2a2a;
+    --card: #333333;
+    --input-bg: #1a1a1a;
+    --text: #f0f0f0;
+    --muted: #aaaaaa;
+    --accent: #3584e4;
+    --accent-light: #62a0ea;
+    --success: #2ec27e;
+    --warning: #f5c211;
+    --danger: #e01b24;
+    --border: #444444;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: 315px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    transition: transform 0.25s ease;
+    z-index: 50;
+  }
+
+  .brand {
+    padding: 18px;
+    border-bottom: 1px solid var(--border);
+    background: #242424;
+  }
+
+  .brand h1 {
+    font-size: 15px;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .brand p {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  .doc-switcher {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 10px 12px;
+    background: #222222;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .doc-tab-btn {
+    padding: 9px 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .doc-tab-btn.active {
+    background: var(--accent);
+    border-color: var(--accent-light);
+    color: #fff;
+  }
+
+  .progress-panel {
+    padding: 12px 14px;
+    background: #20252b;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .progress-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--accent-light);
+    margin-bottom: 6px;
+  }
+
+  .progress-bar-bg {
+    width: 100%;
+    height: 8px;
+    background: #141414;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+
+  .progress-status-text {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  #nav-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+  }
+
+  .nav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 11px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.5px;
+    color: var(--text);
+    margin-bottom: 3px;
+    transition: 0.15s;
+    line-height: 1.3;
+  }
+
+  .nav-item:hover {
+    background: var(--card);
+  }
+
+  .nav-item.filled {
+    border-left: 3px solid var(--success);
+  }
+
+  .nav-item.req-missing {
+    border-left: 3px solid var(--warning);
+  }
+
+  .nav-dot {
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-footer {
+    padding: 10px 12px;
+    border-top: 1px solid var(--border);
+    background: #222222;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sidebar-footer button {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .sidebar-footer button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .sidebar-footer button.btn-danger-soft {
+    border-color: #6b2b2b;
+    color: #ff9b9b;
+  }
+
+  .sidebar-footer button.btn-danger-soft:hover {
+    background: var(--danger);
+    color: #fff;
+  }
+
+  /* Main Area */
+  #main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    min-width: 0;
+  }
+
+  #topbar {
+    min-height: 58px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 22px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #menu-toggle {
+    display: none;
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  .badge {
+    background: var(--accent);
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .badge-save {
+    background: rgba(46, 194, 126, 0.14);
+    color: #8ff0a4;
+    border: 1px solid var(--success);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .controls button {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 7px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 600;
+    transition: 0.2s;
+  }
+
+  .controls button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .controls button.btn-migrate {
+    background: #252f3f;
+    border-color: var(--accent);
+    color: var(--accent-light);
+  }
+
+  .controls button.btn-migrate:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .controls button.btn-export {
+    background: #1f3d2d;
+    border-color: var(--success);
+    color: #8ff0a4;
+  }
+
+  .controls button.btn-export:hover {
+    background: var(--success);
+    color: #000;
+  }
+
+  /* Workspace */
+  #workspace {
+    flex: 1;
+    overflow-y: auto;
+    padding: 26px 38px 60px;
+    max-width: 1160px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .section-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 9px;
+    padding: 20px 22px;
+    margin-bottom: 20px;
+  }
+
+  .section-card.mandatory {
+    border-left-color: var(--warning);
+  }
+
+  .section-card.mandatory.ok {
+    border-left-color: var(--success);
+  }
+
+  .section-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 16.5px;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .req-tag {
+    font-size: 10.5px;
+    background: rgba(245, 194, 17, 0.16);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+    padding: 2px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .section-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .btn-mini {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    transition: 0.2s;
+  }
+
+  .btn-mini:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .btn-mini.btn-poca {
+    background: #1f3d2d;
+    border-color: var(--success);
+    color: #8ff0a4;
+  }
+
+  .btn-mini.btn-poca:hover {
+    background: var(--success);
+    color: #000;
+  }
+
+  .help-box {
+    display: none;
+    background: #232a36;
+    border: 1px solid var(--accent);
+    border-radius: 7px;
+    padding: 13px 15px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #dce6f5;
+  }
+
+  .help-box.open {
+    display: block;
+  }
+
+  .help-box strong {
+    color: var(--accent-light);
+  }
+
+  /* Quick Templates Bar */
+  .template-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    background: #222831;
+    border: 1px dashed var(--accent-light);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 12px;
+  }
+
+  .template-bar-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--accent-light);
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .btn-tpl {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: #e8e8e8;
+    padding: 6px 11px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .btn-tpl:hover {
+    background: var(--accent);
+    border-color: var(--accent-light);
+    color: #fff;
+  }
+
+  /* Clause Chips */
+  .chips-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 9px;
+  }
+
+  .chip-btn {
+    background: #232a36;
+    border: 1px solid #3c5473;
+    color: #a8c7fa;
+    padding: 4px 10px;
+    border-radius: 14px;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.15s;
+  }
+
+  .chip-btn:hover {
+    background: var(--accent);
+    border-color: var(--accent-light);
+    color: #fff;
+  }
+
+  /* Logo Upload Box */
+  .logo-upload-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    background: #222222;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 14px;
+    margin-top: 10px;
+  }
+
+  .logo-preview-thumb {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 3px;
+    border: 1px solid var(--border);
+  }
+
+  .form-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .form-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .field-group label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #d0d0d0;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  select,
+  textarea {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent-light);
+  }
+
+  textarea {
+    min-height: 98px;
+    resize: vertical;
+    line-height: 1.55;
+  }
+
+  /* Dynamic Tables */
+  .table-wrap {
+    overflow-x: auto;
+    margin-top: 8px;
+    margin-bottom: 10px;
+  }
+
+  table.edit-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  table.edit-table th {
+    background: #22262c;
+    color: var(--accent-light);
+    text-align: left;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  table.edit-table td {
+    padding: 6px;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  table.edit-table td input {
+    padding: 7px 8px;
+    font-size: 13px;
+  }
+
+  .total-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #20252b;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .total-bar span.val {
+    color: var(--success);
+    font-size: 16px;
+  }
+
+  .btn-add-row {
+    background: #1f3d2d;
+    border: 1px solid var(--success);
+    color: #8ff0a4;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+
+  .btn-add-row:hover {
+    background: var(--success);
+    color: #000;
+  }
+
+  .btn-del-row {
+    background: #3d1f1f;
+    border: 1px solid var(--danger);
+    color: #ff9b9b;
+    padding: 6px 9px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  .btn-del-row:hover {
+    background: var(--danger);
+    color: #fff;
+  }
+
+  /* Modals */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+  }
+
+  .modal-content {
+    background: var(--panel);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    max-width: 820px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+  }
+
+  .modal-header h3 {
+    color: var(--accent-light);
+    font-size: 17px;
+  }
+
+  .close-modal {
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #1a1a1a;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    padding: 7px 12px;
+    border-radius: 6px 6px 0 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  pre#poca-output {
+    background: #121212;
+    padding: 15px;
+    border-radius: 0 0 6px 6px;
+    border: 1px solid var(--border);
+    color: #8ff0a4;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 12.8px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.55;
+  }
+
+  .copy-btn {
+    background: var(--success);
+    color: #000;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 12px;
+  }
+
+  .warn-list {
+    list-style: none;
+    margin: 14px 0 18px;
+  }
+
+  .warn-list li {
+    background: rgba(245, 194, 17, 0.1);
+    border-left: 3px solid var(--warning);
+    padding: 8px 12px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    font-size: 13.5px;
+    color: #ffe69c;
+  }
+
+  .modal-footer-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  /* Print Area (Official A4 Document) */
+  #print-document {
+    display: none;
+  }
+
+  @media (max-width: 920px) {
+    #sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      transform: translateX(-100%);
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #menu-toggle {
+      display: inline-block;
+    }
+    #workspace {
+      padding: 18px 14px 50px;
+    }
+  }
+
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 14mm 15mm;
+      @top-left { content: none; }
+      @top-center { content: none; }
+      @top-right { content: none; }
+    }
+    body {
+      display: block;
+      height: auto;
+      overflow: visible;
+      background: #ffffff;
+      color: #000000;
+    }
+    #sidebar, #topbar, #workspace, .modal-overlay {
+      display: none !important;
+    }
+    #print-document {
+      display: block !important;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      color: #000;
+      font-size: 11pt;
+      line-height: 1.5;
+    }
+    .p-header {
+      text-align: center;
+      border-bottom: 2px solid #000;
+      padding-bottom: 10px;
+      margin-bottom: 18px;
+    }
+    .p-header img.p-logo {
+      max-height: 64px;
+      max-width: 140px;
+      object-fit: contain;
+      margin-bottom: 6px;
+    }
+    .p-header h1 {
+      font-size: 14pt;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .p-header h2 {
+      font-size: 12pt;
+      font-weight: 700;
+    }
+    .p-sec {
+      margin-bottom: 14px;
+      page-break-inside: avoid;
+    }
+    .p-sec h3 {
+      font-size: 11pt;
+      background: #ececec;
+      padding: 5px 8px;
+      border-left: 3px solid #222;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .p-text {
+      white-space: pre-wrap;
+      text-align: justify;
+      padding: 0 4px;
+    }
+    table.p-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-size: 9.5pt;
+    }
+    table.p-table th, table.p-table td {
+      border: 1px solid #333;
+      padding: 5px 6px;
+      text-align: left;
+    }
+    table.p-table th {
+      background: #e6e6e6;
+    }
+    table.p-sig-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 32px;
+      page-break-inside: avoid;
+    }
+    table.p-sig-table td {
+      width: 50%;
+      border: none;
+      padding: 26px 18px 8px;
+      text-align: center;
+      vertical-align: bottom;
+    }
+    .p-sig-line {
+      border-top: 1px solid #000;
+      padding-top: 5px;
+      font-size: 10pt;
+    }
+  }
+</style>
+</head>
+<body>
+
+<aside id="sidebar">
+  <div class="brand">
+    <h1>Criador ETP &amp; TR • SUS</h1>
+    <p>Lei nº 14.133/2021 • IN 58/2022<br>Secretarias Municipais de Saúde</p>
+  </div>
+
+  <div class="doc-switcher">
+    <button id="tab-btn-etp" class="doc-tab-btn active" onclick="switchDoc('etp')">📄 ETP (15 Itens)</button>
+    <button id="tab-btn-tr" class="doc-tab-btn" onclick="switchDoc('tr')">📋 TR (14 Itens)</button>
+  </div>
+
+  <div class="progress-panel">
+    <div class="progress-panel-header">
+      <span id="prog-label">OBRIGATÓRIOS DO ETP (*)</span>
+      <span id="prog-count">0 / 6</span>
+    </div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="prog-fill"></div>
+    </div>
+    <div class="progress-status-text">
+      <span id="prog-msg">Preencha os itens com (*)</span>
+      <span>💾 Auto-save</span>
+    </div>
+  </div>
+
+  <div id="nav-list"></div>
+
+  <div class="sidebar-footer">
+    <button onclick="exportDraftJSON()">💾 Exportar Rascunho (.json)</button>
+    <button onclick="document.getElementById('import-json-input').click()">📂 Importar Rascunho (.json)</button>
+    <input type="file" id="import-json-input" accept=".json" class="hidden" onchange="importDraftJSON(event)">
+    <button class="btn-danger-soft" onclick="resetAllData()">🗑️ Limpar Formulário</button>
+  </div>
+</aside>
+
+<main id="main">
+  <header id="topbar">
+    <div class="top-left">
+      <button id="menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
+      <span id="active-doc-badge" class="badge">ESTUDO TÉCNICO PRELIMINAR (ETP)</span>
+      <span id="save-indicator" class="badge-save">✓ Salvo no navegador</span>
+    </div>
+    <div class="controls">
+      <button class="btn-migrate" onclick="migrateEtpToTr()">🔄 Migrar ETP ➔ TR</button>
+      <button class="btn-export" onclick="requestExport('word')">📝 Baixar Word (.doc)</button>
+      <button class="btn-export" onclick="requestExport('pdf')">🖨️ Imprimir / PDF A4</button>
+    </div>
+  </header>
+
+  <section id="workspace">
+    <!-- CABEÇALHO INSTITUCIONAL COMUM -->
+    <div class="section-card" id="sec-cabecalho">
+      <div class="section-top">
+        <div class="section-title">🏛️ Identificação Institucional e Modelos Rápidos da Saúde</div>
+      </div>
+      <div class="form-grid-3">
+        <div class="field-group">
+          <label>Município / Prefeitura</label>
+          <input type="text" id="cfg-municipio" placeholder="Ex.: Prefeitura Municipal de ..." oninput="saveState()">
+        </div>
+        <div class="field-group">
+          <label>Secretaria</label>
+          <input type="text" id="cfg-secretaria" value="Secretaria Municipal de Saúde" oninput="saveState()">
+        </div>
+        <div class="field-group">
+          <label>Local e Data do Documento</label>
+          <input type="text" id="cfg-local-data" placeholder="Ex.: Município/UF, 22 de novembro de 2026" oninput="saveState()">
+        </div>
+      </div>
+      <div class="form-grid-2">
+        <div class="field-group">
+          <label>Objeto Resumido (Usado para montar os Prompts P.O.C.A. automaticamente)</label>
+          <input type="text" id="cfg-objeto-resumo" placeholder="Ex.: Aquisição de insumos de curativos especiais para UBSs e Melhor em Casa" oninput="saveState()">
+        </div>
+        <div class="field-group">
+          <label>Decreto Municipal Regulamentador da Lei 14.133/2021 (Opcional)</label>
+          <input type="text" id="cfg-decreto" placeholder="Ex.: Decreto Municipal nº .../2023 (opcional)" oninput="onDecretoChange()">
+        </div>
+      </div>
+
+      <!-- UPLOAD DO BRASÃO / LOGO -->
+      <div class="logo-upload-row">
+        <img id="logo-preview" class="logo-preview-thumb hidden" alt="Brasão">
+        <div style="flex:1; min-width:200px;">
+          <div style="font-size:12.5px; font-weight:700; color:#e0e0e0;">Brasão / Logotipo Institucional (Opcional — aparece no PDF e no Word)</div>
+          <div style="font-size:11.5px; color:var(--muted);">Formatos PNG ou JPG (salvo localmente apenas no seu navegador).</div>
+        </div>
+        <input type="file" id="logo-file-input" accept="image/png,image/jpeg,image/webp" class="hidden" onchange="handleLogoUpload(event)">
+        <button type="button" class="btn-mini" onclick="document.getElementById('logo-file-input').click()">🖼️ Anexar Brasão</button>
+        <button type="button" id="btn-remove-logo" class="btn-mini hidden" style="color:#ff9b9b;" onclick="removeLogo()">✕ Remover</button>
+      </div>
+
+      <!-- MODELOS RÁPIDOS DA SAÚDE -->
+      <div class="template-bar">
+        <span class="template-bar-label">⚡ Modelos-Base da Saúde:</span>
+        <button type="button" class="btn-tpl" onclick="applyHealthTemplate('medicamentos')">💊 Medicamentos &amp; Insumos</button>
+        <button type="button" class="btn-tpl" onclick="applyHealthTemplate('manutencao')">🔧 Manutenção de Equipamentos</button>
+        <button type="button" class="btn-tpl" onclick="applyHealthTemplate('servicos')">🏥 Serviços Terceirizados</button>
+      </div>
+    </div>
+
+    <!-- ========================================================== -->
+    <!-- FORMULÁRIO 1: ESTUDO TÉCNICO PRELIMINAR (ETP)              -->
+    <!-- ========================================================== -->
+    <div id="view-etp"></div>
+
+    <!-- ========================================================== -->
+    <!-- FORMULÁRIO 2: TERMO DE REFERÊNCIA (TR)                     -->
+    <!-- ========================================================== -->
+    <div id="view-tr" class="hidden"></div>
+  </section>
+
+  <!-- ÁREA OCULTA PARA IMPRESSÃO A4 OFICIAL -->
+  <section id="print-document"></section>
+</main>
+
+<!-- MODAL COPILOTO P.O.C.A. -->
+<div id="poca-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="poca-modal-title">✨ Copiloto P.O.C.A. — Prompt Pronto para IA</h3>
+      <button class="close-modal" onclick="closeModal('poca-modal')">✕ Fechar</button>
+    </div>
+    <p id="poca-modal-desc" style="font-size: 13px; color: var(--muted); margin-bottom: 12px; line-height: 1.5;"></p>
+    <div class="code-header">
+      <span>Prompt Estruturado (Protocolo P.O.C.A. • Zero Dados Pessoais / LGPD)</span>
+      <button class="copy-btn" onclick="copyPocaOutput(this)">📋 Copiar Prompt</button>
+    </div>
+    <pre id="poca-output"></pre>
+  </div>
+</div>
+
+<!-- MODAL DE VALIDAÇÃO DE CAMPOS OBRIGATÓRIOS ANTES DA EXPORTAÇÃO -->
+<div id="export-warn-modal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 580px; border-color: var(--warning);">
+    <div class="modal-header">
+      <h3 style="color: var(--warning);">⚠️ Itens Obrigatórios (*) Ainda Não Preenchidos</h3>
+      <button class="close-modal" onclick="closeModal('export-warn-modal')">✕ Fechar</button>
+    </div>
+    <p style="font-size: 13.5px; color: #e2e8f0; line-height: 1.5;">
+      Os seguintes itens essenciais do documento atual ainda estão em branco ou incompletos:
+    </p>
+    <ul id="export-warn-list" class="warn-list"></ul>
+    <div class="modal-footer-btns">
+      <button type="button" class="btn-mini" style="padding:9px 14px;" onclick="closeModal('export-warn-modal')">⬅ Voltar e Preencher</button>
+      <button type="button" class="btn-mini btn-poca" style="padding:9px 14px;" onclick="confirmPendingExport()">Exportar Mesmo Assim ➡</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = "sms_criador_etp_tr_2026_v2";
+let activeDoc = "etp";
+let logoBase64 = "";
+let pendingExportType = null;
+
+// Cláusulas prontas clicáveis (Chips) por seção
+const SECTION_CHIPS = {
+  etp_4: [
+    { label: "+ Registro ANVISA", text: "Os produtos/insumos ofertados deverão possuir registro válido junto à Agência Nacional de Vigilância Sanitária (ANVISA) ou comprovação formal de isenção, quando aplicável." },
+    { label: "+ Validade mín. 75%", text: "Na data da entrega, os medicamentos e insumos deverão apresentar prazo de validade mínimo equivalente a 75% (setenta e cinco por cento) de sua vida útil total." },
+    { label: "+ Conformidade LGPD", text: "A contratada deverá observar integralmente a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018), mantendo sigilo absoluto sobre informações institucionais e dados sensíveis de saúde." },
+    { label: "+ Garantia / Assist. Técnica", text: "O objeto deverá contar com garantia mínima de 12 (doze) meses contra defeitos de fabricação e assistência técnica autorizada com atendimento ágil." }
+  ],
+  etp_14: [
+    { label: "+ Descarte PGRSS", text: "Os resíduos gerados durante o uso e substituição dos insumos deverão seguir o Plano de Gerenciamento de Resíduos de Serviços de Saúde (PGRSS) vigente nas unidades, conforme RDC ANVISA nº 222/2018." },
+    { label: "+ Logística Reversa", text: "A contratada deverá observar as diretrizes da Política Nacional de Resíduos Sólidos (Lei nº 12.305/2010), realizando a logística reversa de embalagens, baterias ou equipamentos substituídos quando aplicável." },
+    { label: "+ Eficiência Energética", text: "Sempre que aplicável, os equipamentos ofertados deverão possuir certificação de eficiência energética (Selo PROCEL / INMETRO) e baixo consumo de recursos." }
+  ],
+  tr_4: [
+    { label: "+ Registro ANVISA", text: "Os produtos/insumos ofertados deverão possuir registro válido junto à ANVISA ou comprovação de isenção, bem como Autorização de Funcionamento de Empresa (AFE) e Licença Sanitária vigente." },
+    { label: "+ Validade mín. 75%", text: "Na data da entrega, os produtos deverão apresentar prazo de validade mínimo equivalente a 75% (setenta e cinco por cento) do prazo total de fabricação." },
+    { label: "+ Amostra (Art. 17 §3º)", text: "A Administração poderá solicitar amostra do licitante provisoriamente classificado em primeiro lugar para verificação de compatibilidade técnica e qualidade, nos termos do art. 17, § 3º da Lei nº 14.133/2021." },
+    { label: "+ Conformidade LGPD", text: "A contratada obriga-se a cumprir a Lei nº 13.709/2018 (LGPD), sendo vedado o compartilhamento ou uso indevido de dados pessoais ou sensíveis a que tenha acesso." }
+  ],
+  tr_5: [
+    { label: "+ Recebimento (Art. 140)", text: "O objeto será recebido provisoriamente no ato da entrega para verificação de conformidade quantitativa e definitivamente em até 05 (cinco) dias úteis após conferência técnica integral, nos termos do art. 140 da Lei nº 14.133/2021." },
+    { label: "+ Substituição em 48h", text: "Itens entregues com avarias, prazo de validade inferior ao exigido ou em desacordo com as especificações deverão ser substituídos pela contratada em até 48 (quarenta e oito) horas, sem ônus para a Administração." },
+    { label: "+ Vedação de Subcontratação", text: "Não será admitida a subcontratação do objeto principal da contratação." }
+  ]
+};
+
+// Modelos Rápidos da Saúde (1 clique)
+const HEALTH_TEMPLATES = {
+  medicamentos: {
+    objeto: "Aquisição de medicamentos e insumos padronizados (REMUME) para abastecimento das Unidades Básicas de Saúde (UBSs), Farmácia Municipal e Pronto Atendimento.",
+    etp_2: "Divisão de Assistência Farmacêutica",
+    etp_3: "A presente contratação justifica-se pela necessidade contínua de garantir o abastecimento regular de medicamentos e insumos essenciais da rede municipal de saúde, evitando o desabastecimento assistencial e assegurando a continuidade terapêutica aos usuários do SUS, nos termos do art. 196 da Constituição Federal e da Lei nº 8.080/1990.",
+    etp_4: "Os produtos deverão possuir registro válido na ANVISA, apresentar validade mínima de 75% do prazo total na data da entrega, conter bula e rotulagem em português com lote e validade legíveis, e ser fornecidos por empresa com Licença Sanitária e AFE vigentes.",
+    etp_5: "Solução 1: Aquisição via Sistema de Registro de Preços (Pregão Eletrônico), permitindo entregas parceladas conforme demanda real e evitando perdas por vencimento em estoque.\nSolução 2: Compra única anual integral, que exige maior espaço físico refrigerado e eleva o risco de vencimento.\nConclusão: O Registro de Preços com entregas parceladas apresenta melhor custo-benefício, economicidade e segurança logística.",
+    etp_6: "Aquisição parcelada de medicamentos/insumos mediante Sistema de Registro de Preços com vigência de 12 meses, entregas diretamente no Almoxarifado da Saúde em até 10 dias úteis após emissão da Solicitação de Fornecimento (SF).",
+    etp_9: "A licitação deverá ser julgada pelo critério de menor preço POR ITEM, conforme Súmula TCU nº 247/2004, ampliando a competitividade entre fabricantes e distribuidoras e evitando restrição de mercado.",
+    etp_14: "O descarte de embalagens e eventuais resíduos de serviços de saúde observará rigorosamente o Plano de Gerenciamento de Resíduos de Serviços de Saúde (PGRSS) e a RDC ANVISA nº 222/2018.",
+    tr_5: "As entregas ocorrerão de forma parcelada no Almoxarifado da Secretaria Municipal de Saúde, em até 10 (dez) dias úteis após o recebimento da Solicitação de Fornecimento (SF). O recebimento provisório ocorrerá no ato da entrega e o definitivo em até 05 (cinco) dias úteis após conferência de lote, validade (mínimo 75%) e integridade das embalagens. Itens em desacordo deverão ser substituídos em até 48 horas sem ônus à Administração."
+  },
+  manutencao: {
+    objeto: "Contratação de empresa especializada em manutenção preventiva, corretiva e calibração de equipamentos médico-hospitalares e odontológicos da rede municipal de saúde.",
+    etp_2: "Departamento de Infraestrutura e Engenharia Clínica",
+    etp_3: "Os equipamentos médico-hospitalares e odontológicos das UBSs, UPA e ambulatórios operam em regime intenso e contínuo. A ausência de manutenção preventiva, corretiva e calibração periódica compromete a segurança do paciente, a precisão diagnóstica e pode gerar interrupção dos atendimentos no SUS.",
+    etp_4: "A contratada deverá possuir registro no conselho profissional competente (CREA/CFT), responsável técnico habilitado, padrões de calibração rastreáveis à RBC/INMETRO, garantia mínima de 90 dias sobre serviços e peças substituídas, e estrita observância à LGPD (Lei nº 13.709/2018).",
+    etp_5: "Solução 1: Contratação de empresa especializada por contrato continuado cobrindo manutenção preventiva programada, corretiva sob demanda e calibração.\nSolução 2: Contratações avulsas por dispensa a cada quebra, resultando em maior tempo de equipamento parado e custos unitários elevados.\nConclusão: A contratação continuada reduz indisponibilidade clínica e gera previsibilidade orçamentária.",
+    etp_6: "Prestação de serviços técnicos de engenharia clínica com cronograma mensal de manutenção preventiva, atendimento corretivo em até 24h (urgência/UPA) ou 48h (UBSs), emissão de laudos e certificados de calibração.",
+    etp_9: "Justifica-se o agrupamento em lote único (ou por especialidade: médico-hospitalar e odontológico) pela necessidade de padronização técnica, responsabilidade única sobre o parque tecnológico e economia de escala no deslocamento das equipes técnicas.",
+    etp_14: "Peças eletrônicas, baterias, lâmpadas e componentes substituídos deverão ter destinação ambientalmente adequada mediante logística reversa, conforme Lei nº 12.305/2010.",
+    tr_5: "Os serviços preventivos seguirão cronograma aprovado pela Secretaria. Chamados corretivos serão atendidos em até 24 horas para unidades de urgência e 48 horas para demais unidades. Cada intervenção gerará Ordem de Serviço assinada pelo responsável da unidade, com garantia mínima de 90 dias sobre os serviços executados."
+  },
+  servicos: {
+    objeto: "Contratação de empresa especializada para prestação de serviços continuados de apoio operacional / limpeza hospitalar / exames laboratoriais para a Secretaria Municipal de Saúde.",
+    etp_2: "Departamento Administrativo / Média e Alta Complexidade",
+    etp_3: "A Secretaria Municipal de Saúde necessita assegurar a continuidade de serviços essenciais de apoio às unidades de saúde, visando manter padrões sanitários adequados, agilidade diagnóstica e atendimento humanizado à população do município.",
+    etp_4: "A empresa contratada deverá comprovar regularidade fiscal, trabalhista e sanitária, capacidade técnica compatível com o volume estimado, fornecimento de EPIs adequados conforme NR-32 e conformidade integral com a LGPD (Lei nº 13.709/2018).",
+    etp_5: "Solução 1: Execução indireta via contratação de empresa especializada com Instrumento de Medição de Resultado (IMR).\nSolução 2: Execução direta integral com quadro próprio, inviável no curto prazo diante da insuficiência de pessoal e estrutura instalada.\nConclusão: A contratação complementar mostra-se mais eficiente e célere para garantir a assistência.",
+    etp_6: "Prestação continuada dos serviços pelo prazo inicial de 12 (doze) meses, prorrogável nos termos da Lei nº 14.133/2021, com monitoramento mensal de qualidade e produtividade.",
+    etp_9: "A adjudicação deverá observar a divisibilidade técnica do objeto, adotando-se o critério que melhor preserve a eficiência operacional, a gestão contratual e a ampla competitividade.",
+    etp_14: "A contratada deverá adotar práticas de uso racional de água e energia, utilizar saneantes registrados na ANVISA e respeitar integralmente o PGRSS das unidades de saúde.",
+    tr_5: "Os serviços serão prestados nas unidades indicadas pela Secretaria Municipal de Saúde, cumprindo rigorosamente os horários, protocolos sanitários e níveis de qualidade pactuados. A contratada responderá pelos encargos trabalhistas, uniformes, EPIs e substituição imediata de profissionais em caso de ausência."
+  }
+};
+
+// Definição estruturada dos 15 itens do ETP
+const ETP_SECTIONS = [
+  {
+    id: "etp_1", num: 1, title: "1 - Introdução", mandatory: false, type: "textarea",
+    defaultVal: "O presente documento tem como objetivo descrever a primeira etapa da fase de planejamento e apresentar os devidos estudos para a contratação de solução que atenderá à necessidade abaixo especificada, buscando identificar no mercado a melhor alternativa para supri-la, em observância à Lei Federal nº 14.133/2021, à IN SEGES nº 58/2022 e aos princípios que regem a Administração Pública.",
+    help: "<strong>Orientações:</strong> Apresenta o objetivo do Estudo Técnico Preliminar como primeira etapa do planejamento da contratação."
+  },
+  {
+    id: "etp_2", num: 2, title: "2 - Área Requisitante", mandatory: false, type: "text",
+    placeholder: "Ex.: Departamento de Atenção Básica / Divisão de Assistência Farmacêutica / UPA",
+    help: "<strong>Orientações:</strong> Informar o nome do departamento, coordenação ou divisão solicitante dentro da Secretaria Municipal de Saúde."
+  },
+  {
+    id: "etp_3", num: 3, title: "3 - Descrição da Necessidade da Contratação", mandatory: true, type: "textarea",
+    placeholder: "Detalhe o problema identificado na rede de saúde e o interesse público que origina esta demanda...",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso I da IN 58/2022.<br><strong>Orientações:</strong> Detalhar a necessidade identificada e que originou a demanda. Quanto mais detalhes sobre o problema assistencial ou administrativo, melhor para definir os requisitos."
+  },
+  {
+    id: "etp_4", num: 4, title: "4 - Requisitos Necessários à Contratação", mandatory: false, type: "textarea",
+    placeholder: "Liste requisitos essenciais (qualidade, registro ANVISA/INMETRO, garantia, assistência técnica, amostras, sustentabilidade, LGPD) sem restringir a competição...",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso II da IN 58/2022; Lei 14.133/2021 (arts. 11 IV, 17 §§ 3º e 6º, 40 §1º, 96).<br><strong>Orientações:</strong> Listar apenas requisitos essenciais, evitando especificações excessivas que frustrem a competitividade. Avaliar garantia, amostra, assistência técnica, certificações, sustentabilidade e proteção de dados pessoais (LGPD)."
+  },
+  {
+    id: "etp_5", num: 5, title: "5 - Levantamento de Mercado", mandatory: false, type: "textarea",
+    placeholder: "Solução 1 – Descrição completa e preço estimado...\nSolução 2 – Descrição completa e preço estimado...\nComparativo objetivo de custo-benefício (ciclo de vida)...",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso III da IN 58/2022 e Art. 11, I da Lei 14.133/2021.<br><strong>Orientações:</strong> Comparar alternativas existentes no mercado (ex.: compra vs. locação vs. comodato; contratações similares de outros órgãos públicos) demonstrando a solução mais vantajosa em conveniência e economicidade."
+  },
+  {
+    id: "etp_6", num: 6, title: "6 - Descrição da Solução como um Todo", mandatory: false, type: "textarea",
+    placeholder: "Descreva integralmente a solução escolhida como mais vantajosa, incluindo manutenção e assistência técnica quando couber...",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso IV da IN 58/2022.<br><strong>Orientações:</strong> Após o comparativo, descrever a solução escolhida como um todo. Ela será detalhada posteriormente no Termo de Referência."
+  },
+  {
+    id: "etp_7", num: 7, title: "7 - Estimativa das Quantidades", mandatory: true, type: "table_qty",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso V da IN 58/2022 e Art. 40, inciso III da Lei 14.133/2021.<br><strong>Orientações:</strong> Apresentar as memórias de cálculo e o perfil de consumo médio que justificam as quantidades estimadas de cada item."
+  },
+  {
+    id: "etp_8", num: 8, title: "8 - Estimativa do Valor da Contratação", mandatory: true, type: "table_val",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso VI da IN 58/2022 e Art. 23 da Lei 14.133/2021.<br><strong>Orientações:</strong> Estimativa preliminar de preço (ao menos 1 orçamento, contrato anterior ou contratações similares) para analisar a viabilidade. A pesquisa aprofundada final ocorre após o Termo de Referência."
+  },
+  {
+    id: "etp_9", num: 9, title: "9 - Justificativa para o Parcelamento ou Não", mandatory: true, type: "textarea",
+    placeholder: "Justifique se a adjudicação será por item, por lote/grupo ou global (Súmula TCU 247/2004)...",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso VII da IN 58/2022 e Súmula TCU 247/2004.<br><strong>Orientações:</strong> Identificar se o objeto é divisível ou não, justificando o critério de adjudicação (por item, por grupos ou global) conforme viabilidade técnica e econômica."
+  },
+  {
+    id: "etp_10", num: 10, title: "10 - Contratações Correlatas e/ou Interdependentes", mandatory: false, type: "textarea",
+    placeholder: "Informe se existem contratações similares ou interdependentes em andamento na Secretaria ou no Município...",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso VIII e Art. 3º da IN 58/2022.<br><strong>Orientações:</strong> Verificar se há contratações correlatas (objetos similares) ou interdependentes (que precisam ser contratadas juntas para pleno funcionamento)."
+  },
+  {
+    id: "etp_11", num: 11, title: "11 - Previsão no Plano de Contratação Anual (PCA)", mandatory: true, type: "textarea",
+    placeholder: "Informe o alinhamento com o PCA vigente ou justifique caso a demanda não tenha sido prevista previamente...",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso IX da IN 58/2022.<br><strong>Orientações:</strong> Demonstrar a previsão no Plano de Contratações Anual (PCA) e alinhamento com o planejamento da Saúde. Se não estiver prevista, justificar."
+  },
+  {
+    id: "etp_12", num: 12, title: "12 - Demonstração dos Resultados Pretendidos", mandatory: false, type: "textarea",
+    placeholder: "Aponte os resultados esperados em economicidade, aproveitamento de recursos e indicadores de desempenho (IMR/SLA)...",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso X da IN 58/2022.<br><strong>Orientações:</strong> Indicar os ganhos em economicidade, eficiência assistencial e aproveitamento de recursos humanos, materiais e financeiros, subsidiando futuros indicadores de resultado."
+  },
+  {
+    id: "etp_13", num: 13, title: "13 - Providências Prévias ao Contrato", mandatory: false, type: "textarea",
+    placeholder: "Informe ações prévias necessárias (ex.: adequação de espaço físico, ajustes de TI, capacitação de fiscais) ou declare que não há providências prévias...",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso XI da IN 58/2022.<br><strong>Orientações:</strong> Informar ações que a Administração precisa tomar antes da assinatura do contrato (ex.: pequenas adequações prediais, licenças, capacitação de servidores)."
+  },
+  {
+    id: "etp_14", num: 14, title: "14 - Impactos Ambientais e Tratamentos", mandatory: false, type: "textarea",
+    placeholder: "Descreva possíveis impactos ambientais, requisitos de eficiência energética e logística reversa / descarte (PGRSS)...",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso XII da IN 58/2022.<br><strong>Orientações:</strong> Identificar impactos ambientais e medidas mitigadoras (baixo consumo de energia, logística reversa, descarte correto de resíduos de saúde/eletrônicos)."
+  },
+  {
+    id: "etp_15", num: 15, title: "15 - Viabilidade da Contratação", mandatory: true, type: "textarea",
+    defaultVal: "Diante dos estudos técnicos, do levantamento de mercado e da estimativa preliminar de valores apresentados neste Estudo Técnico Preliminar, declara-se a VIABILIDADE técnica e econômica da contratação da solução pretendida, por mostrar-se adequada ao atendimento da necessidade da Secretaria Municipal de Saúde, nos termos do § 1º do art. 18 da Lei Federal nº 14.133/2021.",
+    help: "<strong>Fundamentação:</strong> Art. 9º, inciso XIII da IN 58/2022 e Art. 18, § 1º da Lei 14.133/2021.<br><strong>Orientações:</strong> Parecer conclusivo sobre a adequação técnica e econômica da contratação."
+  }
+];
+
+// Definição estruturada dos 14 itens do TR
+const TR_SECTIONS = [
+  {
+    id: "tr_1", num: 1, title: "1 - Definição do Objeto", mandatory: true, type: "tr_objeto",
+    help: "<strong>Orientações:</strong> Definir com precisão a natureza do objeto, os quantitativos, o prazo de vigência do contrato/ata e a possibilidade de prorrogação. Uma definição precisa assegura igualdade, boas propostas e fácil fiscalização."
+  },
+  {
+    id: "tr_2", num: 2, title: "2 - Fundamentação da Contratação", mandatory: true, type: "textarea",
+    placeholder: "Descreva a necessidade da contratação/aquisição e as justificativas técnicas e de interesse público...",
+    help: "<strong>Orientações:</strong> Descrição da necessidade da contratação/aquisição com as devidas justificativas (pode ser migrada diretamente do Item 3 do ETP)."
+  },
+  {
+    id: "tr_3", num: 3, title: "3 - Fundamentação e Enquadramento Legal", mandatory: true, type: "tr_enquadramento",
+    help: "<strong>Orientações:</strong> Selecionar o enquadramento legal na Lei Federal nº 14.133/2021: Registro de Preços/Aquisições, Dispensa de Licitação (Art. 75) ou Inexigibilidade (Art. 74)."
+  },
+  {
+    id: "tr_4", num: 4, title: "4 - Requisitos da Contratação", mandatory: false, type: "textarea",
+    placeholder: "Informe requisitos de qualidade, garantia, amostra, qualificação técnica, assistência técnica, sustentabilidade e LGPD...",
+    help: "<strong>Orientações:</strong> Avaliar necessidade de garantia de execução, amostra, qualificação técnica, assistência técnica, certificações (ANVISA/INMETRO), visita técnica, sustentabilidade ambiental e proteção de dados pessoais (LGPD)."
+  },
+  {
+    id: "tr_5", num: 5, title: "5 - Modelo de Execução do Objeto", mandatory: true, type: "textarea",
+    placeholder: "Defina condições de entrega/execução, local de entrega, prazos de recebimento provisório e definitivo, validade mínima, garantia, obrigações da contratada e da contratante...",
+    help: "<strong>Orientações:</strong> Passo a passo de como o contrato produzirá resultados: local e prazo de entrega, recebimentos provisório e definitivo, instalação, garantia, validade, armazenamento/descarte, subcontratação e obrigações das partes."
+  },
+  {
+    id: "tr_6", num: 6, title: "6 - Modelo de Gestão do Contrato", mandatory: false, type: "textarea",
+    defaultVal: "A execução do objeto será acompanhada e fiscalizada pelo Gestor e pelo(s) Fiscal(is) designados pela Secretaria Municipal de Saúde, nos termos do art. 117 da Lei nº 14.133/2021. Compete ao Fiscal verificar a conformidade técnica, prazos e qualidade da entrega/serviço, registrando ocorrências e realizando o ateste; compete ao Gestor coordenar a rotina administrativa, prazos de vigência, aditivos e notificações à contratada para regularização de eventuais falhas.",
+    help: "<strong>Orientações:</strong> Descrever como a execução será acompanhada e fiscalizada, definindo as atribuições do Gestor e do Fiscal, rotina de medição, ateste e regularização de falhas."
+  },
+  {
+    id: "tr_7", num: 7, title: "7 - Critérios de Medição e Pagamento", mandatory: true, type: "tr_pagamento",
+    help: "<strong>Orientações:</strong> Definir critérios de medição (se houver), prazo de aceite da Nota Fiscal/Fatura (padrão: 5 dias úteis) e prazo de pagamento após o aceite."
+  },
+  {
+    id: "tr_8", num: 8, title: "8 - Forma e Critérios de Seleção do Fornecedor", mandatory: false, type: "textarea",
+    placeholder: "Justifique a escolha da modalidade (Pregão/Registro de Preços, Dispensa, Inexigibilidade), critério de julgamento (ex.: menor preço por item) e qualificação técnica exigida...",
+    help: "<strong>Orientações:</strong> Justificar o que motivou a modalidade escolhida e quais requisitos de habilitação/qualificação técnica o fornecedor deve apresentar."
+  },
+  {
+    id: "tr_9", num: 9, title: "9 - Estimativa do Valor da Contratação", mandatory: true, type: "tr_valor",
+    help: "<strong>Fundamentação:</strong> Art. 23 da Lei nº 14.133/2021.<br><strong>Orientações:</strong> Apresentar preços unitários referenciais e valor total estimado, compatíveis com o mercado, bancos de dados públicos e economia de escala."
+  },
+  {
+    id: "tr_10", num: 10, title: "10 - Adequação Orçamentária", mandatory: true, type: "tr_orcamento",
+    help: "<strong>Orientações:</strong> Informar a Ficha Orçamentária e destinação (para aquisições diretas/contratos) ou selecionar o texto padrão de Registro de Preços (dotação informada na expedição da Solicitação de Fornecimento - SF)."
+  },
+  {
+    id: "tr_11", num: 11, title: "11 - Fiscal(is) Responsável(is) pela Execução", mandatory: false, type: "tr_fiscais",
+    help: "<strong>Orientações:</strong> Informar Nome, Cargo, E-mail Institucional e Telefone do(s) Fiscal(is) designado(s)."
+  },
+  {
+    id: "tr_12", num: 12, title: "12 - Gestor Responsável pela Execução", mandatory: false, type: "tr_gestor",
+    help: "<strong>Orientações:</strong> Informar Nome, Cargo, E-mail Institucional e Telefone do Gestor do Contrato."
+  },
+  {
+    id: "tr_13", num: 13, title: "13 - Equipe de Apoio", mandatory: false, type: "tr_apoio",
+    help: "<strong>Orientações:</strong> Informar Nome, Cargo, E-mail Institucional e Telefone do integrante da Equipe de Apoio."
+  },
+  {
+    id: "tr_14", num: 14, title: "14 - Disposições Finais e Assinaturas", mandatory: false, type: "textarea",
+    defaultVal: "Os casos omissos serão resolvidos de acordo com as disposições da Lei Federal nº 14.133/2021 e demais normas aplicáveis.\nEste Termo de Referência integra o processo administrativo de contratação e deverá ser observado em conjunto com o edital e seus anexos.",
+    help: "<strong>Orientações:</strong> Cláusula padrão de encerramento e integração ao processo administrativo."
+  }
+];
+
+let itemsData = [
+  { unidade: "UN", descricao: "", consumo: "", qtd: 1, valor_unit: 0 }
+];
+
+function getTodayFormatted() {
+  return new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
+}
+
+function buildForms() {
+  const etpContainer = document.getElementById("view-etp");
+  let etpHTML = "";
+  ETP_SECTIONS.forEach(s => { etpHTML += renderSectionCard("etp", s); });
+  etpHTML += `
+    <div class="section-card" id="sec-etp-sigs">
+      <div class="section-top">
+        <div class="section-title">✍️ Assinaturas do ETP</div>
+      </div>
+      <div class="form-grid-2">
+        <div class="field-group"><label>Responsável 1 (Nome / Cargo / Setor)</label><input type="text" id="etp_sig_1" placeholder="Nome Completo - Cargo - Departamento" oninput="saveState()"></div>
+        <div class="field-group"><label>Responsável 2 (Opcional)</label><input type="text" id="etp_sig_2" placeholder="Nome Completo - Cargo - Departamento" oninput="saveState()"></div>
+        <div class="field-group"><label>Diretor(a) do Departamento (Nome / Cargo)</label><input type="text" id="etp_sig_dir" placeholder="Nome Completo - Diretor(a)" oninput="saveState()"></div>
+        <div class="field-group"><label>Ordenador(a) de Despesas (Nome / Cargo)</label><input type="text" id="etp_sig_ord" placeholder="Nome Completo - Secretário(a) de Saúde" oninput="saveState()"></div>
+      </div>
+    </div>
+  `;
+  etpContainer.innerHTML = etpHTML;
+
+  const trContainer = document.getElementById("view-tr");
+  let trHTML = "";
+  TR_SECTIONS.forEach(s => { trHTML += renderSectionCard("tr", s); });
+  trHTML += `
+    <div class="section-card" id="sec-tr-sigs">
+      <div class="section-top">
+        <div class="section-title">✍️ Direção e Ordenador de Despesas (Complemento das Assinaturas do TR)</div>
+      </div>
+      <p style="font-size:12.5px; color:var(--muted); margin-bottom:10px;">Os nomes dos Fiscais, Gestor e Equipe de Apoio preenchidos nos itens 11, 12 e 13 entram automaticamente no bloco de assinaturas.</p>
+      <div class="form-grid-2">
+        <div class="field-group"><label>Diretor(a) do Departamento (Nome / Cargo)</label><input type="text" id="tr_sig_dir" placeholder="Nome Completo - Diretor(a)" oninput="saveState()"></div>
+        <div class="field-group"><label>Ordenador(a) de Despesas (Nome / Cargo)</label><input type="text" id="tr_sig_ord" placeholder="Nome Completo - Secretário(a) de Saúde" oninput="saveState()"></div>
+      </div>
+    </div>
+  `;
+  trContainer.innerHTML = trHTML;
+}
+
+function renderSectionCard(docType, s) {
+  const reqBadge = s.mandatory ? '<span class="req-tag">Obrigatório (*)</span>' : '';
+  const showPoca = (s.type === "textarea" || s.type === "tr_objeto");
+  let chipsHTML = "";
+  if (SECTION_CHIPS[s.id]) {
+    chipsHTML = `<div class="chips-bar">${SECTION_CHIPS[s.id].map((c, idx) =>
+      `<button type="button" class="chip-btn" onclick="insertClauseChip('${s.id}', ${idx})">${c.label}</button>`
+    ).join('')}</div>`;
+  }
+
+  let bodyHTML = "";
+  if (s.type === "text") {
+    bodyHTML = `<input type="text" id="${s.id}" placeholder="${s.placeholder || ''}" oninput="saveState()">`;
+  } else if (s.type === "textarea") {
+    bodyHTML = `${chipsHTML}<textarea id="${s.id}" placeholder="${s.placeholder || ''}" oninput="saveState()">${s.defaultVal || ''}</textarea>`;
+  } else if (s.type === "table_qty") {
+    bodyHTML = `
+      <div class="field-group" style="margin-bottom:10px;">
+        <label>Memória de Cálculo / Justificativa das Quantidades</label>
+        <textarea id="etp_7_memo" style="min-height:66px;" placeholder="Ex.: Quantidades estimadas com base na série histórica de consumo dos últimos 12 meses acrescida de 15% de margem de segurança..." oninput="saveState()"></textarea>
+      </div>
+      <div class="table-wrap" id="etp-qty-table-wrap"></div>
+      <button type="button" class="btn-add-row" onclick="addItemRow()">➕ Adicionar Item</button>
+    `;
+  } else if (s.type === "table_val") {
+    bodyHTML = `
+      <div class="field-group" style="margin-bottom:10px;">
+        <label>Fonte da Estimativa Preliminar de Preços</label>
+        <input type="text" id="etp_8_fonte" placeholder="Ex.: Contratos anteriores da Secretaria, Painel de Preços / PNCP e orçamento preliminar" oninput="saveState()">
+      </div>
+      <div class="table-wrap" id="etp-val-table-wrap"></div>
+      <div class="total-bar">
+        <span>Valor Global Estimado (ETP):</span>
+        <span class="val" id="etp-grand-total">R$ 0,00</span>
+      </div>
+    `;
+  } else if (s.type === "tr_objeto") {
+    bodyHTML = `
+      <div class="field-group" style="margin-bottom:12px;">
+        <label>Descrição Geral do Objeto, Natureza, Vigência e Prorrogação</label>
+        <textarea id="tr_1_desc" placeholder="Ex.: Aquisição de ..., de natureza comum, com vigência de 12 (doze) meses, podendo ser prorrogada nos termos da Lei nº 14.133/2021." oninput="saveState()"></textarea>
+      </div>
+      <div class="table-wrap" id="tr-obj-table-wrap"></div>
+      <button type="button" class="btn-add-row" onclick="addItemRow()">➕ Adicionar Item</button>
+    `;
+  } else if (s.type === "tr_enquadramento") {
+    bodyHTML = `
+      <div class="field-group" style="margin-bottom:10px;">
+        <label>Selecione o Enquadramento Legal</label>
+        <select id="tr_3_mod" onchange="onTrEnquadramentoChange()">
+          <option value="rp">Lei nº 14.133/2021 — Registro de Preços e Aquisições</option>
+          <option value="dispensa">Art. 75 da Lei nº 14.133/2021 — Dispensa de Licitação</option>
+          <option value="inex">Art. 74 da Lei nº 14.133/2021 — Inexigibilidade de Licitação</option>
+        </select>
+      </div>
+      <textarea id="tr_3_texto" style="min-height:72px;" oninput="saveState()">A presente contratação enquadra-se na Lei Federal nº 14.133, de 1º de abril de 2021, para realização de Registro de Preços / Aquisição.</textarea>
+    `;
+  } else if (s.type === "tr_pagamento") {
+    bodyHTML = `
+      <div class="form-grid-2">
+        <div class="field-group">
+          <label>Prazo de Aceite da Nota Fiscal</label>
+          <input type="text" id="tr_7_aceite" value="05 (cinco) dias úteis" oninput="saveState()">
+        </div>
+        <div class="field-group">
+          <label>Prazo de Pagamento após o Aceite</label>
+          <input type="text" id="tr_7_prazo" value="30 (trinta) dias" oninput="saveState()">
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Critérios Específicos de Medição / Observações (Opcional)</label>
+        <textarea id="tr_7_extra" style="min-height:66px;" placeholder="Se houver critério específico de medição (ex.: IMR / SLA), descreva aqui..." oninput="saveState()"></textarea>
+      </div>
+    `;
+  } else if (s.type === "tr_valor") {
+    bodyHTML = `
+      <div class="field-group" style="margin-bottom:10px;">
+        <label>Metodologia da Pesquisa de Preços (Art. 23 da Lei 14.133/2021)</label>
+        <textarea id="tr_9_metodologia" style="min-height:66px;" oninput="saveState()">Os valores unitários referenciais foram obtidos em conformidade com o art. 23 da Lei nº 14.133/2021, considerando contratações similares da Administração Pública, bancos de dados públicos (PNCP/Painel de Preços) e pesquisa de mercado compatível com os quantitativos e peculiaridades locais.</textarea>
+      </div>
+      <div class="table-wrap" id="tr-val-table-wrap"></div>
+      <div class="total-bar">
+        <span>Valor Global Estimado (TR):</span>
+        <span class="val" id="tr-grand-total">R$ 0,00</span>
+      </div>
+    `;
+  } else if (s.type === "tr_orcamento") {
+    bodyHTML = `
+      <div class="field-group" style="margin-bottom:10px;">
+        <label>Tipo de Adequação Orçamentária</label>
+        <select id="tr_10_tipo" onchange="onTrOrcamentoChange()">
+          <option value="ficha">Aquisição Direta / Contrato (Informar Ficha Orçamentária)</option>
+          <option value="rp">Sistema de Registro de Preços (Dotação na emissão da SF)</option>
+        </select>
+      </div>
+      <div id="tr_10_ficha_fields" class="form-grid-3">
+        <div class="field-group"><label>Ficha Orçamentária</label><input type="text" id="tr_10_ficha" placeholder="Ex.: Ficha 123" oninput="saveState()"></div>
+        <div class="field-group"><label>Destinação</label><input type="text" id="tr_10_dest" placeholder="Ex.: Material de Consumo / Serviços" oninput="saveState()"></div>
+        <div class="field-group"><label>Departamento Correspondente</label><input type="text" id="tr_10_dept" placeholder="Ex.: Atenção Básica" oninput="saveState()"></div>
+      </div>
+      <div id="tr_10_rp_box" class="hidden" style="background:#20252b; border:1px solid var(--border); padding:10px 12px; border-radius:6px; font-size:13px; color:#8ff0a4;">
+        Texto padrão aplicado: <em>"A dotação orçamentária pela qual correrá a despesa desta licitação será apresentada no momento da solicitação dos materiais/serviços, ante a expedição da Solicitação de Fornecimento (SF)."</em>
+      </div>
+    `;
+  } else if (s.type === "tr_fiscais") {
+    bodyHTML = `
+      <div class="form-grid-2">
+        <div class="field-group"><label>Fiscal 1 - Nome</label><input type="text" id="tr_f1_nome" oninput="saveState()"></div>
+        <div class="field-group"><label>Fiscal 1 - Cargo</label><input type="text" id="tr_f1_cargo" oninput="saveState()"></div>
+        <div class="field-group"><label>Fiscal 1 - E-mail Institucional</label><input type="email" id="tr_f1_email" oninput="saveState()"></div>
+        <div class="field-group"><label>Fiscal 1 - Telefone</label><input type="text" id="tr_f1_tel" oninput="saveState()"></div>
+      </div>
+      <hr style="border:0; border-top:1px dashed var(--border); margin:12px 0;">
+      <div class="form-grid-2">
+        <div class="field-group"><label>Fiscal 2 (Opcional) - Nome</label><input type="text" id="tr_f2_nome" oninput="saveState()"></div>
+        <div class="field-group"><label>Fiscal 2 - Cargo</label><input type="text" id="tr_f2_cargo" oninput="saveState()"></div>
+        <div class="field-group"><label>Fiscal 2 - E-mail Institucional</label><input type="email" id="tr_f2_email" oninput="saveState()"></div>
+        <div class="field-group"><label>Fiscal 2 - Telefone</label><input type="text" id="tr_f2_tel" oninput="saveState()"></div>
+      </div>
+    `;
+  } else if (s.type === "tr_gestor") {
+    bodyHTML = `
+      <div class="form-grid-2">
+        <div class="field-group"><label>Gestor - Nome</label><input type="text" id="tr_g_nome" oninput="saveState()"></div>
+        <div class="field-group"><label>Gestor - Cargo</label><input type="text" id="tr_g_cargo" oninput="saveState()"></div>
+        <div class="field-group"><label>Gestor - E-mail Institucional</label><input type="email" id="tr_g_email" oninput="saveState()"></div>
+        <div class="field-group"><label>Gestor - Telefone</label><input type="text" id="tr_g_tel" oninput="saveState()"></div>
+      </div>
+    `;
+  } else if (s.type === "tr_apoio") {
+    bodyHTML = `
+      <div class="form-grid-2">
+        <div class="field-group"><label>Equipe de Apoio - Nome</label><input type="text" id="tr_a_nome" oninput="saveState()"></div>
+        <div class="field-group"><label>Equipe de Apoio - Cargo</label><input type="text" id="tr_a_cargo" oninput="saveState()"></div>
+        <div class="field-group"><label>Equipe de Apoio - E-mail Institucional</label><input type="email" id="tr_a_email" oninput="saveState()"></div>
+        <div class="field-group"><label>Equipe de Apoio - Telefone</label><input type="text" id="tr_a_tel" oninput="saveState()"></div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="section-card ${s.mandatory ? 'mandatory' : ''}" id="card-${s.id}">
+      <div class="section-top">
+        <div class="section-title">${s.title} ${reqBadge}</div>
+        <div class="section-actions">
+          <button type="button" class="btn-mini" onclick="toggleHelp('${s.id}')">❓ Orientação Legal</button>
+          ${showPoca ? `<button type="button" class="btn-mini btn-poca" onclick="openPocaForSection('${docType}', '${s.id}')">✨ Prompt P.O.C.A.</button>` : ''}
+        </div>
+      </div>
+      <div class="help-box" id="help-${s.id}">${s.help}</div>
+      ${bodyHTML}
+    </div>
+  `;
+}
+
+// =========================================================================
+// CLÁUSULAS PRONTAS (CHIPS) & MODELOS RÁPIDOS DA SAÚDE
+// =========================================================================
+function insertClauseChip(secId, chipIdx) {
+  const chip = SECTION_CHIPS[secId] && SECTION_CHIPS[secId][chipIdx];
+  const el = document.getElementById(secId);
+  if (!chip || !el) return;
+  const cur = el.value.trim();
+  if (cur.includes(chip.text)) return;
+  el.value = cur ? (cur + "\n\n" + chip.text) : chip.text;
+  el.focus();
+  saveState();
+}
+
+function applyHealthTemplate(key) {
+  const tpl = HEALTH_TEMPLATES[key];
+  if (!tpl) return;
+  const hasContent = document.getElementById("etp_3").value.trim().length > 0 || document.getElementById("tr_2").value.trim().length > 0;
+  if (hasContent && !confirm("Deseja aplicar este modelo-base da Saúde? Ele substituirá os textos-base de Objeto, Necessidade, Requisitos, Levantamento, Solução, Parcelamento, Impactos e Execução.")) {
+    return;
+  }
+  document.getElementById("cfg-objeto-resumo").value = tpl.objeto;
+  document.getElementById("etp_2").value = tpl.etp_2;
+  document.getElementById("etp_3").value = tpl.etp_3;
+  document.getElementById("etp_4").value = tpl.etp_4;
+  document.getElementById("etp_5").value = tpl.etp_5;
+  document.getElementById("etp_6").value = tpl.etp_6;
+  document.getElementById("etp_9").value = tpl.etp_9;
+  document.getElementById("etp_14").value = tpl.etp_14;
+
+  // Also pre-populate matching TR fields
+  document.getElementById("tr_1_desc").value = tpl.objeto + "\n\n" + tpl.etp_6;
+  document.getElementById("tr_2").value = tpl.etp_3;
+  document.getElementById("tr_4").value = tpl.etp_4;
+  document.getElementById("tr_5").value = tpl.tr_5;
+
+  saveState();
+  alert("✅ Modelo-base aplicado no ETP e no Termo de Referência! Revise os detalhes e adicione os itens na tabela.");
+}
+
+// =========================================================================
+// BRASÃO / LOGOTIPO (BASE64 LOCAL)
+// =========================================================================
+function handleLogoUpload(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  if (file.size > 1500000) {
+    alert("⚠️ Escolha uma imagem menor que 1,5 MB para manter o documento leve.");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    logoBase64 = e.target.result;
+    updateLogoUI();
+    saveState();
+  };
+  reader.readAsDataURL(file);
+  ev.target.value = "";
+}
+
+function removeLogo() {
+  logoBase64 = "";
+  updateLogoUI();
+  saveState();
+}
+
+function updateLogoUI() {
+  const img = document.getElementById("logo-preview");
+  const btnRem = document.getElementById("btn-remove-logo");
+  if (logoBase64) {
+    img.src = logoBase64;
+    img.classList.remove("hidden");
+    btnRem.classList.remove("hidden");
+  } else {
+    img.src = "";
+    img.classList.add("hidden");
+    btnRem.classList.add("hidden");
+  }
+}
+
+// =========================================================================
+// TABELAS DINÂMICAS COM SINCRONIZAÇÃO EM TEMPO REAL
+// =========================================================================
+function formatBRL(v) {
+  return (Number(v) || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function renderAllItemTables() {
+  let grandTotal = 0;
+  itemsData.forEach(it => { grandTotal += (Number(it.qtd) || 0) * (Number(it.valor_unit) || 0); });
+
+  // 1. ETP Item 7 (Quantidades)
+  const wQty = document.getElementById("etp-qty-table-wrap");
+  if (wQty) {
+    let rows = itemsData.map((it, idx) => `
+      <tr>
+        <td style="width:45px; text-align:center;">${idx + 1}</td>
+        <td style="width:90px;"><input type="text" data-sync="etp-un-${idx}" value="${escapeAttr(it.unidade)}" oninput="updateItem(${idx}, 'unidade', this.value, 'etp')"></td>
+        <td><input type="text" data-sync="etp-desc-${idx}" value="${escapeAttr(it.descricao)}" placeholder="Descrição detalhada do item..." oninput="updateItem(${idx}, 'descricao', this.value, 'etp')"></td>
+        <td style="width:125px;"><input type="text" value="${escapeAttr(it.consumo)}" placeholder="Ex.: 50/mês" oninput="updateItem(${idx}, 'consumo', this.value, 'etp')"></td>
+        <td style="width:105px;"><input type="number" min="0" step="any" data-sync="etp-qtd-${idx}" value="${it.qtd}" oninput="updateItem(${idx}, 'qtd', this.value, 'etp')"></td>
+        <td style="width:46px; text-align:center;"><button type="button" class="btn-del-row" onclick="removeItemRow(${idx})">✕</button></td>
+      </tr>
+    `).join('');
+    wQty.innerHTML = `
+      <table class="edit-table">
+        <thead><tr><th>Item</th><th>Unid.</th><th>Descrição</th><th>Consumo Médio</th><th>Qtd. Estimada</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
+
+  // 2. ETP Item 8 & TR Item 9 (Valores)
+  const buildValTable = (prefix) => {
+    let rows = itemsData.map((it, idx) => {
+      const sub = (Number(it.qtd) || 0) * (Number(it.valor_unit) || 0);
+      return `
+        <tr>
+          <td style="width:45px; text-align:center;">${idx + 1}</td>
+          <td style="width:80px;" id="${prefix}-cell-un-${idx}">${escapeHtml(it.unidade || '-')}</td>
+          <td id="${prefix}-cell-desc-${idx}">${escapeHtml(it.descricao || '(Preencher descrição no Item 7 / Objeto)')}</td>
+          <td style="width:95px;" id="${prefix}-cell-qtd-${idx}">${it.qtd || 0}</td>
+          <td style="width:130px;"><input type="number" min="0" step="0.01" id="${prefix}-inp-vu-${idx}" value="${it.valor_unit}" oninput="updateItem(${idx}, 'valor_unit', this.value, '${prefix}')"></td>
+          <td style="width:130px; font-weight:700; color:#8ff0a4;" id="${prefix}-cell-sub-${idx}">${formatBRL(sub)}</td>
+        </tr>
+      `;
+    }).join('');
+    return `
+      <table class="edit-table">
+        <thead><tr><th>Item</th><th>Unid.</th><th>Descrição</th><th>Qtd.</th><th>Valor Unit. (R$)</th><th>Valor Total</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  };
+
+  const wEtpVal = document.getElementById("etp-val-table-wrap");
+  if (wEtpVal) wEtpVal.innerHTML = buildValTable("etpval");
+  const wTrVal = document.getElementById("tr-val-table-wrap");
+  if (wTrVal) wTrVal.innerHTML = buildValTable("trval");
+
+  const etpTotEl = document.getElementById("etp-grand-total");
+  if (etpTotEl) etpTotEl.innerText = formatBRL(grandTotal);
+  const trTotEl = document.getElementById("tr-grand-total");
+  if (trTotEl) trTotEl.innerText = formatBRL(grandTotal);
+
+  // 3. TR Item 1 (Objeto)
+  const wTrObj = document.getElementById("tr-obj-table-wrap");
+  if (wTrObj) {
+    let rows = itemsData.map((it, idx) => `
+      <tr>
+        <td style="width:45px; text-align:center;">${String(idx + 1).padStart(2, '0')}</td>
+        <td style="width:90px;"><input type="text" data-sync="tr-un-${idx}" value="${escapeAttr(it.unidade)}" oninput="updateItem(${idx}, 'unidade', this.value, 'tr')"></td>
+        <td><input type="text" data-sync="tr-desc-${idx}" value="${escapeAttr(it.descricao)}" placeholder="Descrição completa do item..." oninput="updateItem(${idx}, 'descricao', this.value, 'tr')"></td>
+        <td style="width:105px;"><input type="number" min="0" step="any" data-sync="tr-qtd-${idx}" value="${it.qtd}" oninput="updateItem(${idx}, 'qtd', this.value, 'tr')"></td>
+        <td style="width:46px; text-align:center;"><button type="button" class="btn-del-row" onclick="removeItemRow(${idx})">✕</button></td>
+      </tr>
+    `).join('');
+    wTrObj.innerHTML = `
+      <table class="edit-table">
+        <thead><tr><th>Item</th><th>Unidade</th><th>Descrição Completa</th><th>Quantidade</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  }
+}
+
+function updateItem(idx, field, val, source) {
+  if (!itemsData[idx]) return;
+  if (field === 'qtd' || field === 'valor_unit') {
+    itemsData[idx][field] = parseFloat(val) || 0;
+  } else {
+    itemsData[idx][field] = val;
+  }
+
+  const it = itemsData[idx];
+  const sub = (Number(it.qtd) || 0) * (Number(it.valor_unit) || 0);
+
+  ["etpval", "trval"].forEach(prefix => {
+    const cUn = document.getElementById(`${prefix}-cell-un-${idx}`);
+    const cDesc = document.getElementById(`${prefix}-cell-desc-${idx}`);
+    const cQtd = document.getElementById(`${prefix}-cell-qtd-${idx}`);
+    const cSub = document.getElementById(`${prefix}-cell-sub-${idx}`);
+    const inpVu = document.getElementById(`${prefix}-inp-vu-${idx}`);
+    if (cUn) cUn.innerText = it.unidade || "-";
+    if (cDesc) cDesc.innerText = it.descricao || "(Preencher descrição no Item 7 / Objeto)";
+    if (cQtd) cQtd.innerText = it.qtd || 0;
+    if (cSub) cSub.innerText = formatBRL(sub);
+    if (inpVu && source !== prefix && field === 'valor_unit') inpVu.value = it.valor_unit;
+  });
+
+  if (source === "etp") {
+    const tUn = document.querySelector(`[data-sync="tr-un-${idx}"]`);
+    const tDesc = document.querySelector(`[data-sync="tr-desc-${idx}"]`);
+    const tQtd = document.querySelector(`[data-sync="tr-qtd-${idx}"]`);
+    if (tUn && field === 'unidade') tUn.value = it.unidade;
+    if (tDesc && field === 'descricao') tDesc.value = it.descricao;
+    if (tQtd && field === 'qtd') tQtd.value = it.qtd;
+  } else if (source === "tr") {
+    const eUn = document.querySelector(`[data-sync="etp-un-${idx}"]`);
+    const eDesc = document.querySelector(`[data-sync="etp-desc-${idx}"]`);
+    const eQtd = document.querySelector(`[data-sync="etp-qtd-${idx}"]`);
+    if (eUn && field === 'unidade') eUn.value = it.unidade;
+    if (eDesc && field === 'descricao') eDesc.value = it.descricao;
+    if (eQtd && field === 'qtd') eQtd.value = it.qtd;
+  }
+
+  let grandTotal = 0;
+  itemsData.forEach(item => { grandTotal += (Number(item.qtd) || 0) * (Number(item.valor_unit) || 0); });
+  const etpTotEl = document.getElementById("etp-grand-total");
+  if (etpTotEl) etpTotEl.innerText = formatBRL(grandTotal);
+  const trTotEl = document.getElementById("tr-grand-total");
+  if (trTotEl) trTotEl.innerText = formatBRL(grandTotal);
+
+  saveState();
+}
+
+function addItemRow() {
+  itemsData.push({ unidade: "UN", descricao: "", consumo: "", qtd: 1, valor_unit: 0 });
+  renderAllItemTables();
+  saveState();
+}
+
+function removeItemRow(idx) {
+  if (itemsData.length <= 1) return;
+  itemsData.splice(idx, 1);
+  renderAllItemTables();
+  saveState();
+}
+
+function escapeAttr(str) {
+  return String(str || "").replace(/"/g, '&quot;');
+}
+
+function escapeHtml(str) {
+  return String(str || "").replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function toggleHelp(secId) {
+  const el = document.getElementById("help-" + secId);
+  if (el) el.classList.toggle("open");
+}
+
+function onDecretoChange() {
+  onTrEnquadramentoChange();
+}
+
+function onTrEnquadramentoChange() {
+  const mod = document.getElementById("tr_3_mod").value;
+  const txt = document.getElementById("tr_3_texto");
+  const dec = (document.getElementById("cfg-decreto").value || "").trim();
+  const decSuffix = dec ? ` Regulamentação local aplicável: ${dec}.` : "";
+  if (mod === "dispensa") {
+    txt.value = "A presente contratação enquadra-se no Artigo 75 da Lei Federal nº 14.133, de 1º de abril de 2021 (Dispensa de Licitação)." + decSuffix;
+  } else if (mod === "inex") {
+    txt.value = "A presente contratação enquadra-se no Artigo 74 da Lei Federal nº 14.133, de 1º de abril de 2021 (Inexigibilidade de Licitação)." + decSuffix;
+  } else {
+    txt.value = "A presente contratação enquadra-se na Lei Federal nº 14.133, de 1º de abril de 2021, para realização de Registro de Preços / Aquisição." + decSuffix;
+  }
+  saveState();
+}
+
+function onTrOrcamentoChange() {
+  const tipo = document.getElementById("tr_10_tipo").value;
+  document.getElementById("tr_10_ficha_fields").classList.toggle("hidden", tipo === "rp");
+  document.getElementById("tr_10_rp_box").classList.toggle("hidden", tipo !== "rp");
+  saveState();
+}
+
+function switchDoc(doc) {
+  activeDoc = doc;
+  document.getElementById("view-etp").classList.toggle("hidden", doc !== "etp");
+  document.getElementById("view-tr").classList.toggle("hidden", doc !== "tr");
+  document.getElementById("tab-btn-etp").classList.toggle("active", doc === "etp");
+  document.getElementById("tab-btn-tr").classList.toggle("active", doc === "tr");
+  document.getElementById("active-doc-badge").innerText = doc === "etp"
+    ? "ESTUDO TÉCNICO PRELIMINAR (ETP)"
+    : "TERMO DE REFERÊNCIA (TR)";
+  renderAllItemTables();
+  buildNav();
+  updateProgress();
+  document.getElementById("workspace").scrollTop = 0;
+}
+
+function migrateEtpToTr() {
+  const etp3 = document.getElementById("etp_3").value.trim();
+  const etp4 = document.getElementById("etp_4").value.trim();
+  const etp6 = document.getElementById("etp_6").value.trim();
+  const etpDir = document.getElementById("etp_sig_dir").value.trim();
+  const etpOrd = document.getElementById("etp_sig_ord").value.trim();
+  const objResumo = document.getElementById("cfg-objeto-resumo").value.trim();
+
+  if (objResumo && !document.getElementById("tr_1_desc").value.trim()) {
+    document.getElementById("tr_1_desc").value = objResumo + (etp6 ? "\n\n" + etp6 : "");
+  } else if (etp6 && !document.getElementById("tr_1_desc").value.trim()) {
+    document.getElementById("tr_1_desc").value = etp6;
+  }
+  if (etp3) document.getElementById("tr_2").value = etp3;
+  if (etp4) document.getElementById("tr_4").value = etp4;
+  if (etpDir && !document.getElementById("tr_sig_dir").value.trim()) document.getElementById("tr_sig_dir").value = etpDir;
+  if (etpOrd && !document.getElementById("tr_sig_ord").value.trim()) document.getElementById("tr_sig_ord").value = etpOrd;
+
+  saveState();
+  switchDoc("tr");
+  alert("✅ Dados principais (Objeto, Fundamentação, Requisitos, Itens/Valores e Assinaturas) migrados do ETP para o Termo de Referência!");
+}
+
+// =========================================================================
+// COPILOTO P.O.C.A. INTELIGENTE (MODO MELHORAR RASCUNHO + CONTEXTO DO ITEM 3)
+// =========================================================================
+function openPocaForSection(docType, secId) {
+  const sections = docType === "etp" ? ETP_SECTIONS : TR_SECTIONS;
+  const sec = sections.find(s => s.id === secId);
+  if (!sec) return;
+
+  const secretaria = document.getElementById("cfg-secretaria").value.trim() || "Secretaria Municipal de Saúde";
+  const area = document.getElementById("etp_2").value.trim() || "Departamento Solicitante";
+  const objeto = document.getElementById("cfg-objeto-resumo").value.trim() || "[DESCREVA AQUI O OBJETO DA CONTRATAÇÃO]";
+  const docName = docType === "etp" ? "Estudo Técnico Preliminar (ETP)" : "Termo de Referência (TR)";
+
+  const targetFieldId = (secId === "tr_1") ? "tr_1_desc" : secId;
+  const currentDraftEl = document.getElementById(targetFieldId);
+  const currentDraft = currentDraftEl ? currentDraftEl.value.trim() : "";
+
+  const necessidadeCtx = (document.getElementById("etp_3").value.trim() || document.getElementById("tr_2").value.trim());
+  const includeNec = necessidadeCtx && secId !== "etp_3" && secId !== "tr_2";
+
+  const itemsList = itemsData
+    .filter(i => i.descricao && i.descricao.trim())
+    .map((i, idx) => `  - Item ${idx + 1}: ${i.descricao} (${i.qtd} ${i.unidade})`)
+    .join("\n");
+
+  const helpPlain = sec.help.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+  const objetivoLine = currentDraft
+    ? `Aprimore, formalize e estruture tecnicamente o rascunho abaixo para a seção "${sec.title}" do ${docName}, preservando todos os fatos informados.`
+    : `Redija o texto técnico formal para a seção "${sec.title}" do ${docName}.`;
+
+  const draftBlock = currentDraft
+    ? `\n- Rascunho atual do servidor (para melhorar e formalizar):\n---\n${currentDraft}\n---`
+    : "";
+
+  const necBlock = includeNec
+    ? `\n- Contexto da Necessidade já definida:\n"${necessidadeCtx.slice(0, 600)}${necessidadeCtx.length > 600 ? '...' : ''}"`
+    : "";
+
+  const promptText = `[P - PERSONIFICAÇÃO]
+Atue como Especialista Sênior em Planejamento de Contratações Públicas na área da Saúde (SUS), com profundo domínio da Lei Federal nº 14.133/2021 e da IN SEGES nº 58/2022.
+
+[O - OBJETIVO]
+${objetivoLine}
+
+[C - CONTEXTO]
+- Órgão: ${secretaria} (${area})
+- Objeto da Contratação: ${objeto}${itemsList ? "\n- Itens previstos:\n" + itemsList : ""}${necBlock}${draftBlock}
+- Diretriz normativa da seção: ${helpPlain}
+
+[A - AJUSTES]
+1. Use linguagem técnica, objetiva, impessoal e pronta para compor processo administrativo oficial;
+2. Não invente números de leis municipais, preços ou quantidades que não foram fornecidos — caso falte algum dado local, sinalize entre colchetes [PREENCHER];
+3. Evite especificações que direcionem marca ou restrinjam a competitividade;
+4. Entregue apenas o texto final da seção pronto para colar no documento.`;
+
+  document.getElementById("poca-modal-title").innerText = currentDraft
+    ? `✨ Copiloto P.O.C.A. (Modo Melhorar Rascunho) — ${sec.title}`
+    : `✨ Copiloto P.O.C.A. — ${sec.title}`;
+  document.getElementById("poca-modal-desc").innerHTML = currentDraft
+    ? `Detectamos que você já escreveu um rascunho neste campo! O prompt abaixo inclui o seu texto para a IA <strong>aprimorar e formalizar</strong> conforme a Lei nº 14.133/2021.`
+    : `Copie o prompt estruturado abaixo e cole no <strong>ChatGPT, Google Gemini ou Copilot</strong>. Ele já inclui o objeto, itens, necessidade e fundamentação legal da seção.`;
+  document.getElementById("poca-output").innerText = promptText;
+  document.getElementById("poca-modal").classList.add("open");
+}
+
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.remove("open");
+}
+
+function copyPocaOutput(btn) {
+  const txt = document.getElementById("poca-output").innerText;
+  const done = () => {
+    const orig = btn.innerText;
+    btn.innerText = "✓ Copiado!";
+    setTimeout(() => { btn.innerText = orig; }, 1600);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(txt).then(done).catch(() => fallbackCopy(txt, done));
+  } else {
+    fallbackCopy(txt, done);
+  }
+}
+
+function fallbackCopy(text, cb) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand("copy"); if (cb) cb(); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+// =========================================================================
+// PROGRESSO E VALIDAÇÃO DE OBRIGATÓRIOS
+// =========================================================================
+function isSectionFilled(s) {
+  if (s.type === "table_qty") return itemsData.some(i => i.descricao.trim().length > 0);
+  if (s.type === "table_val" || s.type === "tr_valor") return itemsData.some(i => (Number(i.valor_unit) || 0) > 0);
+  if (s.type === "tr_objeto") return (document.getElementById("tr_1_desc").value.trim().length > 0) && itemsData.some(i => i.descricao.trim().length > 0);
+  if (s.type === "tr_enquadramento") return document.getElementById("tr_3_texto").value.trim().length > 0;
+  if (s.type === "tr_pagamento") return document.getElementById("tr_7_prazo").value.trim().length > 0;
+  if (s.type === "tr_orcamento") {
+    const t = document.getElementById("tr_10_tipo").value;
+    return t === "rp" || document.getElementById("tr_10_ficha").value.trim().length > 0;
+  }
+  if (s.type === "tr_fiscais") return document.getElementById("tr_f1_nome").value.trim().length > 0;
+  if (s.type === "tr_gestor") return document.getElementById("tr_g_nome").value.trim().length > 0;
+  if (s.type === "tr_apoio") return document.getElementById("tr_a_nome").value.trim().length > 0;
+  const el = document.getElementById(s.id);
+  return el ? el.value.trim().length > 0 : false;
+}
+
+function getMissingMandatorySections() {
+  const list = activeDoc === "etp" ? ETP_SECTIONS : TR_SECTIONS;
+  return list.filter(s => s.mandatory && !isSectionFilled(s));
+}
+
+function updateProgress() {
+  const list = activeDoc === "etp" ? ETP_SECTIONS : TR_SECTIONS;
+  const reqs = list.filter(s => s.mandatory);
+  let done = 0;
+  reqs.forEach(s => {
+    const ok = isSectionFilled(s);
+    if (ok) done++;
+    const card = document.getElementById("card-" + s.id);
+    if (card) card.classList.toggle("ok", ok);
+  });
+
+  const pct = reqs.length ? Math.round((done / reqs.length) * 100) : 0;
+  document.getElementById("prog-label").innerText = activeDoc === "etp" ? "OBRIGATÓRIOS DO ETP (*)" : "ESSENCIAIS DO TR (*)";
+  document.getElementById("prog-count").innerText = `${done} / ${reqs.length}`;
+  document.getElementById("prog-fill").style.width = `${pct}%`;
+  document.getElementById("prog-msg").innerText = done === reqs.length ? "✅ Pronto para exportar!" : "Preencha os itens com (*)";
+  buildNav();
+}
+
+function buildNav() {
+  const nav = document.getElementById("nav-list");
+  const list = activeDoc === "etp" ? ETP_SECTIONS : TR_SECTIONS;
+  nav.innerHTML = "";
+  list.forEach(s => {
+    const ok = isSectionFilled(s);
+    const div = document.createElement("div");
+    div.className = "nav-item " + (ok ? "filled" : (s.mandatory ? "req-missing" : ""));
+    div.innerHTML = `<span>${s.title}</span><span class="nav-dot">${ok ? '✅' : (s.mandatory ? '⚠️' : '○')}</span>`;
+    div.onclick = () => {
+      const target = document.getElementById("card-" + s.id);
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (window.innerWidth <= 920) document.getElementById("sidebar").classList.remove("open");
+    };
+    nav.appendChild(div);
+  });
+}
+
+// =========================================================================
+// EXPORTAÇÃO COM VERIFICAÇÃO DE OBRIGATÓRIOS + TABELA DE ASSINATURAS WORD
+// =========================================================================
+function requestExport(type) {
+  const missing = getMissingMandatorySections();
+  if (missing.length > 0) {
+    pendingExportType = type;
+    const ul = document.getElementById("export-warn-list");
+    ul.innerHTML = missing.map(s => `<li><strong>${s.title}</strong></li>`).join('');
+    document.getElementById("export-warn-modal").classList.add("open");
+    return;
+  }
+  executeExport(type);
+}
+
+function confirmPendingExport() {
+  const t = pendingExportType;
+  closeModal("export-warn-modal");
+  if (t) executeExport(t);
+}
+
+const ORIGINAL_PAGE_TITLE = document.title;
+
+window.addEventListener("beforeprint", () => {
+  const printEl = document.getElementById("print-document");
+  if (printEl && !printEl.innerHTML.trim()) {
+    printEl.innerHTML = buildOfficialDocumentHTML();
+  }
+  document.title = "\u00A0";
+});
+
+window.addEventListener("afterprint", () => {
+  document.title = ORIGINAL_PAGE_TITLE;
+});
+
+function executeExport(type) {
+  if (type === "pdf") {
+    document.getElementById("print-document").innerHTML = buildOfficialDocumentHTML();
+    document.title = "\u00A0";
+    window.print();
+    setTimeout(() => { document.title = ORIGINAL_PAGE_TITLE; }, 500);
+  } else if (type === "word") {
+    exportToWord();
+  }
+}
+
+function buildSignaturesTableHTML(sigs) {
+  let rows = "";
+  for (let i = 0; i < sigs.length; i += 2) {
+    const left = `<div class="p-sig-line">${escapeHtml(sigs[i])}</div>`;
+    const right = sigs[i + 1] ? `<div class="p-sig-line">${escapeHtml(sigs[i + 1])}</div>` : "";
+    rows += `<tr><td>${left}</td><td>${right}</td></tr>`;
+  }
+  return `<table class="p-sig-table" border="0" cellpadding="0" cellspacing="0"><tbody>${rows}</tbody></table>`;
+}
+
+function buildOfficialDocumentHTML() {
+  const mun = escapeHtml(document.getElementById("cfg-municipio").value.trim() || "PREFEITURA MUNICIPAL");
+  const sec = escapeHtml(document.getElementById("cfg-secretaria").value.trim() || "SECRETARIA MUNICIPAL DE SAÚDE");
+  const localData = escapeHtml(document.getElementById("cfg-local-data").value.trim() || getTodayFormatted());
+  const logoHtml = logoBase64 ? `<img src="${logoBase64}" class="p-logo" width="90" style="max-height:64px; object-fit:contain; margin-bottom:6px;"><br>` : "";
+
+  let grandTotal = 0;
+  itemsData.forEach(it => { grandTotal += (Number(it.qtd) || 0) * (Number(it.valor_unit) || 0); });
+
+  if (activeDoc === "etp") {
+    const qtyRows = itemsData.map((it, i) => `
+      <tr><td>${i + 1}</td><td>${escapeHtml(it.unidade)}</td><td>${escapeHtml(it.descricao)}</td><td>${escapeHtml(it.consumo)}</td><td>${it.qtd}</td></tr>
+    `).join('');
+    const valRows = itemsData.map((it, i) => {
+      const sub = (Number(it.qtd) || 0) * (Number(it.valor_unit) || 0);
+      return `<tr><td>${i + 1}</td><td>${escapeHtml(it.unidade)}</td><td>${escapeHtml(it.descricao)}</td><td>${it.qtd}</td><td>${formatBRL(it.valor_unit)}</td><td>${formatBRL(sub)}</td></tr>`;
+    }).join('');
+
+    const secHtml = (title, val) => `
+      <div class="p-sec"><h3>${title}</h3><div class="p-text">${escapeHtml(val || "Não informado.")}</div></div>
+    `;
+
+    const sigs = [
+      document.getElementById("etp_sig_1").value.trim(),
+      document.getElementById("etp_sig_2").value.trim(),
+      document.getElementById("etp_sig_dir").value.trim(),
+      document.getElementById("etp_sig_ord").value.trim()
+    ].filter(Boolean);
+    const finalSigs = sigs.length ? sigs : ["Responsável pelo Planejamento", "Diretor(a) do Departamento", "Ordenador(a) de Despesas"];
+
+    return `
+      <div class="p-header">${logoHtml}<h1>${mun}</h1><h2>${sec}</h2><div style="margin-top:6px; font-weight:700; font-size:13pt;">ESTUDO TÉCNICO PRELIMINAR (ETP)</div></div>
+      ${secHtml("1 - Introdução", document.getElementById("etp_1").value)}
+      ${secHtml("2 - Área Requisitante", document.getElementById("etp_2").value)}
+      ${secHtml("3 - Descrição da Necessidade da Contratação", document.getElementById("etp_3").value)}
+      ${secHtml("4 - Requisitos Necessários à Contratação", document.getElementById("etp_4").value)}
+      ${secHtml("5 - Levantamento de Mercado", document.getElementById("etp_5").value)}
+      ${secHtml("6 - Descrição da Solução como um Todo", document.getElementById("etp_6").value)}
+      <div class="p-sec">
+        <h3>7 - Estimativa das Quantidades</h3>
+        <div class="p-text">${escapeHtml(document.getElementById("etp_7_memo").value)}</div>
+        <table class="p-table"><thead><tr><th>Item</th><th>Unidade</th><th>Descrição</th><th>Consumo Médio</th><th>Quantidade Estimada</th></tr></thead><tbody>${qtyRows}</tbody></table>
+      </div>
+      <div class="p-sec">
+        <h3>8 - Estimativa do Valor da Contratação</h3>
+        <div class="p-text">${escapeHtml(document.getElementById("etp_8_fonte").value)}</div>
+        <table class="p-table"><thead><tr><th>Item</th><th>Unidade</th><th>Descrição</th><th>Quantidade</th><th>Valor Unitário</th><th>Valor Total</th></tr></thead><tbody>${valRows}<tr><td colspan="5" style="text-align:right; font-weight:700;">TOTAL ESTIMADO:</td><td style="font-weight:700;">${formatBRL(grandTotal)}</td></tr></tbody></table>
+      </div>
+      ${secHtml("9 - Justificativa para o Parcelamento ou Não da Contratação", document.getElementById("etp_9").value)}
+      ${secHtml("10 - Contratações Correlatas e/ou Interdependentes", document.getElementById("etp_10").value)}
+      ${secHtml("11 - Previsão no Plano de Contratação Anual (PCA)", document.getElementById("etp_11").value)}
+      ${secHtml("12 - Demonstração dos Resultados Pretendidos", document.getElementById("etp_12").value)}
+      ${secHtml("13 - Providências a Serem Tomadas Previamente ao Contrato", document.getElementById("etp_13").value)}
+      ${secHtml("14 - Impactos Ambientais e Tratamentos", document.getElementById("etp_14").value)}
+      ${secHtml("15 - Viabilidade da Contratação", document.getElementById("etp_15").value)}
+      <p style="margin-top:24px; text-align:right;">${localData}.</p>
+      ${buildSignaturesTableHTML(finalSigs)}
+    `;
+  } else {
+    const objRows = itemsData.map((it, i) => `
+      <tr><td>${String(i + 1).padStart(2, '0')}</td><td>${escapeHtml(it.unidade)}</td><td>${escapeHtml(it.descricao)}</td><td>${it.qtd}</td></tr>
+    `).join('');
+    const valRows = itemsData.map((it, i) => {
+      const sub = (Number(it.qtd) || 0) * (Number(it.valor_unit) || 0);
+      return `<tr><td>${String(i + 1).padStart(2, '0')}</td><td>${escapeHtml(it.unidade)}</td><td>${escapeHtml(it.descricao)}</td><td>${it.qtd}</td><td>${formatBRL(it.valor_unit)}</td><td>${formatBRL(sub)}</td></tr>`;
+    }).join('');
+
+    const aceite = escapeHtml(document.getElementById("tr_7_aceite").value.trim() || "05 (cinco) dias úteis");
+    const prazoPg = escapeHtml(document.getElementById("tr_7_prazo").value.trim() || "30 (trinta) dias");
+    const extraPg = document.getElementById("tr_7_extra").value.trim();
+    const pgText = `${extraPg ? extraPg + "\n\n" : ""}A empresa vencedora apresentará à ${mun}, Nota Fiscal/Fatura referente aos itens entregues ou serviços prestados. A Administração terá o prazo de ${aceite}, a contar da apresentação da Nota Fiscal/Fatura, para aceitá-la ou rejeitá-la.\nA Nota Fiscal/Fatura não aprovada será devolvida à contratada para as necessárias correções, com as informações que motivaram sua rejeição.\nO pagamento será providenciado no prazo de ${prazoPg} contados da data do aceite definitivo da Nota Fiscal/Fatura.`;
+
+    const orcTipo = document.getElementById("tr_10_tipo").value;
+    const orcText = orcTipo === "rp"
+      ? "A dotação orçamentária pela qual correrá a despesa desta licitação será apresentada no momento da solicitação dos materiais/serviços, ante a expedição da Solicitação de Fornecimento (SF)."
+      : `A despesa desta aquisição correrá à conta da Ficha Orçamentária ${document.getElementById("tr_10_ficha").value || "[INFORMAR FICHA]"}, destinada a ${document.getElementById("tr_10_dest").value || "[INFORMAR DESTINAÇÃO]"}, para ações do departamento de ${document.getElementById("tr_10_dept").value || "[INFORMAR DEPARTAMENTO]"}.`;
+
+    const personBlock = (n, c, e, t) => n ? `Nome: ${n} | Cargo: ${c || '-'} | E-mail: ${e || '-'} | Telefone: ${t || '-'}` : "";
+    const f1 = personBlock(document.getElementById("tr_f1_nome").value, document.getElementById("tr_f1_cargo").value, document.getElementById("tr_f1_email").value, document.getElementById("tr_f1_tel").value);
+    const f2 = personBlock(document.getElementById("tr_f2_nome").value, document.getElementById("tr_f2_cargo").value, document.getElementById("tr_f2_email").value, document.getElementById("tr_f2_tel").value);
+    const gest = personBlock(document.getElementById("tr_g_nome").value, document.getElementById("tr_g_cargo").value, document.getElementById("tr_g_email").value, document.getElementById("tr_g_tel").value);
+    const apoio = personBlock(document.getElementById("tr_a_nome").value, document.getElementById("tr_a_cargo").value, document.getElementById("tr_a_email").value, document.getElementById("tr_a_tel").value);
+
+    const sigs = [
+      document.getElementById("tr_f1_nome").value ? `${document.getElementById("tr_f1_nome").value} - Fiscal` : "",
+      document.getElementById("tr_f2_nome").value ? `${document.getElementById("tr_f2_nome").value} - Fiscal` : "",
+      document.getElementById("tr_g_nome").value ? `${document.getElementById("tr_g_nome").value} - Gestor` : "",
+      document.getElementById("tr_a_nome").value ? `${document.getElementById("tr_a_nome").value} - Equipe de Apoio` : "",
+      document.getElementById("tr_sig_dir").value.trim(),
+      document.getElementById("tr_sig_ord").value.trim()
+    ].filter(Boolean);
+    const finalSigs = sigs.length ? sigs : ["Fiscal Responsável", "Gestor do Contrato", "Diretor(a) do Departamento", "Ordenador(a) de Despesas"];
+
+    const secHtml = (title, val) => `
+      <div class="p-sec"><h3>${title}</h3><div class="p-text">${escapeHtml(val || "Não informado.")}</div></div>
+    `;
+
+    return `
+      <div class="p-header">${logoHtml}<h1>${mun}</h1><h2>${sec}</h2><div style="margin-top:6px; font-weight:700; font-size:13pt;">TERMO DE REFERÊNCIA (TR)</div></div>
+      <div class="p-sec">
+        <h3>1 - Definição do Objeto</h3>
+        <div class="p-text">${escapeHtml(document.getElementById("tr_1_desc").value)}</div>
+        <table class="p-table"><thead><tr><th>Item</th><th>Unidade</th><th>Descrição</th><th>Quantidade</th></tr></thead><tbody>${objRows}</tbody></table>
+      </div>
+      ${secHtml("2 - Fundamentação da Contratação", document.getElementById("tr_2").value)}
+      ${secHtml("3 - Fundamentação e Enquadramento Legal", document.getElementById("tr_3_texto").value)}
+      ${secHtml("4 - Requisitos da Contratação", document.getElementById("tr_4").value)}
+      ${secHtml("5 - Modelo de Execução do Objeto", document.getElementById("tr_5").value)}
+      ${secHtml("6 - Modelo de Gestão do Contrato", document.getElementById("tr_6").value)}
+      ${secHtml("7 - Critérios de Medição e Pagamento", pgText)}
+      ${secHtml("8 - Forma e Critérios de Seleção do Fornecedor", document.getElementById("tr_8").value)}
+      <div class="p-sec">
+        <h3>9 - Estimativa do Valor da Contratação</h3>
+        <div class="p-text">${escapeHtml(document.getElementById("tr_9_metodologia").value)}</div>
+        <table class="p-table"><thead><tr><th>Item</th><th>Unidade</th><th>Descrição</th><th>Quantidade</th><th>Valor Unitário</th><th>Valor Total</th></tr></thead><tbody>${valRows}<tr><td colspan="5" style="text-align:right; font-weight:700;">VALOR GLOBAL ESTIMADO:</td><td style="font-weight:700;">${formatBRL(grandTotal)}</td></tr></tbody></table>
+      </div>
+      ${secHtml("10 - Adequação Orçamentária", orcText)}
+      ${secHtml("11 - Fiscal(is) Responsável(is) pela Execução do Objeto", [f1, f2].filter(Boolean).join("\n"))}
+      ${secHtml("12 - Gestor Responsável pela Execução do Objeto", gest)}
+      ${secHtml("13 - Equipe de Apoio", apoio)}
+      ${secHtml("14 - Disposições Finais", document.getElementById("tr_14").value)}
+      <p style="margin-top:24px; text-align:right;">${localData}.</p>
+      ${buildSignaturesTableHTML(finalSigs)}
+    `;
+  }
+}
+
+function exportToWord() {
+  const bodyContent = buildOfficialDocumentHTML();
+  const docHtml = `
+    <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+    <head><meta charset='utf-8'><title>${activeDoc.toUpperCase()}</title>
+    <style>
+      body { font-family: Arial, sans-serif; font-size: 11pt; line-height: 1.5; color: #000; }
+      .p-header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 16px; }
+      h1 { font-size: 14pt; margin: 0; } h2 { font-size: 12pt; margin: 4px 0; }
+      h3 { font-size: 11pt; background: #eaeaea; padding: 4px 8px; border-left: 3px solid #222; text-transform: uppercase; margin-top: 14px; }
+      .p-text { white-space: pre-wrap; text-align: justify; }
+      table.p-table { width: 100%; border-collapse: collapse; margin-top: 6px; font-size: 9.5pt; }
+      table.p-table th, table.p-table td { border: 1px solid #333; padding: 5px; text-align: left; }
+      table.p-table th { background: #e6e6e6; }
+      table.p-sig-table { width: 100%; border-collapse: collapse; margin-top: 32px; }
+      table.p-sig-table td { width: 50%; border: none; padding: 28px 18px 8px; text-align: center; vertical-align: bottom; }
+      .p-sig-line { border-top: 1px solid #000; padding-top: 5px; font-size: 10pt; }
+    </style></head><body>${bodyContent}</body></html>
+  `;
+  const blob = new Blob(['\ufeff', docHtml], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = (activeDoc === "etp" ? "ETP_Secretaria_Saude.doc" : "Termo_de_Referencia_Secretaria_Saude.doc");
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 2500);
+}
+
+// =========================================================================
+// PERSISTÊNCIA (LOCALSTORAGE + JSON EXPORT/IMPORT)
+// =========================================================================
+function collectAllFields() {
+  const fields = {};
+  document.querySelectorAll("#workspace input[id], #workspace textarea[id], #workspace select[id]").forEach(el => {
+    if (el.type !== "file") fields[el.id] = el.value;
+  });
+  return { fields, itemsData, activeDoc, logoBase64 };
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(collectAllFields()));
+    const ind = document.getElementById("save-indicator");
+    if (ind) {
+      ind.innerText = "✓ Salvo agora";
+      setTimeout(() => { ind.innerText = "✓ Salvo no navegador"; }, 1200);
+    }
+  } catch (e) {}
+  updateProgress();
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    if (data.fields) {
+      Object.keys(data.fields).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = data.fields[id];
+      });
+    }
+    if (Array.isArray(data.itemsData) && data.itemsData.length > 0) {
+      itemsData = data.itemsData;
+    }
+    if (typeof data.logoBase64 === "string") {
+      logoBase64 = data.logoBase64;
+    }
+    updateLogoUI();
+    onTrOrcamentoChange();
+  } catch (e) {}
+}
+
+function exportDraftJSON() {
+  const blob = new Blob([JSON.stringify(collectAllFields(), null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "rascunho_etp_tr_saude.json";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+function importDraftJSON(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      loadState();
+      renderAllItemTables();
+      updateProgress();
+      alert("✅ Rascunho importado com sucesso!");
+    } catch (err) {
+      alert("❌ Arquivo JSON inválido.");
+    }
+  };
+  reader.readAsText(file);
+  ev.target.value = "";
+}
+
+function resetAllData() {
+  if (!confirm("Deseja limpar todos os campos do ETP e do Termo de Referência?")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+}
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") {
+    closeModal("poca-modal");
+    closeModal("export-warn-modal");
+  }
+});
+
+// Init
+buildForms();
+document.getElementById("cfg-local-data").value = "Município/UF, " + getTodayFormatted();
+loadState();
+renderAllItemTables();
+updateProgress();
+</script>
+</body>
+</html>
